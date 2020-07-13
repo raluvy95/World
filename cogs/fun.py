@@ -46,7 +46,7 @@ class FunCog(commands.Cog):
             "Tafina Kills Himself",
             "Tafina Ignores And Works On Mama Ping Command",
             "Tafina Approves",
-            "Tafina Dosnt Approve"
+            "Tafina Doesn't Approve"
         ]
         em = discord.Embed(title="Ask Tafina")
         em.description = (f"{ctx.author.mention} - {random.choice(responses)}")
