@@ -20,7 +20,16 @@ class FunCog(commands.Cog):
         async with aiohttp.ClientSession() as session:
             async with session.get("https://icanhazdadjoke.com", headers=headers) as req:
                 r = await req.json()
-        await ctx.send(r["joke"])  
+        await ctx.send(r["joke"])
+
+    @commands.command(help="Make a user wasted.")
+    async def wasted(self, ctx, user : discord.Member=None):
+        if user == None:
+            user = ctx.author
+        embed=discord.Embed(title=f"Wasted Machine", color=0xb921e4)
+        embed.set_image(url=f'https://some-random-api.ml/canvas/wasted?avatar={user.avatar_url_as(format="png")}')
+        embed.set_footer(text=f"Requested by {ctx.author}")
+        await ctx.send(embed=embed)
 
 
 
@@ -200,7 +209,7 @@ class FunCog(commands.Cog):
     @commands.command(help="Make a custom embed.")
     async def embed(self, ctx, *, desc):
             colors = [
-                0xFF8686, 
+                0xFF8686,
                 0x331A1A,
                 0xF3031B,
                 0xFEF200,
@@ -338,7 +347,7 @@ class FunCog(commands.Cog):
     async def gif(self, ctx):
         try:
             em = discord.Embed(color=ctx.author.color, title="Random GIF")
-            r = requests.get(f'https://api.giphy.com/v1/gifs/trending?api_key=oh nonno') 
+            r = requests.get(f'https://api.giphy.com/v1/gifs/trending?api_key=oh nonno')
             r = r.json()
             em.set_image(url=f"https://media.giphy.com/media/{r['data'][random.randint(0, len(r['data']) - 1)]['id']}/giphy.gif")
             em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
