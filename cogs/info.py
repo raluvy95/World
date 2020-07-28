@@ -12,7 +12,7 @@ class InfoCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(help="Show users information.")
     async def userinfo(self, ctx, *, user: discord.Member = None):
       if user is None:
           user = ctx.author
@@ -38,14 +38,14 @@ class InfoCog(commands.Cog):
       em.set_footer(text=f"World Userinfo | {user}'s Info", icon_url=user.avatar_url)
       return await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Show guilds avatar.")
     async def servericon(self, ctx):
       em = discord.Embed(title=ctx.guild.name)
       em.set_image(url=ctx.guild.icon_url)
       em.color = (ctx.author.color)
       await ctx.send(embed=em)
     
-    @commands.command()
+    @commands.command(help="Show guilds information.")
     async def serverinfo(self, ctx):
       em = discord.Embed(description=f"Name: {ctx.guild}")
       em.color = (ctx.author.color)
@@ -68,13 +68,13 @@ class InfoCog(commands.Cog):
       em.set_footer(text=f"World ServerInfo | {ctx.guild}'s Info", icon_url=ctx.guild.icon_url)
       await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="List of connected servers.")
     async def servers(self, ctx):
       servers = list(self.bot.guilds)
       embed = discord.Embed(title=None,colour=ctx.author.color,description="Connected on " + str(len(servers)) + " servers")
       await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(help="Show World's Info.")
     async def botinfo(self, ctx):
       dpyVersion = discord.__version__
       serverCount = len(self.bot.guilds)
@@ -96,7 +96,7 @@ class InfoCog(commands.Cog):
 
 
 
-    @commands.command()
+    @commands.command(help="Show World's Info.")
     async def botstats(self, ctx):
       dpyVersion = discord.__version__
       serverCount = len(bot.guilds)
@@ -115,7 +115,7 @@ class InfoCog(commands.Cog):
       await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @commands.command(help="Show users spotify info.")
     async def spotify(self, ctx, user: discord.Member=None):
         user = user or ctx.author
         for activity in user.activities:
@@ -136,33 +136,33 @@ class InfoCog(commands.Cog):
               await ctx.send(embed=embed1)
 
 
-    @commands.command()
+    @commands.command(help="Invite World.")
     async def invite(self, ctx):
         coronastats = ('https://discord.com/api/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot')
-        em = discord.Embed(title='Click Me To Invite Me :)', url=(coronastats), icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
-        em.set_author(name='World - Invite', url='https://discord.com/api/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot' , icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024g')
+        em = discord.Embed(title='Click Me To Invite Me :)', url=(coronastats), icon_url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
+        em.set_author(name='World - Invite', url='https://discord.com/api/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot' , icon_url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
         em.description = ('Link Above Directs To My Invite Link!')
-        em.set_thumbnail(url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
-        em.set_image(url="https://cdn.discordapp.com/attachments/717867181827817984/725066426980892772/unknown.png")
+        em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
+        em.set_image(url="https://cdn.discordapp.com/attachments/717867341333004328/730137118499799232/unknown.png")
         em.set_footer(text='World - Invite')
         em.colour = (0x00FF)
         await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(help="Vote for world.")
     async def vote(self, ctx):
         coronastats = ('https://top.gg/bot/700292147311542282')
         em = discord.Embed(title='Click Me To Vote For Me', url=(coronastats), icon_url='https://top.gg/bot/700292147311542282')
-        em.set_author(name='World - Vote!', url='https://top.gg/bot/700292147311542282' , icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+        em.set_author(name='World - Vote!', url='https://top.gg/bot/700292147311542282' , icon_url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
         em.description = ('Link Above Directs To Top.gg')
-        em.set_thumbnail(url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
-        em.set_image(url="https://top.gg/api/widget/700292147311542282.png?cache=poop")
+        em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
+        em.set_image(url="https://top.gg/api/widget/700292147311542282.png?cache=poor")
         em.set_footer(text='World - Top.gg')
         em.colour = (0x00FF)
         await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(help="Show Guilds Bans.")
     @commands.has_permissions(ban_members=True)
     async def bans(self, ctx):
         try:
@@ -177,7 +177,7 @@ class InfoCog(commands.Cog):
         await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(help="Corona Virus information")
     async def corona(self, ctx):
         r = requests.get("https://api.covid19api.com/world/total")
         res = r.json()
@@ -195,7 +195,7 @@ class InfoCog(commands.Cog):
         await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(help="Show World's uptime.")
     async def uptime(self, ctx):
         seconds = time.time()-starttime
         m, s = divmod(seconds, 60)

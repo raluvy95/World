@@ -5,13 +5,14 @@ import random
 from pymongo import MongoClient
 from discord.ext import commands
 
+cluster = MongoClient("no db for u")
+
 class EconomyCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(help="Register in Worlds database.")
     async def create(self, ctx):
-        cluster = MongoClient("think ima give u my db link NOPE")
         db = cluster["Coins"]
         collection = db["Coins"]
         post = {"_id": ctx.author.id, "coins": 0, "cookie": 0, "apple": 0, "choc": 0, "poop": 0, "afk": "No Status Set"}
@@ -20,11 +21,10 @@ class EconomyCog(commands.Cog):
         embed1.add_field(name=f"**Success**", value=f"{ctx.author.mention} I Have Succsesfully Registered You!", inline=True)
         await ctx.channel.send(embed=embed1)
 
-    @commands.command()
+    @commands.command(help="Buy a item from the shop.")
     @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
     async def buy(self, ctx, product, amount: int):
         if product == 'cookie':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -41,7 +41,6 @@ class EconomyCog(commands.Cog):
                 embed1.add_field(name=f"**Success**", value=f"{ctx.author.mention} You Bought `{amount}` Cookies For {amount} Coins, You Now Have {coins1} Coins!", inline=True)
                 await ctx.send(embed=embed1)
         if product == 'apple':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -58,7 +57,6 @@ class EconomyCog(commands.Cog):
                 embed2.add_field(name=f"**Success**", value=f"{ctx.author.mention} You Bought `{amount}` Apples For {int(amount*10)} Coins, You Now Have {coins1} Coins!", inline=True)
                 await ctx.send(embed=embed2)
         if product == 'chocbar':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -75,7 +73,6 @@ class EconomyCog(commands.Cog):
                 embed3.add_field(name=f"**Success**", value=f"{ctx.author.mention} You Bought `{amount}` Chocolate Bars For {int(amount*3)} Coins, You Now Have {coins1} Coins!", inline=True)
                 await ctx.send(embed=embed3)
         if product == 'poop':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -99,11 +96,10 @@ class EconomyCog(commands.Cog):
 
 
     
-    @commands.command()
+    @commands.command(help="Eat a item from your inventory.")
     @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
     async def eat(self, ctx, product, amount: int):
         if product == 'chocbar':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -117,7 +113,6 @@ class EconomyCog(commands.Cog):
                 embed1.add_field(name=f"**Success**", value=f"{ctx.author.mention} You ate `{amount}` Chocolate Bars! You Now Have {coins} Chocolate Bars!", inline=True)
                 await ctx.send(embed=embed1)
         if product == 'apple':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -131,7 +126,6 @@ class EconomyCog(commands.Cog):
                 embed1.add_field(name=f"**Success**", value=f"{ctx.author.mention} You ate `{amount}` Apples! You Now Have {coins} Apples!", inline=True)
                 await ctx.send(embed=embed1)
         if product == 'cookie':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -145,7 +139,6 @@ class EconomyCog(commands.Cog):
                 embed1.add_field(name=f"**Success**", value=f"{ctx.author.mention} You ate `{amount}` Cookies! You Now Have {coins} Cookies", inline=True)
                 await ctx.send(embed=embed1)
         if product == 'poop':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -161,11 +154,10 @@ class EconomyCog(commands.Cog):
 
         
 
-    @commands.command()
+    @commands.command(help="Sell a item from your inventory.")
     @commands.cooldown(rate=6, per=15, type=commands.BucketType.member)
     async def sell(self, ctx, product, amount: int):
         if product == 'chocbar':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -182,7 +174,6 @@ class EconomyCog(commands.Cog):
                 embed1.add_field(name=f"**SOLD!**", value=f"{ctx.author.mention} You Sold `{amount}` Chocolate Bars! For {int(amount*4)} Coins, You Now Have {mon1} Coins!", inline=True)
                 await ctx.send(embed=embed1)
         if product == 'apple':
-            cluster = MongoClient("think ima give u my db link NOPE")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -199,7 +190,6 @@ class EconomyCog(commands.Cog):
                 embed1.add_field(name=f"**SOLD!**", value=f"{ctx.author.mention} You Sold `{amount}` Apples! For {int(amount*11)} Coins, You Now Have {mon1} Coins!", inline=True)
                 await ctx.send(embed=embed1)
         if product == 'poop':
-            cluster = MongoClient("")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -216,7 +206,6 @@ class EconomyCog(commands.Cog):
                 embed1.add_field(name=f"**SOLD**", value=f"{ctx.author.mention} You Sold `{amount}` Poops! For {int(amount*6)} Coins, You Now Have {mon1} Coins!", inline=True)
                 await ctx.send(embed=embed1)
         if product == 'cookie':
-            cluster = MongoClient("")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -267,10 +256,9 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/eat [product] [amount]`")
 
 
-    @commands.command()
+    @commands.command(help="Shows your inventory.")
     @commands.cooldown(rate=8, per=50, type=commands.BucketType.member)
     async def inv(self, ctx):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": ctx.author.id}
@@ -299,10 +287,9 @@ class EconomyCog(commands.Cog):
             a = round(a)
             await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
-    @commands.command()
+    @commands.command(help="Get daily coins.")
     @commands.cooldown(rate=1, per=86400, type=commands.BucketType.member)
     async def daily(self, ctx):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": ctx.author.id}
@@ -317,10 +304,9 @@ class EconomyCog(commands.Cog):
             await ctx.send(embed=embed1)
 
 
-    @commands.command(aliases=["afk", "ss", "activity", "act"])
+    @commands.command(aliases=["afk", "ss", "activity", "act"], help="Set a custom status.")
     @commands.cooldown(rate=8, per=230, type=commands.BucketType.member)
     async def setstatus(self, ctx, *, afk1):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": ctx.author.id}
@@ -344,10 +330,9 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
 
-    @commands.command()
+    @commands.command(help="Shows users status")
     @commands.cooldown(rate=11, per=80, type=commands.BucketType.member)
     async def status(self, ctx, users: discord.Member):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": users.id}
@@ -368,10 +353,9 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
 
-    @commands.command()
+    @commands.command(help="Get weekly coins.")
     @commands.cooldown(rate=1, per=604800, type=commands.BucketType.member)
     async def weekly(self, ctx):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": ctx.author.id}
@@ -385,10 +369,9 @@ class EconomyCog(commands.Cog):
             embed1.add_field(name=f"**Success**", value=f"{ctx.author.mention} I Have Added `1500` Coins To Your Balance", inline=True)
             await ctx.send(embed=embed1)
 
-    @commands.command()
+    @commands.command(help="Beg for coins.")
     @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
     async def beg(self, ctx):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": ctx.author.id}
@@ -403,11 +386,10 @@ class EconomyCog(commands.Cog):
             await ctx.send(embed=embed1)
 
 
-    @commands.command()
+    @commands.command(help="Sorry Buddy only owner.")
     @commands.is_owner()
     @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
     async def give(self, ctx, users: discord.Member, *, coin):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": users.id}
@@ -421,11 +403,10 @@ class EconomyCog(commands.Cog):
             embed1.add_field(name=f"**Stop Cheating!**", value=f"{ctx.author.mention} I Have Added `{coin}` Coins To {users.mention}'s Balance", inline=True)
             await ctx.send(embed=embed1)
 
-    @commands.command()
+    @commands.command(help="Only owner buddy.")
     @commands.is_owner()
     @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
     async def remove(self, ctx, users: discord.Member, *, coin):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": users.id}
@@ -440,9 +421,8 @@ class EconomyCog(commands.Cog):
             await ctx.send(embed=embed1)
 
 
-    @commands.command()
+    @commands.command(aliases=["balance"], help="Shows users balance.")
     async def bal(self, ctx):
-        cluster = MongoClient("")
         db = cluster["Coins"]
         collection = db["Coins"]
         query = {"_id": ctx.author.id}
@@ -479,7 +459,7 @@ class EconomyCog(commands.Cog):
 
 
 
-    @commands.command(aliases=["bet", "slot", "gam"])
+    @commands.command(aliases=["bet", "slot", "gam"], help="Gamble for some coins.")
     @commands.cooldown(rate=2, per=8, type=commands.BucketType.member)
     async def gamble(self, ctx):
         emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
@@ -488,7 +468,6 @@ class EconomyCog(commands.Cog):
         c = random.choice(emojis)
         slotmachine = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
         if a == b == c:
-            cluster = MongoClient("")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -510,7 +489,6 @@ class EconomyCog(commands.Cog):
                 )
             )
         elif (a == b) or (a == c) or (b == c):
-            cluster = MongoClient("")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}
@@ -531,7 +509,6 @@ class EconomyCog(commands.Cog):
                 )
             )
         else:
-            cluster = MongoClient("")
             db = cluster["Coins"]
             collection = db["Coins"]
             query = {"_id": ctx.author.id}

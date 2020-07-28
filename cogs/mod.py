@@ -8,7 +8,7 @@ class ModCog(commands.Cog):
         self.bot = bot
 
 
-    @commands.command()
+    @commands.command(help="Ban a user.")
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         await member.ban(reason=reason)
@@ -19,7 +19,7 @@ class ModCog(commands.Cog):
         em.colour = (0xFF0000)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Kick a user.")
     @commands.has_permissions(ban_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
@@ -30,7 +30,7 @@ class ModCog(commands.Cog):
         em.colour = (0xFF0000)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Mute a user.")
     @commands.has_permissions(ban_members=True)
     async def mute(self, ctx, user: discord.Member, *, reason=None):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
@@ -68,7 +68,7 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
 
-    @commands.command()
+    @commands.command(help="Delete specified messages.")
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, amount=100):
         if amount == 1:
@@ -91,7 +91,7 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Kick People!')
 
-    @commands.command()
+    @commands.command(help="Unban a user.")
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
@@ -116,7 +116,7 @@ class ModCog(commands.Cog):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Dont Have Perms Or This Person Cannot Be Unbanned')
 
 
-    @commands.command()
+    @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
     async def poll(self, ctx, *, desc):
         await ctx.send('@here NEW POLE VOTE TO TAKE PART!')
@@ -137,7 +137,7 @@ class ModCog(commands.Cog):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')  
 
 
-    @commands.command()
+    @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
     async def polln(self, ctx, *, desc):
         embed = discord.Embed(
@@ -151,7 +151,7 @@ class ModCog(commands.Cog):
         await add_reactions_to.add_reaction("👍")
         await add_reactions_to.add_reaction("👎")
 
-    @commands.command()
+    @commands.command(help="Lockdown the current channel.")
     @commands.has_permissions(ban_members=True)
     async def lock(self, ctx):
         guild = ctx.guild
@@ -163,7 +163,7 @@ class ModCog(commands.Cog):
         await ctx.send(embed=embed)
 
  
-    @commands.command()
+    @commands.command(help="Unlock the current channel.")
     @commands.has_permissions(ban_members=True)
     async def unlock(self, ctx):
         guild = ctx.guild
@@ -185,21 +185,21 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} This Command Can Only Be Used By Admins')
 
-    @commands.command()
+    @commands.command(help="Direct message a user.")
     @commands.cooldown(rate=1, per=20, type=commands.BucketType.member)
     @commands.has_permissions(administrator=True)
     async def dm(self, ctx, member : discord.Member, *, msg):
         embed = discord.Embed(description=f"World - Direct Message", timestamp=ctx.message.created_at)
         embed.add_field(name="Direct Message", value=f"{ctx.author.mention} Sent A Message To {member}\n Message: \n `{msg}`")
         embed.set_author(name="Succsesfully Sent Direct Message", icon_url=self.bot.user.avatar_url)
-        embed.set_thumbnail(url="https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
         embed.set_footer(text=f"World - Direct Message")
         embed.color = (ctx.author.color)
         await ctx.send(embed=embed)
         embed1 = discord.Embed(description=f"You Have Recived A Message", timestamp=ctx.message.created_at)
         embed1.add_field(name="Message:", value=f"`{msg}`\n --------------\n From - {ctx.author.mention}\n Guild = `{ctx.guild}`")
         embed1.set_author(name="World - Direct Message", icon_url=self.bot.user.avatar_url)
-        embed1.set_thumbnail(url="https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024")
+        embed1.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
         embed1.set_footer(text=f"World - Direct Message")
         embed1.color = (ctx.author.color)
         await member.send(embed=embed1)

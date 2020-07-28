@@ -8,7 +8,7 @@ class OwnerCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(hidden=True)
+    @commands.command(hidden=True, help="Load a python file.")
     @commands.is_owner()
     async def load(self, ctx, module):
         """Loads a module."""
@@ -20,7 +20,7 @@ class OwnerCog(commands.Cog):
             embed = discord.Embed(title='load!', description=f"I Have loaded `{module}`", colour=ctx.author.colour)
             await ctx.send(content=None, embed=embed)
 
-    @commands.command(hidden=True)
+    @commands.command(hidden=True, help="Unload a python file.")
     @commands.is_owner()
     async def unload(self, ctx, module):
         """Unloads a module."""
@@ -32,7 +32,7 @@ class OwnerCog(commands.Cog):
             embed = discord.Embed(title='Unload!', description=f"I Have Unloaded `{module}`", colour=ctx.author.colour)
             await ctx.send(content=None, embed=embed)
 
-    @commands.command(name='reload', hidden=True)
+    @commands.command(name='reload', hidden=True, help="Reload python file.")
     @commands.is_owner()
     async def _reload(self, ctx, module):
         """Reloads a module."""
@@ -45,7 +45,7 @@ class OwnerCog(commands.Cog):
             embed = discord.Embed(title='Reload!', description=f"I Have Reloaded `{module}`", colour=ctx.author.colour)
             await ctx.send(content=None, embed=embed)
 
-    @commands.command(name='eval')
+    @commands.command(name='eval', help="Eval some code.")
     @commands.is_owner()
     async def eval_(self, ctx, *, code):
         await eval(code)

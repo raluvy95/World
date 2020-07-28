@@ -1,28 +1,60 @@
 import discord
+import typing
+from typing import Optional
+from discord.ext.commands import Cog
+from discord import Embed
+from discord.ext.commands import command
+from discord.utils import get
 from discord.ext import commands
+
+
+def syntax(command):
+	cmd_and_aliases = " | ".join([str(command), *command.aliases])
+	params = []
+
+	for key, value in command.params.items():
+		if key not in ("self", "ctx"):
+			params.append(f"[{key}]" if "NoneType" in str(value) else f"<{key}>")
+
+	params = " ".join(params)
+
+	return f"**Usage:** `w/{cmd_and_aliases} {params}`"
+
 
 class HelpCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def help(self, ctx):
-        author = ctx.message
-        author
-    
-
-        embed = discord.Embed(colour=ctx.author.color)
-        embed.set_author(name='World - Help', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
-        embed.add_field(
-            name="Shows multiple categories.", value="w/categories", inline=True
-        )
-        embed.add_field(name="Server", value="[Join Support Server](https://discord.gg/zenM2Kd)", inline=True)
-        embed.add_field(name="Vote", value="[Vote For World](https://top.gg/bot/700292147311542282/vote)", inline=True)
-        embed.add_field(name="> World is a discord bot made for all", value="> World is a discord bot made a while after juice wrld's death(Jarad Higgins).\n> My owner was very upset that juice wrld passed away so he decided to make me.", inline=False)
-        await ctx.send(embed=embed)
+    async def cmd_help(self, ctx, command):
+    	embed = Embed(title=f"{command} - Help",
+					  description=syntax(command),
+					  colour=ctx.author.colour)
+    	embed.add_field(name="Command info", value=command.help)
+    	await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @command(name="help", help="Shows this message.")
+    async def show_help(self, ctx, cmd: Optional[str]):
+    	"""Shows this message."""
+    	if cmd is None:
+    		embed = discord.Embed(colour=ctx.author.color)
+    		embed.set_author(name='World - Help', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+    		embed.add_field(name="Shows multiple categories.", value="w/categories", inline=True)
+    		embed.add_field(name="Server", value="[Join Support Server](https://discord.gg/zenM2Kd)", inline=True)
+    		embed.add_field(name="Vote", value="[Vote For World](https://top.gg/bot/700292147311542282/vote)", inline=True)
+    		embed.add_field(name="> World is a discord bot made for all", value="> World is a discord bot made a while after juice wrld's death(Jarad Higgins).\n> My owner was very upset that juice wrld passed away so he decided to make me.", inline=False)
+    		embed.set_footer(text="Use \"w/help <command>\" For more info")
+    		await ctx.send(embed=embed)
+
+    	else:
+    		if (command := get(self.bot.commands, name=cmd)):
+    			await self.cmd_help(ctx, command)
+
+    		else:
+    			await ctx.send(f"Hey {ctx.author.mention} thats not a valid command.")
+
+
+    @commands.command(help="Shows categories.")
     async def categories(self, ctx):
         author = ctx.message
         author
@@ -40,7 +72,7 @@ class HelpCog(commands.Cog):
         await ctx.send(embed=embed1)
 
 
-    @commands.command()
+    @commands.command(help="Shows other categorie.")
     async def other(self, ctx):
         author = ctx.message
         author
@@ -60,7 +92,7 @@ class HelpCog(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @commands.command(help="Shows useful categorie.")
     async def useful(self, ctx):
         author = ctx.message
         author
@@ -83,12 +115,12 @@ class HelpCog(commands.Cog):
         embed.add_field(name="Users status", value="w/status [user]", inline=True)
         embed.add_field(name="Set a status", value="w/setstatus", inline=True)
         embed.add_field(
-            name="Screenshot [NSFW]", value="w/screenshot [website]", inline=True
+            name="Shows my website", value="w/website", inline=True
         )
         await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @commands.command(help="Shows mod categorie.")
     async def mod(self, ctx):
       author = ctx.message
       author
@@ -115,7 +147,7 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @commands.command(help="Shows fun categorie.")
     async def fun(self, ctx):
       author = ctx.message
       author
@@ -124,16 +156,15 @@ class HelpCog(commands.Cog):
       embed.set_author(name='World - Fun', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
       embed.add_field(name="Show this message", value="w/fun", inline=True)
       embed.add_field(name="Are you gay?", value="w/gay [user]", inline=True)
-      embed.add_field(name="Play Russian roulette", value="w/rr", inline=True)
       embed.add_field(name="Ask Ali A", value="w/askali [question]", inline=True)
       embed.add_field(
       name="Show user pp size", value="w/pp", inline=True
       )
-      embed.add_field(name="Get a random gif!", value="w/gif", inline=True)
+      embed.add_field(name="Steal user avatar", value="w/avatar [user]", inline=True)
       embed.add_field(
           name="Supreme text", value="w/supreme [text]", inline=True
       )
-      embed.add_field(name="Ask Mr Trump", value="w/asktrump [question]", inline=True)
+      embed.add_field(name="Makes a Tweet", value="w/tweet [user] [message]", inline=True)
       embed.add_field(
           name="Sad Times :(", value="w/f [sad thing]", inline=True
       )
@@ -147,7 +178,7 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @commands.command(help="Shows economy categorie.")
     async def economy(self, ctx):
       author = ctx.message
       author
@@ -172,7 +203,7 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
     
    
-    @commands.command()
+    @commands.command(help="Shows shop categorie.")
     async def shop(self, ctx):
       author = ctx.message
       author

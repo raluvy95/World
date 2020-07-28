@@ -14,7 +14,7 @@ class FunCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(help="World is funny.")
     async def joke(self, ctx):
         headers = {"Accept": "application/json"}
         async with aiohttp.ClientSession() as session:
@@ -40,13 +40,13 @@ class FunCog(commands.Cog):
         await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(help="Ask fatina a question.")
     async def asktafina(self, ctx, *, desc):
         responses = [
             "Tafina Kills Himself",
             "Tafina Ignores And Works On Mama Ping Command",
             "Tafina Approves",
-            "Tafina Dosnt Approve"
+            "Tafina Doesn't Approve"
         ]
         em = discord.Embed(title="Ask Tafina")
         em.description = (f"{ctx.author.mention} - {random.choice(responses)}")
@@ -56,7 +56,7 @@ class FunCog(commands.Cog):
         await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(help="Generate some P*rn Hub text.")
     async def phtext(self,ctx,text1,line,text):
         if line == '&':
             embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}')
@@ -70,7 +70,7 @@ class FunCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/phtext text & text`")
 
 
-    @commands.command()
+    @commands.command(help="Show love between users.")
     async def ship(self, ctx, text1: discord.Member, line, text: discord.Member):
         if line == '&':
             embed = discord.Embed(title='Cuties', description=f'Requested By {ctx.author.mention}')
@@ -83,7 +83,7 @@ class FunCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/ship @user & @user`")
 
 
-    @commands.command()
+    @commands.command(help="Generate supreme text.")
     async def supreme(self, ctx,*,message=''):
         sent = message.lower()
         embed = discord.Embed(title='Supreme', description=f'Requested By {ctx.author.mention}')
@@ -93,7 +93,7 @@ class FunCog(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @commands.command(help="Fatina is a qt")
     async def fatina(self, ctx):
         coronastats = ('https://discord.com/oauth2/authorize?client_id=711632711743438888&permissions=0&scope=bot')
         em = discord.Embed(title='Invite Mama Music!', url=(coronastats), icon_url='https://cdn.discordapp.com/attachments/265156286406983680/720627340375359498/Avatar.png')
@@ -105,7 +105,7 @@ class FunCog(commands.Cog):
         await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(help="Show real love between a user.")
     async def Love(self, ctx, *, user: discord.Member):
         responses = [
             "█ - 1% In Love",
@@ -142,7 +142,7 @@ class FunCog(commands.Cog):
         else:
             await ctx.send(embed=em)
 
-    @commands.command(name="f")
+    @commands.command(name="f", help="Sad times.")
     async def f(self, ctx, *, text: commands.clean_content = None):
         """ Press F to pay respect """
         sean = ['💔', '💝', '💚', '💙', '💜']
@@ -150,7 +150,7 @@ class FunCog(commands.Cog):
         finchat = discord.Embed(title = f"**{ctx.author.name}** has paid their respect {reason}{random.choice(sean)}", color =ctx.author.color)
         await ctx.send(embed=finchat)
 
-    @commands.command()
+    @commands.command(help="Shows a meme from random subreddits.")
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(rate=4, per=7, type=commands.BucketType.member)
     async def meme(self, ctx):
@@ -174,7 +174,7 @@ class FunCog(commands.Cog):
             a = round(a)
             await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
-    @commands.command()
+    @commands.command(help="Fancy.")
     async def textart(self, ctx, *, text):
         r = requests.get(
             f"http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}"
@@ -184,8 +184,8 @@ class FunCog(commands.Cog):
         await ctx.send(f"```{r}```")
 
 
-    @commands.command(aliases=["pp", "pepe"])
-    async def dick(self, ctx, *, user: discord.Member = None):
+    @commands.command(aliases=["pepe"], help="Shows users pp size.")
+    async def pp(self, ctx, *, user: discord.Member = None):
         if user is None:
             user = ctx.author
         size = random.randint(1, 15)
@@ -197,7 +197,7 @@ class FunCog(commands.Cog):
         )
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Make a custom embed.")
     async def embed(self, ctx, *, desc):
             colors = [
                 0xFF8686, 
@@ -214,7 +214,7 @@ class FunCog(commands.Cog):
             em.colour = (random.choice(colors))
             await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Steal a users avatar.")
     async def avatar(self, ctx, *, user: discord.Member=None):
         format = "gif"
         user = user or ctx.author
@@ -228,7 +228,7 @@ class FunCog(commands.Cog):
             await ctx.send(file = discord.File(file, f"Avatar.{format}"))
 
 
-    @commands.command()
+    @commands.command(help="Fake tweet text.")
     async def tweet(self, ctx, username: str, *, message: str):
         async with aiohttp.ClientSession() as cs:
             async with cs.get(
@@ -240,14 +240,14 @@ class FunCog(commands.Cog):
                 em.set_image(url=res["message"])
                 await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Very fancy.")
     async def ascii(self, ctx, *, text):
         r = requests.get(f'http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}').text
         if len('```'+r+'```') > 2000:
             return
         await ctx.send(f"```{r}```")
 
-    @commands.command()
+    @commands.command(help="Secret.")
     async def cum(self, ctx):
         responses = [
             "Where Do You Mant Me To Come?",
@@ -263,7 +263,7 @@ class FunCog(commands.Cog):
         em.colour = (0x00FF)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Is that user gay?.")
     async def gay(self, ctx, *, user: discord.Member):
         randomPercentage = random.randint(1, 100)
         em = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
@@ -286,7 +286,7 @@ class FunCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} Please Mention A User')
 
-    @commands.command(aliases=["8ball"])
+    @commands.command(aliases=["8ball"], help="Magical answers.")
     async def _8ball(self, ctx, *, question):
         responses = [
             "It is certain.",
@@ -317,16 +317,15 @@ class FunCog(commands.Cog):
         em.colour = (0x000000)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Turn text into emojis!.")
     async def emojify(self, ctx, *, stuff):
     	emj = ("".join([":regional_indicator_"+l+":"  if l in "abcdefghijklmnopqrstuvwyx" else [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"][int(l)] if l.isdigit() else ":question:" if l == "?" else ":exclamation:" if l == "!" else l for l in f"{stuff}"]))
     	embed = discord.Embed(title='Emojify', description=f'Requested By {ctx.author.mention}', color=ctx.author.color)
     	embed.add_field(name='Your Message Was Emojifyed', value=f'{emj}')
     	await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(help="Ask the boss.")
     async def asktrump(self, ctx, *, question):
-        """Ask Trump"""
         r = requests.get(f"https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}")
         r = r.json()
         em = discord.Embed(color=ctx.author.color, title="Ask Mr Presendent?")
@@ -335,12 +334,11 @@ class FunCog(commands.Cog):
         em.set_footer(text="World - Ask Trump")
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(help="Sends a random gif.")
     async def gif(self, ctx):
-        """Sends a random GIF."""
         try:
             em = discord.Embed(color=ctx.author.color, title="Random GIF")
-            r = requests.get(f'https://api.giphy.com/v1/gifs/trending?api_key=NO API KEY FOR U') 
+            r = requests.get(f'https://api.giphy.com/v1/gifs/trending?api_key=oh nonno') 
             r = r.json()
             em.set_image(url=f"https://media.giphy.com/media/{r['data'][random.randint(0, len(r['data']) - 1)]['id']}/giphy.gif")
             em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
@@ -352,7 +350,7 @@ class FunCog(commands.Cog):
             await ctx.send(embed=em)
 
 
-    @commands.command(aliases=["russianrulette"])
+    @commands.command(aliases=["russianrulette"], help="Play Russian rulette.")
     async def rr(self, ctx):
         responses = [
             "🔫Pow Your Dead!, Try again?",
