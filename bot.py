@@ -1,26 +1,3 @@
-#MIT License
-
-#Copyright (c) 2020 Shuana
-
-#Permission is hereby granted, free of charge, to any person obtaining a copy
-#of this software and associated documentation files (the "Software"), to deal
-#in the Software without restriction, including without limitation the rights
-#to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-#copies of the Software, and to permit persons to whom the Software is
-#furnished to do so, subject to the following conditions:
-
-#The above copyright notice and this permission notice shall be included in all
-#copies or substantial portions of the Software.
-
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-#SOFTWARE.
-
-
 import discord
 import asyncio
 import random
@@ -43,14 +20,15 @@ from discord.ext.commands import has_permissions, MissingPermissions
 
 
 def get_prefix(bot, message):
-    prefixes = ['world ', 'w/']
+    prefixes = ['t/']
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
 bot = commands.Bot(command_prefix=get_prefix, description='Discord Bot Made For All', case_insensitive=True)
 bot.remove_command("help")
 
 
-initial_extensions = ['cogs.owner', 'cogs.ping', 'cogs.help', 'cogs.info', 'cogs.economy', 'cogs.fun', 'cogs.mod']
+initial_extensions = ['cogs.owner', 'cogs.ping', 'cogs.help',
+ 'cogs.info', 'cogs.economy', 'cogs.fun', 'cogs.mod']
 
 
 if __name__ == '__main__':
@@ -60,8 +38,7 @@ if __name__ == '__main__':
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(
-        status=discord.Status.online, activity=discord.Game("w/help | For More Info")
+    await bot.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=discord.ActivityType.listening, name="w/help")
     )
     print(
         """        ----------------
@@ -73,10 +50,10 @@ async def on_ready():
         ---------------
         Current Version: 433634.128947
         ---------------"""
-    )             
+    )              
 
 
-@bot.command(aliases=["firstmessage"])
+@bot.command(aliases=["firstmessage"], help="Pull first sent message in a channel.")
 @commands.has_permissions(manage_messages=True)
 async def fm(ctx, channel: discord.TextChannel = None):  
 	if channel is None:
@@ -85,7 +62,7 @@ async def fm(ctx, channel: discord.TextChannel = None):
 		embed = discord.Embed(description=fm.content, timestamp=ctx.message.created_at)
 		embed.add_field(name="First Ever Message!", value=f"[Click To Go To Message]({fm.jump_url})\nChannel: <#{channel.id}>")
 		embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
-		embed.set_thumbnail(url="https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024")
+		embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
 		embed.set_footer(text=f"World - First Message")
 		embed.color = (ctx.author.color)
 		await ctx.send(embed=embed)
@@ -118,7 +95,7 @@ async def on_message(message: discord.Message) -> None:
     await bot.process_commands(message)
 	
 
-@bot.command()
+@bot.command(help="[Nsfw], Screenshot a website.")
 async def screenshot(ctx, site):
     if ctx.channel.is_nsfw():
         embed=discord.Embed(title="World - Screenshot", timestamp=ctx.message.created_at, color=ctx.author.color)
@@ -128,5 +105,5 @@ async def screenshot(ctx, site):
         embed=discord.Embed(title="Nsfw Only!", timestamp=ctx.message.created_at, color=ctx.author.color)
         embed.set_image(url=f"https://media.discordapp.net/attachments/265156286406983680/728328135942340699/nsfw.gif") 
         await ctx.send(embed=embed)
-   
-bot.run("really think i would leave my token here LOL", bot=True, reconnect=True)
+    
+bot.run("no token for u", bot=True, reconnect=True)
