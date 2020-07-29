@@ -52,13 +52,13 @@ class JoinCog(commands.Cog):
             embed.set_author(name=f'{ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')
             return await ctx.send(embed=embed)
     @commands.command(help='Sets join role')
-    async def joinrole(self, ctx, role : discord.Role=None):
+    async def joinrole(self, ctx, role=None):
         if role == None:
             embed = discord.Embed(title="Error!", description="Usage: `<prefix>welcomes #channel`", color=ctx.author.color)
             embed.set_author(name=f'{ctx.author.name}', icon_url=ctx.author.avatar_url)
             return await ctx.send(embed=embed)
         if role.startswith('<@&'):
-            await thng
+            pass
         else:
             embed = discord.Embed(title="Error!", description="Usage: `<prefix>joinrole @role`", color=ctx.author.color)
             embed.set_author(name=f'{ctx.author.name}', icon_url=ctx.author.avatar_url)
@@ -87,5 +87,14 @@ class JoinCog(commands.Cog):
             await channels.send(embed=embed)
         except:
             pass
+        cursor.execute("SELECT role FROM joins WHERE server_id = " + str(member.guild.id))
+        res = cursor.fetchall()
+        newres = res[0][0]
+        try:
+        intsCoverr = int(newres)
+        if intsCoverr <= 15:
+            pass
+        role = member.guild.get_role(intsCoverr)
+        await member.add_roles(role)
 def setup(bot):
     bot.add_cog(JoinCog(bot))
