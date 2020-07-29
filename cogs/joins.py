@@ -10,6 +10,8 @@ from discord.ext import commands
 from urllib.parse import urlparse
 import mysql.connector
 from mysql.connector import pooling
+import aiohttp
+import io
 
 mysql_connection = mysql.connector.pooling.MySQLConnectionPool(
     pool_name="join_connector",
@@ -34,11 +36,15 @@ class JoinCog(commands.Cog):
             mydb.commit()
     @commands.command(help="Set welcomes channel")
     async def welcomes(self, ctx, channel=None):
+        if ctx.author.guild_permissions.manage_messages:
+            pass
+        else:
+            return await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Execute This Command!')
         if channel == None:
             embed = discord.Embed(title="Error!", description="Usage: `<prefix>welcomes #channel`", color=ctx.author.color)
             embed.set_author(name=f'{ctx.author.name}', icon_url=ctx.author.avatar_url)
             return await ctx.send(embed=embed)
-        if channel.startswith('<#')
+        if channel.startswith('<#'):
             cursor = mydb.cursor()
             channels = channel.strip('<#').strip('>')
             cursor.execute("UPDATE joins SET channel = " + str(channels) + " WHERE server_id = " + str(ctx.guild.id))
@@ -53,6 +59,10 @@ class JoinCog(commands.Cog):
             return await ctx.send(embed=embed)
     @commands.command(help='Sets join role')
     async def joinrole(self, ctx, role=None):
+        if ctx.author.guild_permissions.manage_messages:
+            pass
+        else:
+            return await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Execute This Command!')
         if role == None:
             embed = discord.Embed(title="Error!", description="Usage: `<prefix>welcomes #channel`", color=ctx.author.color)
             embed.set_author(name=f'{ctx.author.name}', icon_url=ctx.author.avatar_url)
@@ -64,11 +74,12 @@ class JoinCog(commands.Cog):
             embed.set_author(name=f'{ctx.author.name}', icon_url=ctx.author.avatar_url)
             return await ctx.send(embed=embed)
         cursor = mydb.cursor()
-        cursor.execute("UPDATE joins SET role = " + str(role) + " WHERE server_id = " + str(ctx.guild.id))
+        newrole = role.strip('<@&').strip('>')
+        cursor.execute("UPDATE joins SET role = " + str(newrole) + " WHERE server_id = " + str(ctx.guild.id))
         mydb.commit()
         embed = discord.Embed(title="Sucsess!", color=ctx.author.color)
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
-        embed.add_field(name="I have set the join auto-role to:", value=f"{role.mention}")
+        embed.add_field(name="I have set the join auto-role to:", value=f"<@&{newrole}>")
         await ctx.send(embed=embed)
     @bot.Cog.listener()
     async def on_member_join(self, member):
@@ -81,10 +92,15 @@ class JoinCog(commands.Cog):
             if intsCover <= 15:
                 pass
             channels = self.bot.get_channel(intsCover)
-            embed = discord.Embed(title="Welcome to " + str(member.guild.name))
-            embed.set_image(url=f"https://welcome-imgs.some-random-api.ml/img/4/sunset?type=join&username={member.name}&discriminator={member.discriminator}&guildName={member.guild.name}&memberCount={member.guild.member_count}&avatar={member.avatar_url_as(format='png')}&textcolor=blue")
-            embed.set_footer(text="World | Joins", icon_url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
-            await channels.send(embed=embed)
+            async with aiohttp.ClientSession().get(f"https://welcome-imgs.some-random-api.ml/img/4/sunset?type=join&username={member.name}&discriminator={member.discriminator}&guildName={member.guild.name}&memberCount={member.guild.member_count}&avatar={member.avatar_url_as(format='png')}&textcolor=blue") as r:
+                if r.status != 200:
+                    return
+                else:
+                    data = io.BytesIO(await r.read())
+                    embed = discord.Embed(title="Welcome to " + str(member.guild.name))
+                    embed.set_image(file=discord.File(data, 'sunset.png'))
+                    embed.set_footer(text="World | Joins", icon_url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
+                    await channels.send(embed=embed)
         except:
             pass
         cursor.execute("SELECT role FROM joins WHERE server_id = " + str(member.guild.id))
