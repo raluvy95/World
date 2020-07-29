@@ -3,3 +3,4 @@ asyncio
 requests
 pymongo
 dnspython
+mysql-connector-python
