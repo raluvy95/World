@@ -10,8 +10,8 @@
 | seañ | #1718 | OWNER |
 | fxcilities | #4728 | DEV |
 -------------------------------------------
+
 > Here Are Some Features And Commands Below
--------------------------------------------
 
 ## 1. Main Features
 Fun Commands - Example `w/meme` shows a funny meme
