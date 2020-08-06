@@ -4,7 +4,8 @@
 > Description: Hi i'm World If You Would Like to Invite me, ill be super nice to everyone in the server!
 
 > Developers:
-| Username | Discriminator | Role |
+
+| Username | Discriminator | Rank |
 | --------------- | --------------- | --------------- |
 | seañ | #1718 | Owner |
 | fxcilities | #4728 | Developer |
