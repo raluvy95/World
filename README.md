@@ -1,5 +1,5 @@
 # World
-> Discord Bot Owned By seañ#1718
+> Discord Bot Made For All.
 
 > Description: Hi i'm World If You Would Like to Invite me, ill be super nice to everyone in the server!
 
