@@ -1,6 +1,14 @@
 # World
 > Discord Bot Owned By seañ#1718
+
 > Description: Hi i'm World If You Would Like to Invite me, ill be super nice to everyone in the server!
+
+> Developers:
+| Username | Discriminator | Role |
+| --------------- | --------------- | --------------- |
+| seañ | #1718 | Owner |
+| fxcilities | #4728 | Developer |
+-------------------------------------------
 > Here Are Some Features And Commands Below
 -------------------------------------------
 
