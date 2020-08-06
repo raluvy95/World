@@ -3,12 +3,12 @@
 
 > Description: Hi i'm World If You Would Like to Invite me, ill be super nice to everyone in the server!
 
-> Developers:
+## Owners & Devs
 
-| Username | Discriminator | Rank |
+| User | Discriminator | Place |
 | --------------- | --------------- | --------------- |
-| seañ | #1718 | Owner |
-| fxcilities | #4728 | Developer |
+| seañ | #1718 | OWNER |
+| fxcilities | #4728 | DEV |
 -------------------------------------------
 > Here Are Some Features And Commands Below
 -------------------------------------------
