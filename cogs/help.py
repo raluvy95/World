@@ -42,7 +42,7 @@ class HelpCog(commands.Cog):
     		embed.add_field(name="Shows multiple categories.", value="w/categories", inline=True)
     		embed.add_field(name="Server", value="[Join Support Server](https://discord.gg/zenM2Kd)", inline=True)
     		embed.add_field(name="Vote", value="[Vote For World](https://top.gg/bot/700292147311542282/vote)", inline=True)
-    		embed.add_field(name="> World is a discord bot made for all", value="> World is a discord bot made a while after juice wrld's death(Jarad Higgins).\n> My owner was very upset that juice wrld passed away so he decided to make me.", inline=False)
+    		embed.add_field(name="> World is a discord bot made for all", value="> World is a discord bot made a while after juice wrld's death(Jarad Higgins).\n> My owner was very upset that juice wrld passed away so she decided to make me.", inline=False)
     		embed.set_footer(text="Use \"w/help <command>\" For more info")
     		await ctx.send(embed=embed)
 
