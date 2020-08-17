@@ -194,6 +194,38 @@ class InfoCog(commands.Cog):
         em.colour = (0xFEF200)
         await ctx.send(embed=em)
 
+    @commands.command(help="Adds emoji")
+    async def addemoji(ctx, emoji: str, name=None):
+        # You can upload emoji, id or url!
+        defurl = "https://cdn.discordapp.com/emojis/"
+        async def upload(name, id=None, url=defurl):
+            async with ClientSession() as s:
+                def URL():
+                    if not id:
+                        return url
+                    else:
+                        return f"{url}{id}"
+                async with s.get(URL()) as r:
+                    if r.status != 200:
+                        return await ctx.send(f"I can't upload the emoji's url\nStatus: {r.status}")
+                    img = await r.read()
+                    edit = await ctx.send("Creating...")
+                    await ctx.guild.create_custom_emoji(name=name, image=img)
+                    await edit.edit(content="Created new emoji!")
+        try:
+            emoji = int(emoji)
+            if not name:
+                return await ctx.send("I can't create an emoji without name")
+            return await upload(name, emoji)
+        except ValueError:
+            if emoji.startswith("http://") or emoji.startswith("https://"):
+                if not name:
+                    return await ctx.send("I can't create an emoji without name")
+                return await upload(name, url=emoji)
+            emoji = emoji.split(":")
+            name = emoji[1]
+            id = emoji[2].replace(">", "")
+            return await upload(name, id)
 
     @commands.command(help="Show World's uptime.")
     async def uptime(self, ctx):
