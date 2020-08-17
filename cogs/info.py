@@ -195,7 +195,7 @@ class InfoCog(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(help="Adds emoji")
-    async def addemoji(ctx, emoji: str, name=None):
+    async def addemoji(self, ctx, emoji: str, name=None):
         # You can upload emoji, id or url!
         defurl = "https://cdn.discordapp.com/emojis/"
         async def upload(name, id=None, url=defurl):
