@@ -241,10 +241,12 @@ class FunCog(commands.Cog):
 
     @commands.command(help="Very fancy.")
     async def ascii(self, ctx, *, text):
-        r = requests.get(f'http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}').text
-        if len('```'+r+'```') > 2000:
-            return
-        await ctx.send(f"```{r}```")
+        async with aiohttp.Client.Session().get(f'http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}').text as r:
+            read = await r.read()
+            if len('```'+r+'```') > 2000:
+                return
+            else:
+                await ctx.send(f"```{r}```")
 
     @commands.command(help="Secret.")
     async def cum(self, ctx):
