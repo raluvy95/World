@@ -5,7 +5,7 @@ import random
 from pymongo import MongoClient
 from discord.ext import commands
 
-cluster = MongoClient("no")
+cluster = MongoClient("no god please no")
 
 
 class EconomyCog(commands.Cog):
