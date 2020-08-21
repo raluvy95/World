@@ -183,16 +183,6 @@ class FunCog(commands.Cog):
             a = round(a)
             await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
-    @commands.command(help="Fancy.")
-    async def textart(self, ctx, *, text):
-        r = requests.get(
-            f"http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}"
-        ).text
-        if len("```" + r + "```") > 2000:
-            return
-        await ctx.send(f"```{r}```")
-
-
     @commands.command(aliases=["pepe"], help="Shows users pp size.")
     async def pp(self, ctx, *, user: discord.Member = None):
         if user is None:
