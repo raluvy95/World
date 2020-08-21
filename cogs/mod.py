@@ -11,8 +11,10 @@ class ModCog(commands.Cog):
     @commands.command(help="Ban a user.")
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
+        if member == ctx.author:
+            return await ctx.send("You can't ban yourself")
         await member.ban(reason=reason)
-        em = discord.Embed(title="The Ban Hammer Has Rised!<")
+        em = discord.Embed(title="The Ban Hammer Has Rised!")
         em.description = (f"{ctx.author.mention} Has Banned {member}")
         em.add_field(name=f"**Ban Hammer**", value=f'Banned By {ctx.author.mention}', inline=False)
         em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717867181827817984/719525512715960350/s.png')
@@ -20,8 +22,10 @@ class ModCog(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(help="Kick a user.")
-    @commands.has_permissions(ban_members=True)
+    @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
+        if member == ctx.author:
+            return await ctx.send("You can't kick yourself")
         await member.kick(reason=reason)
         em = discord.Embed(title="The Kick Machine Has Awoken")
         em.description = (f"{ctx.author.mention} Has Kicked {member}")
@@ -31,8 +35,10 @@ class ModCog(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(help="Mute a user.")
-    @commands.has_permissions(ban_members=True)
+    @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, *, reason=None):
+        if user == ctx.author:
+            return await ctx.send("You can't mute yourself")
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         mute = discord.utils.get(ctx.guild.text_channels, name="MUTED-TIME-OUT")
         if not role:
@@ -65,6 +71,25 @@ class ModCog(commands.Cog):
 
     @mute.error
     async def mute_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
+
+    @commands.command(help="Unmute a member")
+    @commands.has_permission(manage_messages=True)
+    async def unmute(self, ctx, user: discord.Member, *, reason=None):
+        if user == ctx.author:
+            return await ctx.send("You can't unmute yourself")
+        role = discord.utils.get(ctx.guild.roles, name="Muted")
+        if not role:
+            return await ctx.send("How can I unmute a member if there's no Muted role 🤔")
+        if not discord.utils.find(lambda role: role.name == "Muted", user.roles):
+            return await ctx.send(f"**{user.name}** is already unmuted!")
+        await user.remove_roles(role)
+        mute1 = discord.Embed(title = f"{user} has been unmuted! | Reason = {reason}", color =ctx.author.color)
+        return await ctx.send(embed=mute1)
+
+    @unmute.error
+    async def unmute_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
 
@@ -115,7 +140,6 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Dont Have Perms Or This Person Cannot Be Unbanned')
 
-
     @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
     async def poll(self, ctx, *, desc):
@@ -136,9 +160,8 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')  
 
-
     @commands.command(help="Start a Poll.")
-    @commands.has_permissions(ban_members=True)
+    @commands.has_permissions(administrator=True)
     async def polln(self, ctx, *, desc):
         embed = discord.Embed(
             colour = discord.Colour.red()
@@ -152,7 +175,7 @@ class ModCog(commands.Cog):
         await add_reactions_to.add_reaction("👎")
 
     @commands.command(help="Lockdown the current channel.")
-    @commands.has_permissions(ban_members=True)
+    @commands.has_permissions(manage_channels=True)
     async def lock(self, ctx):
         guild = ctx.guild
         await ctx.message.channel.set_permissions(guild.default_role,read_messages = True, send_messages = False)
@@ -164,7 +187,7 @@ class ModCog(commands.Cog):
 
  
     @commands.command(help="Unlock the current channel.")
-    @commands.has_permissions(ban_members=True)
+    @commands.has_permissions(manage_channels=True)
     async def unlock(self, ctx):
         guild = ctx.guild
         await ctx.message.channel.set_permissions(guild.default_role,read_messages = True, send_messages = True)
