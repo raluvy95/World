@@ -75,7 +75,7 @@ class ModCog(commands.Cog):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
 
     @commands.command(help="Unmute a member")
-    @commands.has_permission(manage_messages=True)
+    @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, user: discord.Member, *, reason=None):
         if user == ctx.author:
             return await ctx.send("You can't unmute yourself")
