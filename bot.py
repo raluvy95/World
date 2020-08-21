@@ -55,9 +55,18 @@ async def on_ready():
 
 @bot.command(aliases=["firstmessage"], help="Pull first sent message in a channel.")
 @commands.has_permissions(manage_messages=True)
-async def fm(ctx, channel: discord.TextChannel = None):
+async def fm(ctx, channel: discord.TextChannel=None):
 	if channel is None:
 		channel = ctx.channel
+		fm = (await channel.history(limit=1, oldest_first=True).flatten())[0]
+		embed = discord.Embed(description=fm.content, timestamp=ctx.message.created_at)
+		embed.add_field(name="First Ever Message!", value=f"[Click To Go To Message]({fm.jump_url})\nChannel: <#{channel.id}>")
+		embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
+		embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
+		embed.set_footer(text=f"World - First Message")
+		embed.color = (ctx.author.color)
+		await ctx.send(embed=embed)
+	else:
 		fm = (await channel.history(limit=1, oldest_first=True).flatten())[0]
 		embed = discord.Embed(description=fm.content, timestamp=ctx.message.created_at)
 		embed.add_field(name="First Ever Message!", value=f"[Click To Go To Message]({fm.jump_url})\nChannel: <#{channel.id}>")
