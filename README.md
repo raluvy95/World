@@ -53,7 +53,7 @@ Easy commands! - Example` w/help` = shows help!
 Easy Categories - Example `w/categories` = shows Multiple Categorys!
 
 ------------------------
-## 3. Commands
+## 2. Commands
 `w/help` Shows Help Categorie
 
 `w/fun` Shows The Fun Categorie
@@ -69,7 +69,7 @@ Easy Categories - Example `w/categories` = shows Multiple Categorys!
 `w/ping` - Shows The Bots Latency.
 
 ---------
-## 4. Extra
+## 3. Extra
 ### His Support Server Is https://discord.gg/zenM2Kd
 ---------
 <a href="https://top.gg/bot/700292147311542282" >
