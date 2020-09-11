@@ -45,6 +45,9 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Buy a item from the shop.")
     @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
     async def buy(self, ctx, product, amount: int):
+        if amount < 0:
+            await ctx.send("No abusing the system!")
+            return
         if product == "cookie":
             db = cluster["Coins"]
             collection = db["Coins"]
