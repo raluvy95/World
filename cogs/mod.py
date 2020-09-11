@@ -97,9 +97,8 @@ class ModCog(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, amount=100):
         if amount == 1:
-            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} Please Purge More Than One Message')
-        else:
-            await ctx.channel.purge(limit=amount)
+            return await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} Please Purge More Than One Message')
+        await ctx.channel.purge(limit=amount)
 
     @purge.error
     async def purge_error(self, ctx, error):
@@ -127,13 +126,11 @@ class ModCog(commands.Cog):
 
             if (user.name, user.discriminator) == (member_name, member_discriminator):
                 await ctx.guild.unban(user)
-                em = discord.Embed(title="Someone Has Used The Unban Hammer!")
+                em = discord.Embed(title="Someone Has Used The Unban Hammer!", color=0xFF0000)
                 em.description = (f"{ctx.author.mention} Has UnBanned {user.name}#{user.discriminator}")
                 em.add_field(name=f"**UnBan Hammer**", value=f'UnBanned By {ctx.author.mention}', inline=False)
                 em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717867181827817984/719525512715960350/s.png')
-                em.colour = (0xFF0000)
-                await ctx.send(embed=em)
-                return
+                return await ctx.send(embed=em)
 
     @unban.error
     async def unban_error(self, ctx, error):
@@ -177,24 +174,21 @@ class ModCog(commands.Cog):
     @commands.command(help="Lockdown the current channel.")
     @commands.has_permissions(manage_channels=True)
     async def lock(self, ctx):
-        guild = ctx.guild
-        await ctx.message.channel.set_permissions(guild.default_role,read_messages = True, send_messages = False)
-        embed = discord.Embed(title="World - Lockdown")
+        await ctx.message.channel.set_permissions(ctx.guild.default_role, read_messages = True, send_messages = False)
+        embed = discord.Embed(title="World - Lockdown", color=ctx.author.color)
         embed.add_field(name="**INFO:**", value=f"🔒 Channel locked.")
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
-        embed.color = (ctx.author.color)
         await ctx.send(embed=embed)
 
  
     @commands.command(help="Unlock the current channel.")
     @commands.has_permissions(manage_channels=True)
     async def unlock(self, ctx):
-        guild = ctx.guild
-        await ctx.message.channel.set_permissions(guild.default_role,read_messages = True, send_messages = True)
-        embed = discord.Embed(title="World- Lockdown Over")
+        # You don't need to define a variable if you're only going to use it once
+        await ctx.message.channel.set_permissions(ctx.guild.default_role, read_messages = True, send_messages = True)
+        embed = discord.Embed(title="World- Lockdown Over", color=ctx.author.color)
         embed.add_field(name="**INFO:**", value=f"🔒 Channel unlocked.")
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
-        embed.color = (ctx.author.color)
         await ctx.send(embed=embed)
    
     @lock.error
