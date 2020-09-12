@@ -81,7 +81,7 @@ class ModCog(commands.Cog):
             return await ctx.send("You can't unmute yourself")
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         if not role:
-            return await ctx.send("How can I unmute a member if there's no Muted role 🤔")
+            return await ctx.send("How can I unmute a member if there's no Muted role ??")
         if not discord.utils.find(lambda role: role.name == "Muted", user.roles):
             return await ctx.send(f"**{user.name}** is already unmuted!")
         await user.remove_roles(role)
@@ -147,7 +147,7 @@ class ModCog(commands.Cog):
         embed.set_author(name=f"New Poll Vote To Take Part", icon_url=ctx.author.avatar_url)
         embed.description = (f'{ctx.author.mention} Has Started A New Poll')
         embed.add_field(name="World | Poll - Question", value=f"`POLL:` **{desc}**", inline=False)
-        embed.set_footer(text="👍 for Yes, 👎 for No.")
+        embed.set_footer(text="👍 for Yes, ?? for 👎.")
         add_reactions_to = await ctx.send(embed=embed)
         await add_reactions_to.add_reaction("👍")
         await add_reactions_to.add_reaction("👎")
@@ -176,7 +176,7 @@ class ModCog(commands.Cog):
     async def lock(self, ctx):
         await ctx.message.channel.set_permissions(ctx.guild.default_role, read_messages = True, send_messages = False)
         embed = discord.Embed(title="World - Lockdown", color=ctx.author.color)
-        embed.add_field(name="**INFO:**", value=f"🔒 Channel locked.")
+        embed.add_field(name="**INFO:**", value=f"?? Channel locked.")
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
         await ctx.send(embed=embed)
 
@@ -187,7 +187,7 @@ class ModCog(commands.Cog):
         # You don't need to define a variable if you're only going to use it once
         await ctx.message.channel.set_permissions(ctx.guild.default_role, read_messages = True, send_messages = True)
         embed = discord.Embed(title="World- Lockdown Over", color=ctx.author.color)
-        embed.add_field(name="**INFO:**", value=f"🔒 Channel unlocked.")
+        embed.add_field(name="**INFO:**", value=f"?? Channel unlocked.")
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
         await ctx.send(embed=embed)
    
