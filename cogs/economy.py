@@ -5,7 +5,7 @@ import random
 from pymongo import MongoClient
 from discord.ext import commands
 
-cluster = MongoClient("no god please no")
+cluster = MongoClient("https://bit.ly/dpyjslol")
 
 
 class EconomyCog(commands.Cog):
@@ -45,12 +45,20 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Buy a item from the shop.")
     @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
     async def buy(self, ctx, product, amount: int):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        for result in user:
+            userbal = result["coins"]
         if amount < 0:
-            await ctx.send("No abusing the system!")
-            return
+            return await ctx.send("No abusing the system!")
+            
+        if collection.find_one({"_id": ctx.author.id})["coins"] < amount:
+            embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `{product}`.\nCurrent balance: `{userbal}` Coins.")
+            return await ctx.send(embed=embed)
+
         if product == "cookie":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "cookie": 10}
@@ -73,8 +81,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed1)
         if product == "apple":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "apple": 10}
@@ -97,8 +103,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed2)
         if product == "chocbar":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "choc": 10}
@@ -119,8 +123,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed3)
         if product == "poop":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "poop": 10}
@@ -151,6 +153,16 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Eat a item from your inventory.")
     @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
     async def eat(self, ctx, product, amount: int):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        if amount < 0:
+            await ctx.send(f"Sorry {ctx.author.mention} you cannot eat negative.")
+            return
+
+        if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
+            embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `{product}` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+            return await ctx.send(embed=embed)
+
         if product == "chocbar":
             db = cluster["Coins"]
             collection = db["Coins"]
@@ -227,6 +239,16 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Sell a item from your inventory.")
     @commands.cooldown(rate=6, per=15, type=commands.BucketType.member)
     async def sell(self, ctx, product, amount: int):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        if amount < 0:
+            await ctx.send(f"Sorry {ctx.author.mention} you cannot sell negative.")
+            return
+
+        if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
+            embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `{product}` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+            return await ctx.send(embed=embed)
+
         if product == "chocbar":
             db = cluster["Coins"]
             collection = db["Coins"]
@@ -467,7 +489,7 @@ class EconomyCog(commands.Cog):
             embed1 = discord.Embed(title="Status")
             embed1.add_field(
                 name=f"**Success**",
-                value=f"{users.mention}'s Status Is: `{coins}`\n\nTo Set Your Own Status Just Type `setstatus [status]`",
+                value=f"{users.mention}'s Status Is: `{coins}`\nTo Set Your Own Status Just Type `setstatus [status]`",
                 inline=True,
             )
             embed1.set_thumbnail(url=users.avatar_url)
@@ -518,7 +540,7 @@ class EconomyCog(commands.Cog):
             embed1 = discord.Embed(title="Begger!")
             embed1.add_field(
                 name=f"**Success**",
-                value=f"{ctx.author.mention} I Have Added `25` Coins To Your Balance\nBecause you have been a good girl/boy",
+                value=f"{ctx.author.mention} I Have Added `25` Coins To Your Balance Because you have been a good girl/boy",
                 inline=True,
             )
             await ctx.send(embed=embed1)
@@ -611,6 +633,18 @@ class EconomyCog(commands.Cog):
     @commands.command(aliases=["bet", "slot", "gam"], help="Gamble for some coins.")
     @commands.cooldown(rate=2, per=8, type=commands.BucketType.member)
     async def gamble(self, ctx):
+        amount = 15
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        for result in user:
+            userbal = result["coins"]
+
+        if collection.find_one({"_id": ctx.author.id})["coins"] < amount:
+            embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to gamble.\n Current balance: `{userbal}` Coins.")
+            return await ctx.send(embed=embed)
+
         emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
         a = random.choice(emojis)
         b = random.choice(emojis)
