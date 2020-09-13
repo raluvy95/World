@@ -6,6 +6,7 @@ from pymongo import MongoClient
 from discord.ext import commands
 
 cluster = MongoClient("https://bit.ly/dpyjslol")
+# click that link :)
 
 
 class EconomyCog(commands.Cog):
