@@ -53,10 +53,26 @@ class EconomyCog(commands.Cog):
             userbal = result["coins"]
         if amount < 0:
             return await ctx.send("No abusing the system!")
-            
-        if collection.find_one({"_id": ctx.author.id})["coins"] < amount:
-            embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `{product}`.\nCurrent balance: `{userbal}` Coins.")
-            return await ctx.send(embed=embed)
+
+        if product == "cookie":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < amount:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `Cookies`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
+        
+        if product == "apple":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < amount *10:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `Apples`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
+
+        if product == "chocbar":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < amount *4:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `Chocolate bars`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
+
+        if product == "poop":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < amount *6:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `Poops`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
 
         if product == "cookie":
             query = {"_id": ctx.author.id}
@@ -244,10 +260,28 @@ class EconomyCog(commands.Cog):
         if amount < 0:
             await ctx.send(f"Sorry {ctx.author.mention} you cannot sell negative.")
             return
+        
+        if product == "chocbar":
+            if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `Chocolate bars` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+                return await ctx.send(embed=embed)
 
-        if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
-            embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `{product}` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
-            return await ctx.send(embed=embed)
+        if product == "apple":
+            if collection.find_one({"_id": ctx.author.id})["apple"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `Apples` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+                return await ctx.send(embed=embed)
+
+        if product == "poop":
+            if collection.find_one({"_id": ctx.author.id})["poop"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `Poops` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+                return await ctx.send(embed=embed)
+
+        if product == "cookie":
+            if collection.find_one({"_id": ctx.author.id})["cookie"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `Cookies` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+                return await ctx.send(embed=embed)
+
+
 
         if product == "chocbar":
             db = cluster["Coins"]
@@ -259,7 +293,7 @@ class EconomyCog(commands.Cog):
                 coins = result["choc"]
                 mon = result["coins"]
                 coins = coins - int(amount)
-                mon1 = mon + int(amount * 4)
+                mon1 = mon + int(amount * 2)
                 collection.update_one({"_id": ctx.author.id}, {"$set": {"choc": coins}})
                 collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": mon1}})
                 embed1 = discord.Embed(title="MarketPlace!")
@@ -279,7 +313,7 @@ class EconomyCog(commands.Cog):
                 coins = result["apple"]
                 mon = result["coins"]
                 coins = coins - int(amount)
-                mon1 = mon + int(amount * 11)
+                mon1 = mon + int(amount * 6)
                 collection.update_one(
                     {"_id": ctx.author.id}, {"$set": {"apple": coins}}
                 )
@@ -301,9 +335,9 @@ class EconomyCog(commands.Cog):
                 coins = result["poop"]
                 mon = result["coins"]
                 coins = coins - int(amount)
-                mon1 = mon + int(amount * 6)
+                mon1 = mon + int(amount * 4)
                 collection.update_one(
-                    {"_id": ctx.author.id}, {"$set": {"poops": coins}}
+                    {"_id": ctx.author.id}, {"$set": {"poop": coins}}
                 )
                 collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": mon1}})
                 embed1 = discord.Embed(title="MarketPlace!")
@@ -323,7 +357,7 @@ class EconomyCog(commands.Cog):
                 coins = result["cookie"]
                 mon = result["coins"]
                 coins = coins - int(amount)
-                mon1 = mon + int(amount * 2)
+                mon1 = mon + int(amount * 0)
                 collection.update_one(
                     {"_id": ctx.author.id}, {"$set": {"cookie": coins}}
                 )
@@ -400,7 +434,7 @@ class EconomyCog(commands.Cog):
             )
             embed1.add_field(
                 name=f"**Chocolate**",
-                value=f"::chocolate_bar: {choc} Chocolate Bars",
+                value=f":chocolate_bar: {choc} Chocolate Bars",
                 inline=True,
             )
             embed1.add_field(
