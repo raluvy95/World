@@ -119,21 +119,24 @@ class InfoCog(commands.Cog):
     async def spotify(self, ctx, user: discord.Member=None):
         user = user or ctx.author
         for activity in user.activities:
-            if isinstance(activity, Spotify):
-              embed1 = discord.Embed(title=f"World - Spotify")
-              embed1.set_author(name=f"Spotify Info For {user}", icon_url=user.avatar_url)
-              embed1.add_field(name=f"**Song:**", value=f"{str(activity.title)}", inline=True)
-              embed1.add_field(name=f"**Artist:**", value=f"{str(activity.artist)}", inline=True)
-              embed1.add_field(name=f"**Album:**", value=f"{str(activity.album)}", inline=True)
-              embed1.add_field(name=f"**ID:**", value=f"{str(activity.track_id)}", inline=True)
-              m1, s1 = divmod(int(activity.duration.seconds), 60)
-              song_length = f'{m1}:{s1}'
-              embed1.add_field(name="**Duration**", value=song_length, inline=True)
-              embed1.add_field(name=f"**Party ID:**", value=f"{str(activity.party_id)}", inline=True)
-              embed1.set_thumbnail(url=f"{activity.album_cover_url}")
-              embed1.set_footer(text=f"All Artists: {activity.artists}", icon_url=activity.album_cover_url)
-              embed1.colour = (discord.Colour.green())
-              await ctx.send(embed=embed1)
+            if isinstance(activity, discord.Spotify):
+                embed1 = discord.Embed(title=f"World - Spotify")
+                embed1.set_author(name=f"Spotify Info For {user}", icon_url=user.avatar_url)
+                embed1.add_field(name=f"**Song:**", value=f"{str(activity.title)}", inline=True)
+                embed1.add_field(name=f"**Artist:**", value=f"{str(activity.artist)}", inline=True)
+                embed1.add_field(name=f"**Album:**", value=f"{str(activity.album)}", inline=True)
+                embed1.add_field(name=f"**ID:**", value=f"{str(activity.track_id)}", inline=True)
+                m1, s1 = divmod(int(activity.duration.seconds), 60)
+                song_length = f'{m1}:{s1}'
+                embed1.add_field(name="**Duration**", value=song_length, inline=True)
+                embed1.add_field(name=f"**Song Link:**", value=f"[{activity.title}](https://open.spotify.com/track/{activity.track_id})", inline=True)
+                embed1.set_thumbnail(url=f"{activity.album_cover_url}")
+                embed1.set_footer(text=f"All Artists: {activity.artists}", icon_url=activity.album_cover_url)
+                embed1.colour = (activity.color)
+                await ctx.send(embed=embed1)
+            else:
+            	embed = discord.Embed(title=f"Sorry {ctx.author} you're not currenty listening to `Spotify`.")
+            	return await ctx.send(embed=embed)
 
 
     @commands.command(help="Invite World.")
