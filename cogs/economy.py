@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from discord.ext import commands
 
 cluster = MongoClient("https://bit.ly/dpyjslol")
-# click that link :)
+#click the link or i will steal ur milk
 
 
 class EconomyCog(commands.Cog):
@@ -253,6 +253,29 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed1)
 
+    @commands.command(help="Leaderboard")
+    async def richest(self, ctx):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        coins_user_mapping: Dict[int, int] = {}
+        for row in collection.find():
+        	coins_user_mapping[row["coins"]] = row["_id"]
+        user_with_most_coins = coins_user_mapping[max(coins_user_mapping.keys())]
+        balance = max(coins_user_mapping.keys())
+        embed = discord.Embed(title="Whos the richest?")
+        user_with_most_coins = coins_user_mapping[max(coins_user_mapping.keys())]
+        embed.add_field(name="1.", value=f"<@{user_with_most_coins}>\nBalance: `{balance}` coins")
+        del coins_user_mapping[max(coins_user_mapping.keys())]
+        user_with_second_most_coins = coins_user_mapping[max(coins_user_mapping.keys())]
+        balance1 = max(coins_user_mapping.keys())
+        embed.add_field(name="2.", value=f"<@{user_with_second_most_coins}>\nBalance: `{balance1}` coins")
+        del coins_user_mapping[max(coins_user_mapping.keys())]
+        user_with_third_most_coins = coins_user_mapping[max(coins_user_mapping.keys())]
+        balance2 = max(coins_user_mapping.keys())
+        embed.add_field(name="3.", value=f"<@{user_with_third_most_coins}>\nBalance: `{balance2}` coins")
+        await ctx.send(embed=embed)
+        
+        
     @commands.command(help="Sell a item from your inventory.")
     @commands.cooldown(rate=6, per=15, type=commands.BucketType.member)
     async def sell(self, ctx, product, amount: int):
@@ -466,16 +489,16 @@ class EconomyCog(commands.Cog):
         collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
-        post = {"_id": ctx.author.id, "coins": 500}
+        post = {"_id": ctx.author.id, "coins": 0}
         for result in user:
             coins = result["coins"]
-            coins = coins + 500
+            coins = coins + 200
             collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": coins}})
             embed1 = discord.Embed(title="Daily Coins!")
             embed1.add_field(
                 name=f"**Success**",
-                value=f"{ctx.author.mention} I Have Added `500` Coins To Your Balance",
-                inline=True,
+                value=f"{ctx.author.mention} I Have Added `200` Coins To Your Balance",
+                inline=True
             )
             await ctx.send(embed=embed1)
 
@@ -540,25 +563,6 @@ class EconomyCog(commands.Cog):
                 f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
             )
 
-    @commands.command(help="Get weekly coins.")
-    @commands.cooldown(rate=1, per=604800, type=commands.BucketType.member)
-    async def weekly(self, ctx):
-        db = cluster["Coins"]
-        collection = db["Coins"]
-        query = {"_id": ctx.author.id}
-        user = collection.find(query)
-        post = {"_id": ctx.author.id, "coins": 500}
-        for result in user:
-            coins = result["coins"]
-            coins = coins + 1500
-            collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": coins}})
-            embed1 = discord.Embed(title="Weekly Coins!")
-            embed1.add_field(
-                name=f"**Success**",
-                value=f"{ctx.author.mention} I Have Added `1500` Coins To Your Balance",
-                inline=True,
-            )
-            await ctx.send(embed=embed1)
 
     @commands.command(help="Beg for coins.")
     @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
@@ -647,15 +651,6 @@ class EconomyCog(commands.Cog):
                 f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
             )
 
-    @weekly.error
-    async def weekly_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            a = error.retry_after
-            a = round(a)
-            await ctx.send(
-                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
-            )
-
     @beg.error
     async def beg_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
@@ -680,7 +675,7 @@ class EconomyCog(commands.Cog):
             embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to gamble.\n Current balance: `{userbal}` Coins.")
             return await ctx.send(embed=embed)
 
-        emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
+        emojis = "ðŸŽðŸŠðŸðŸ‹ðŸ‰ðŸ‡ðŸ“ðŸ’"
         a = random.choice(emojis)
         b = random.choice(emojis)
         c = random.choice(emojis)
