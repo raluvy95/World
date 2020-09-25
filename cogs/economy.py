@@ -177,9 +177,20 @@ class EconomyCog(commands.Cog):
             return
 
         if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
-            embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `{product}` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+            embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `chocolate bars` in your inventory. You can buy more with the command `w/buy chocbar <amount>`")
             return await ctx.send(embed=embed)
 
+        if collection.find_one({"_id": ctx.author.id})["apple"] < amount:
+            embed = discord.Embed(title="Not enough apples", description=f"Sorry {ctx.author.mention} You dont have enough `apples` in your inventory. You can buy more with the command `w/buy apple <amount>`")
+            return await ctx.send(embed=embed)
+
+        if collection.find_one({"_id": ctx.author.id})["cookie"] < amount:
+            embed = discord.Embed(title="Not enough cookies", description=f"Sorry {ctx.author.mention} You dont have enough `cookies` in your inventory. You can buy more with the command `w/buy cookie <amount>`")
+            return await ctx.send(embed=embed)
+
+        if collection.find_one({"_id": ctx.author.id})["poop"] < amount:
+            embed = discord.Embed(title="Not enough poops", description=f"Sorry {ctx.author.mention} You dont have enough `poops` in your inventory. You can buy more with the command `w/buy poop <amount>`")
+            return await ctx.send(embed=embed)
         if product == "chocbar":
             db = cluster["Coins"]
             collection = db["Coins"]
