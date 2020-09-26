@@ -690,7 +690,7 @@ class EconomyCog(commands.Cog):
             embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to gamble.\n Current balance: `{userbal}` Coins.")
             return await ctx.send(embed=embed)
 
-        emojis = "ðŸŽðŸŠðŸðŸ‹ðŸ‰ðŸ‡ðŸ“ðŸ’"
+        emojis = "🍎🍊🍐🍋🍉🍇🍓🍒"
         a = random.choice(emojis)
         b = random.choice(emojis)
         c = random.choice(emojis)
