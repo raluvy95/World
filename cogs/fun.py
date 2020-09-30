@@ -160,7 +160,6 @@ class FunCog(commands.Cog):
         await ctx.send(embed=finchat)
 
     @commands.command(help="Shows a meme from random subreddits.")
-    @commands.has_permissions(ban_members=True)
     @commands.cooldown(rate=4, per=7, type=commands.BucketType.member)
     async def meme(self, ctx):
         r = requests.get("https://memes.blademaker.tv/api?lang=en")
