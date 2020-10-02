@@ -1,20 +1,7 @@
 import discord
-import asyncio
-import random
-import os
-import time
-import requests
-import aiohttp
-import urllib
 import json
 import discord
-import sys
-import inspect
-import traceback
-import datetime
-import platform
-import pip
-import io
+
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
 
