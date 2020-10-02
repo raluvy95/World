@@ -50,21 +50,21 @@ Frequent updates - I Will I `Promise`
 
 Easy commands! - Example` w/help` = shows help!
 
-Easy Categories - Example `w/categories` = shows Multiple Categorys!
+Easy Categories - Example `w/categories` = shows Multiple Categories!
 
 ------------------------
 ## 2. Commands
-`w/help` Shows Help Categorie
+`w/help` Shows Help Category
 
-`w/fun` Shows The Fun Categorie
+`w/fun` Shows The Fun Category
 
-`w/mod` Shows The Mod Categorie
+`w/mod` Shows The Mod Category
 
-`w/useful` Shows The Useful Categorie
+`w/useful` Shows The Useful Category
 
-`w/economy` Shows The Economy Categorie
+`w/economy` Shows The Economy Category
 
-`w/other` Shows The Other Categorie
+`w/other` Shows The Other Category
 
 `w/ping` - Shows The Bots Latency.
 
