@@ -42,7 +42,7 @@ class HelpCog(commands.Cog):
     		embed.add_field(name="Shows multiple categories.", value="w/categories", inline=True)
     		embed.add_field(name="Invite", value="[Invite World](https://discord.com/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot)", inline=True)
     		embed.add_field(name="Vote", value="[Vote For World](https://top.gg/bot/700292147311542282/vote)", inline=True)
-    		embed.add_field(name="> World is a discord bot made for all", value="> World is a discord bot made a while after juice wrld's death(Jarad Higgins).\n> My owner was very upset that juice wrld passed away so she decided to make me.", inline=False)
+    		embed.add_field(name="> World is a discord bot made for all", value="> World is a discord bot made a while after juice wrld's death(Jarad Higgins).\n> My owner was very upset that juice wrld passed away so he decided to make me.", inline=False)
     		embed.set_footer(text="Use \"w/help <command>\" For more info")
     		await ctx.send(embed=embed)
 
@@ -66,7 +66,9 @@ class HelpCog(commands.Cog):
         )
         embed1.add_field(name="> Shows Mod Categorie", value="w/mod", inline=False)
         embed1.add_field(name="> Shows Fun Categorie", value="w/fun", inline=False)
+        embed1.add_field(name="> Shows Useful Categorie", value="w/useful", inline=False)
         embed1.add_field(name="> Shows Eeconomy Categorie", value="w/economy", inline=False)
+        embed1.add_field(name="> Shows Logging Categorie", value="w/logs", inline=False)
         embed1.add_field(name="> Shows New Categorie", value="w/new", inline=False)
         embed1.add_field(name="> Shows Other Categorie", value="w/other", inline=False)
         await ctx.send(embed=embed1)
@@ -89,9 +91,35 @@ class HelpCog(commands.Cog):
         embed.add_field(name="Shows bots latency", value="w/ping", inline=True)
         embed.add_field(name="Shows bots uptime", value="w/uptime", inline=True)
         embed.add_field(name="Shows spotify info", value="w/spotify", inline=True)
-        embed.add_field(name="Shorten a link", value="w/shorten [link]", inline=True)
         await ctx.send(embed=embed)
 
+
+    @commands.command(help="Shows useful categorie.")
+    async def useful(self, ctx):
+        author = ctx.message
+        author
+
+        embed = discord.Embed(colour=ctx.author.color)
+        embed.set_author(name='World - Useful', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+        embed.add_field(
+            name="Show this message", value="w/useful", inline=True
+        )
+        embed.add_field(name="kick member", value="w/kick [user]", inline=True)
+        embed.add_field(
+            name="Ban M=member", value="w/ban [user]", inline=True
+        )
+        embed.add_field(name="Starts a Poll!", value="w/poll [thing]", inline=True)
+        embed.add_field(name="Get servericon", value="w/servericon", inline=True)
+        embed.add_field(name="First ever message!", value="w/fm", inline=True)
+        embed.add_field(name="Deletes messages", value="w/purge [amount]", inline=True)
+        embed.add_field(name="Ascii message", value="w/ascii [message]", inline=True)
+        embed.add_field(name="Shortens a link", value="w/shorten [link]", inline=True)
+        embed.add_field(name="Users status", value="w/status [user]", inline=True)
+        embed.add_field(name="Set a status", value="w/setstatus", inline=True)
+        embed.add_field(
+            name="Shows my website", value="w/website", inline=True
+        )
+        await ctx.send(embed=embed)
 
 
     @commands.command(help="Shows mod categorie.")
@@ -107,7 +135,7 @@ class HelpCog(commands.Cog):
       embed.add_field(name="kicks member", value="w/kick [user]", inline=True)
       embed.add_field(name="Bans member", value="w/ban [user]", inline=True)
       embed.add_field(name="Unbans member", value="w/unban [username then #]", inline=True)
-      embed.add_field(name="Set Channels Slowmode", value="w/slowmode [number]", inline=True)
+      embed.add_field(name="Get users info", value="w/userinfo [user]", inline=True)
       embed.add_field(name="Shows all bans", value="w/bans", inline=True)
       embed.add_field(name="Mutes member", value="w/mute [user]", inline=True)
       embed.add_field(name="Unmute a user", value="w/unmute [user]", inline=True)
@@ -115,8 +143,20 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Channel lockdown", value="w/lock", inline=True)
       embed.add_field(name="Unlock channel", value="w/unlock", inline=True)
       embed.add_field(name="Direct Message a user", value="w/dm [user] [message]", inline=True)
+      embed.add_field(
+          name="Shows server info", value="w/serverinfo", inline=True
+      )
       await ctx.send(embed=embed)
-
+      
+    @commands.command(help="Shows logging categorie.")
+    async def logs(self, ctx):
+      embed = discord.Embed()
+      embed.set_author(name='World - Logging help')
+      embed.add_field(name="Register your guild.", value="w/logging create", inline=True)
+      embed.add_field(name="Remove your guild.", value="w/logging shutdown", inline=True)
+      embed.add_field(name="Set Logging.", value="w/logging <option>", inline=True)
+      embed.set_footer(text="Use \"w/logging options>\" For logging info.")
+      await ctx.send(embed=embed)
 
 
     @commands.command(help="Shows fun categorie.")
@@ -169,7 +209,7 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Beg for Coins", value="w/beg", inline=True)
       embed.add_field(name="Slots [cost 15 coins]", value="w/gamble", inline=True)
       embed.add_field(name="Get daily Coins", value="w/daily", inline=True)
-      embed.add_field(name="Whos the richest?", value="w/richest", inline=True)
+      embed.add_field(name="Get weekly Coins", value="w/weekly", inline=True)
       embed.add_field(name="Show inventory", value="w/inv", inline=True)
       embed.add_field(name="Buy a Product", value="w/buy [product] [amount]", inline=True)
       embed.add_field(name="Eat a Product", value="w/eat [product] [amount]", inline=True)
@@ -206,9 +246,10 @@ class HelpCog(commands.Cog):
       embed = discord.Embed(colour=ctx.author.color)
       embed.set_author(name='World - new', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
       embed.add_field(
-      name="Show this message", value="w/new", inline=True
+          name="Show this message", value="w/new", inline=True
       )
-      embed.add_field(name="Whos the richest!", value="w/richest", inline=True)
+      embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
+      embed.add_field(name="**NEW** Logging!.", value="w/logs", inline=True)
       await ctx.send(embed=embed)
 
 
@@ -221,7 +262,6 @@ class HelpCog(commands.Cog):
         	title='', description=f'Here Are My Prefixes: `w/`, `world `' , colour=message.author.color)
         	embed.set_footer(text="Type <prefix>help for more info.")
         	await message.channel.send(embed=embed)
-        	
         	await self.bot.process_commands(message)
 
 def setup(bot):
