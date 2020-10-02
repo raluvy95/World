@@ -101,5 +101,13 @@ async def screenshot(ctx, site):
         embed=discord.Embed(title="Nsfw Only!", timestamp=ctx.message.created_at, color=ctx.author.color)
         embed.set_image(url=f"https://media.discordapp.net/attachments/265156286406983680/728328135942340699/nsfw.gif")
         await ctx.send(embed=embed)
+	
+@bot.event
+async def on_command_error(ctx, error):
+    if ctx.author.id == 662334026098409480 or ctx.author.id == 393859835331870721:
+        channels = bot.get_channel(746028290455634032)
+        embed = discord.Embed(description=f":x: New Logged Error By A World Developer!\n```{error}```\nInvoker: `{ctx.author}`", color=discord.Color.blue())
+        embed.set_thumbnail(url=bot.user.avatar_url)
+        await channels.send(embed=embed)
 
 bot.run("no token for u", bot=True, reconnect=True)
