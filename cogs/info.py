@@ -1,6 +1,7 @@
 import discord
 import asyncio
 import time
+import datetime
 import requests
 from discord import Spotify
 from datetime import timedelta
@@ -63,7 +64,7 @@ class InfoCog(commands.Cog):
       em.add_field(name="**Emoji limit**", value=f"{int(ctx.guild.emoji_limit)}", inline=True)
       em.add_field(name="**Verify Level**", value=f"{ctx.guild.verification_level}")
       em.add_field(name="**File Size limit**", value=f"{int(ctx.guild.filesize_limit)}", inline=True)
-      em.add_field(name="**Birate Limit**", value=f"{int(ctx.guild.bitrate_limit)}", inline=True)
+      em.add_field(name="**Bitrate Limit**", value=f"{int(ctx.guild.bitrate_limit)}", inline=True)
       em.set_thumbnail(url=ctx.guild.icon_url)
       em.set_footer(text=f"World ServerInfo | {ctx.guild}'s Info", icon_url=ctx.guild.icon_url)
       await ctx.send(embed=em)
@@ -89,7 +90,7 @@ class InfoCog(commands.Cog):
       embed.add_field(name='Total Users:', value=memberCount)
       embed.add_field(name='Bot Made By:', value="<@662334026098409480>")
 
-      embed.set_footer(text=f"World - Botinfo | Made By seañ#1718")
+      embed.set_footer(text=f"World - Botinfo | Made By seaÃ±#1718")
       embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
 
       await ctx.send(embed=embed)
@@ -109,7 +110,7 @@ class InfoCog(commands.Cog):
       embed.add_field(name='Total Users:', value=memberCount)
       embed.add_field(name='Bot Made By:', value="<@662334026098409480>")
 
-      embed.set_footer(text=f"World - Botstats | Made By seañ#1718")
+      embed.set_footer(text=f"World - Botstats | Made By seaÃ±#1718")
       embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
 
       await ctx.send(embed=embed)
@@ -150,6 +151,18 @@ class InfoCog(commands.Cog):
         em.set_footer(text='World - Invite')
         em.colour = (0x00FF)
         await ctx.send(embed=em)
+        
+    @commands.command(help="Suggest a command or report a bug.")
+    @commands.cooldown(rate=1, per=50, type=commands.BucketType.member)
+    async def suggest(self, ctx, *, message):
+    	suggestion_user = ctx.author
+    	embed = discord.Embed(title="New suggestion", description=f"Suggestion: `{message}`\nSuggestor: `{suggestion_user}`\nSuggestor ID: `{suggestion_user.id}`", timestamp=datetime.datetime.utcnow())
+    	embed.set_footer(text='If abused, the bot logs the user id and the owner will blacklist you from using world.')
+    	embed1 = discord.Embed(title="Done!", description=f"{ctx.author.mention} i have told my developers the following report/suggestion:\n`{message}`")
+    	embed.set_footer(text=f'World - Suggest')
+    	channel = self.bot.get_channel(761671480773050409)
+    	await channel.send(embed=embed)
+    	await ctx.send(embed=embed1)
 
 
     @commands.command(help="Vote for world.")
@@ -197,38 +210,6 @@ class InfoCog(commands.Cog):
         em.colour = (0xFEF200)
         await ctx.send(embed=em)
 
-    @commands.command(help="Adds emoji")
-    async def addemoji(self, ctx, emoji: str, name=None):
-        # You can upload emoji, id or url!
-        defurl = "https://cdn.discordapp.com/emojis/"
-        async def upload(name, id=None, url=defurl):
-            async with ClientSession() as s:
-                def URL():
-                    if not id:
-                        return url
-                    else:
-                        return f"{url}{id}"
-                async with s.get(URL()) as r:
-                    if r.status != 200:
-                        return await ctx.send(f"I can't upload the emoji's url\nStatus: {r.status}")
-                    img = await r.read()
-                    edit = await ctx.send("Creating...")
-                    await ctx.guild.create_custom_emoji(name=name, image=img)
-                    await edit.edit(content="Created new emoji!")
-        try:
-            emoji = int(emoji)
-            if not name:
-                return await ctx.send("I can't create an emoji without name")
-            return await upload(name, emoji)
-        except ValueError:
-            if emoji.startswith("http://") or emoji.startswith("https://"):
-                if not name:
-                    return await ctx.send("I can't create an emoji without name")
-                return await upload(name, url=emoji)
-            emoji = emoji.split(":")
-            name = emoji[1]
-            id = emoji[2].replace(">", "")
-            return await upload(name, id)
 
     @commands.command(help="Show World's uptime.")
     async def uptime(self, ctx):
@@ -241,6 +222,15 @@ class InfoCog(commands.Cog):
         em.add_field(name="Here Is My Uptime:", value="`" + formatted + "`", inline=False)
         em.color = ctx.author.color
         await ctx.send(embed=em)
+        
+    @suggest.error
+    async def suggest_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldow because you could try to abuse it, Try again in {a} seconds."
+            )
 
 
 def setup(bot):
