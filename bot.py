@@ -15,7 +15,7 @@ bot.remove_command("help")
 
 
 initial_extensions = ['cogs.owner', 'cogs.ping', 'cogs.help',
- 'cogs.info', 'cogs.economy', 'cogs.fun', 'cogs.mod', 'cogs.joins']
+ 'cogs.info', 'cogs.economy', 'cogs.fun', 'cogs.mod', 'cogs.logging']
 
 
 if __name__ == '__main__':
