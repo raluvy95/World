@@ -229,7 +229,7 @@ class InfoCog(commands.Cog):
             a = error.retry_after
             a = round(a)
             await ctx.send(
-                f"Sorry {ctx.author.mention} This command in on cooldow because you could try to abuse it, Try again in {a} seconds."
+                f"Sorry {ctx.author.mention} This command in on cooldown because you could try to abuse it, Try again in {a} seconds."
             )
 
 
