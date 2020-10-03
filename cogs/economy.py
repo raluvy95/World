@@ -1,269 +1,807 @@
+import asyncio
 import discord
 import pymongo
-import typing
-import io
-import datetime
-from io import BytesIO
-from typing import Optional
-from discord import TextChannel
+import random
 from pymongo import MongoClient
 from discord.ext import commands
-from discord.ext.commands import has_permissions, MissingPermissions
 
-cluster = MongoClient("damnit")
+cluster = MongoClient("https://bit.ly/dpyjslol")
 
 
-class LoggingCog(commands.Cog):
+class EconomyCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(help="World - Logging")
-    @commands.has_permissions(administrator=True)
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def logging(self, ctx, options, channel: Optional[discord.TextChannel]):
+    @commands.command(help="Register in Worlds database.")
+    async def create(self, ctx):
+        try:
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            post = {
+                "_id": ctx.author.id,
+                "coins": 0,
+                "cookie": 0,
+                "apple": 0,
+                "choc": 0,
+                "poop": 0,
+                "afk": "No Status Set",
+            }
+            collection.insert_one(post)
+            embed1 = discord.Embed(title="Register!")
+            embed1.add_field(
+                name=f"**Success**",
+                value=f"{ctx.author.mention} I Have Succsesfully Registered You!",
+                inline=True,
+            )
+            await ctx.channel.send(embed=embed1)
+        except pymongo.errors.DuplicateKeyError:
+            embed1 = discord.Embed(
+                title="Error!",
+                description=f"Sorry {ctx.author.mention} your already registered!",
+            )
+            await ctx.send(embed=embed1)
+            return
 
-    	if options == "create":
-    		try:
-    			db = cluster["Logging"]
-    			collection = db["Guilds"]
-    			post = {
-    			"_id": ctx.guild.id,
-    			"Bans": 0,
-    			"Kicks": 0,
-    			"Mutes": 0,
-    			"LockedChannel": 0,
-    			"UnLockedChannel": 0,
-    			"Unmute": 0,
-    			"Slowmode": 0,
-    			"DeletedMessage": 0,
-    			"EditedMessage": 0,
-    			"JoinedServer": 0,
-    			"LeftServer": 0,
-    			"Unbanned": 0,
-    			"Poll": 0,
-    			"Eval": 0,
-    			"Extraslot": 0
-    			}
-    			collection.insert_one(post)
-    			embed1 = discord.Embed(title="Logging Created.")
-    			embed1.add_field(
-    				name=f"**Success**",
-    				value=f"{ctx.author.mention} I Have Succsesfully Set up `{ctx.guild.name}'s` Logging\nTo see logging options: `world logging help`\nTo remove logging: `world logging shutdown`.",
-    				inline=True,
-    				)
-    			await ctx.channel.send(embed=embed1)
-    		except pymongo.errors.DuplicateKeyError:
-    			embed1 = discord.Embed(
-    				title="Error!",
-    				description=f"Sorry {ctx.author.mention} your guild is already registered.",
-    				)
-    			await ctx.send(embed=embed1)
+    @commands.command(help="Buy a item from the shop.")
+    @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
+    async def buy(self, ctx, product, amount: int):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        for result in user:
+            userbal = result["coins"]
+        if amount < 0:
+            return await ctx.send("No abusing the system!")
 
-    	if options == "shutdown":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
-    		collection.remove({"_id": ctx.guild.id})
-    		embed = discord.Embed(title="Logging Shutdown.", description=f"{ctx.author.mention} I have succsesfully shutdown `{ctx.guild.name}'s` Logging.")
-    		await ctx.send(embed=embed)
+        if product == "cookie":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < amount:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `Cookies`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
+        
+        if product == "apple":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < amount *10:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `Apples`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
 
-    	if options == "help":
-    		embed = discord.Embed()
-    		embed.set_author(name='World - Logging help')
-    		embed.add_field(name="Register your guild.", value="w/logging create", inline=True)
-    		embed.add_field(name="Remove your guild.", value="w/logging shutdown", inline=True)
-    		embed.add_field(name="Set Logging.", value="w/logging <option>", inline=True)
-    		embed.set_footer(text="Use \"w/logging options>\" For logging info.")
-    		await ctx.send(embed=embed)
+        if product == "chocbar":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < amount *4:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `Chocolate bars`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
 
-    	if options == "options":
-    		embed = discord.Embed()
-    		embed.set_author(name='World - Logging Options')
-    		embed.add_field(name="Set ban log.", value="w/logging bans <channel>", inline=False)
-    		embed.add_field(name="Set unban log.", value="w/logging unbans <channel>", inline=False)
-    		embed.add_field(name="Set deleted messages log.", value="w/logging deleted <channel>", inline=False)
-    		embed.add_field(name="Set all.", value="w/logging all <channel>", inline=False)
-    		embed.set_footer(text="More logging coming soon.")
-    		await ctx.send(embed=embed)
+        if product == "poop":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < amount *6:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `Poops`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
+
+        if product == "cookie":
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "cookie": 10}
+            for result in user:
+                coins = result["cookie"]
+                coins1 = result["coins"]
+                coins = coins + int(amount)
+                coins1 = coins1 - int(amount)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins1}}
+                )
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"cookie": coins}}
+                )
+                embed1 = discord.Embed(title="Cookie Shop!")
+                embed1.add_field(
+                    name=f"**Success**",
+                    value=f"{ctx.author.mention} You Bought `{amount}` Cookies For {amount} Coins, You Now Have {coins1} Coins!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
+        if product == "apple":
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "apple": 10}
+            for result in user:
+                coins = result["apple"]
+                coins1 = result["coins"]
+                coins = coins + int(amount)
+                coins1 = coins1 - int(amount * 10)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins1}}
+                )
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"apple": coins}}
+                )
+                embed2 = discord.Embed(title="Apple Shop!")
+                embed2.add_field(
+                    name=f"**Success**",
+                    value=f"{ctx.author.mention} You Bought `{amount}` Apples For {int(amount*10)} Coins, You Now Have {coins1} Coins!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed2)
+        if product == "chocbar":
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "choc": 10}
+            for result in user:
+                coins = result["choc"]
+                coins1 = result["coins"]
+                coins = coins + int(amount)
+                coins1 = coins1 - int(amount * 3)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins1}}
+                )
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"choc": coins}})
+                embed3 = discord.Embed(title="Chocolate Shop!")
+                embed3.add_field(
+                    name=f"**Success**",
+                    value=f"{ctx.author.mention} You Bought `{amount}` Chocolate Bars For {int(amount*3)} Coins, You Now Have {coins1} Coins!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed3)
+        if product == "poop":
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "poop": 10}
+            for result in user:
+                coins = result["poop"]
+                coins1 = result["coins"]
+                coins = coins + int(amount)
+                coins1 = coins1 - int(amount * 5)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins1}}
+                )
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"poop": coins}})
+                embed3 = discord.Embed(title="Poop Shop!")
+                embed3.add_field(
+                    name=f"**Success**",
+                    value=f"{ctx.author.mention} You Bought `{amount}` Poops For {int(amount*5)} Coins, You Now Have {coins1} Coins!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed3)
+
+    @buy.error
+    async def buy_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(
+                f"Sorry {ctx.author.mention} Please Type `w/buy [product] [amount]`"
+            )
+
+    @commands.command(help="Eat a item from your inventory.")
+    @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
+    async def eat(self, ctx, product, amount: int):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        if amount < 0:
+            await ctx.send(f"Sorry {ctx.author.mention} you cannot eat negative.")
+            return
+
+        if product == "chocbar":
+        	if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
+        		embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough chocolate bars in your inventory. You can buy more with the command `w/buy chocbar <amount>`")
+        		return await ctx.send(embed=embed)
+
+        if product == "apple":
+        	if collection.find_one({"_id": ctx.author.id})["apple"] < amount:
+        		embed = discord.Embed(title="Not enough apples", description=f"Sorry {ctx.author.mention} You dont have enough apples in your inventory. You can buy more with the command `w/buy apple <amount>`")
+        		return await ctx.send(embed=embed)
+
+        if product == "cookie":
+        	if collection.find_one({"_id": ctx.author.id})["cookie"] < amount:
+        		embed = discord.Embed(title="Not enough cookies", description=f"Sorry {ctx.author.mention} You dont have enough cookies in your inventory. You can buy more with the command `w/buy cookie <amount>`")
+        		return await ctx.send(embed=embed)
+
+        if product == "poop":
+        	if collection.find_one({"_id": ctx.author.id})["poop"] < amount:
+        		embed = discord.Embed(title="Not enough poops", description=f"Sorry {ctx.author.mention} You dont have enough poops in your inventory. You can buy more with the command `w/buy poop <amount>`")
+        		return await ctx.send(embed=embed)
+        if product == "chocbar":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "choc": 1}
+            for result in user:
+                coins = result["choc"]
+                coins = coins - int(amount)
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"choc": coins}})
+                embed1 = discord.Embed(title="Hmm Yummy Chocolate!")
+                embed1.add_field(
+                    name=f"**Success**",
+                    value=f"{ctx.author.mention} You ate `{amount}` Chocolate Bars! You Now Have {coins} Chocolate Bars!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
+        if product == "apple":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "apple": 1}
+            for result in user:
+                coins = result["apple"]
+                coins = coins - int(amount)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"apple": coins}}
+                )
+                embed1 = discord.Embed(title="Healthy Apples!")
+                embed1.add_field(
+                    name=f"**Success**",
+                    value=f"{ctx.author.mention} You ate `{amount}` Apples! You Now Have {coins} Apples!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
+        if product == "cookie":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "cookie": 1}
+            for result in user:
+                coins = result["cookie"]
+                coins = coins - int(amount)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"cookie": coins}}
+                )
+                embed1 = discord.Embed(title="Cookies From Granny!")
+                embed1.add_field(
+                    name=f"**Success**",
+                    value=f"{ctx.author.mention} You ate `{amount}` Cookies! You Now Have {coins} Cookies",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
+        if product == "poop":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "poop": 1}
+            for result in user:
+                coins = result["poop"]
+                coins = coins - int(amount)
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"poop": coins}})
+                embed1 = discord.Embed(title="Poop Eater!")
+                embed1.add_field(
+                    name=f"**Success**",
+                    value=f"{ctx.author.mention} You ate `{amount}` Poops! You Now Have {coins} Poops",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
+
+    @commands.command(help="Leaderboard")
+    async def richest(self, ctx):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        coins_user_mapping: Dict[int, int] = {}
+        for row in collection.find():
+        	coins_user_mapping[row["coins"]] = row["_id"]
+        user_with_most_coins = coins_user_mapping[max(coins_user_mapping.keys())]
+        balance = max(coins_user_mapping.keys())
+        embed = discord.Embed(title="Whos the richest?")
+        user_with_most_coins = coins_user_mapping[max(coins_user_mapping.keys())]
+        embed.add_field(name="1.", value=f"<@{user_with_most_coins}>\nBalance: `{balance}` coins")
+        del coins_user_mapping[max(coins_user_mapping.keys())]
+        user_with_second_most_coins = coins_user_mapping[max(coins_user_mapping.keys())]
+        balance1 = max(coins_user_mapping.keys())
+        embed.add_field(name="2.", value=f"<@{user_with_second_most_coins}>\nBalance: `{balance1}` coins")
+        del coins_user_mapping[max(coins_user_mapping.keys())]
+        user_with_third_most_coins = coins_user_mapping[max(coins_user_mapping.keys())]
+        balance2 = max(coins_user_mapping.keys())
+        embed.add_field(name="3.", value=f"<@{user_with_third_most_coins}>\nBalance: `{balance2}` coins")
+        await ctx.send(embed=embed)
+        
+        
+    @commands.command(help="Sell a item from your inventory.")
+    @commands.cooldown(rate=6, per=15, type=commands.BucketType.member)
+    async def sell(self, ctx, product, amount: int):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        if amount < 0:
+            await ctx.send(f"Sorry {ctx.author.mention} you cannot sell negative.")
+            return
+        
+        if product == "chocbar":
+            if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `Chocolate bars` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+                return await ctx.send(embed=embed)
+
+        if product == "apple":
+            if collection.find_one({"_id": ctx.author.id})["apple"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `Apples` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+                return await ctx.send(embed=embed)
+
+        if product == "poop":
+            if collection.find_one({"_id": ctx.author.id})["poop"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `Poops` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+                return await ctx.send(embed=embed)
+
+        if product == "cookie":
+            if collection.find_one({"_id": ctx.author.id})["cookie"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough `Cookies` in your inventory. You can buy more with the command `w/buy {product} <amount>`")
+                return await ctx.send(embed=embed)
 
 
 
-    	if options == "bans":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
-    		query = {"_id": ctx.guild.id}
-    		banlog = collection.find(query)
-    		post = {"Bans": channel.id}
-    		for result in banlog:
-    			if collection.find_one({"_id": ctx.guild.id})["Bans"] == channel.id:
-    				embed = discord.Embed(title="Error!", description=f"Sorry {ctx.author.mention} <#{channel.id}> has already been set as your `Ban Log`.")
-    				return await ctx.send(embed=embed)
-    			ban = result["Bans"]
-    			banresult = int(channel.id)
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"Bans": banresult}})
-    			embed = discord.Embed(title="Logging - set", description=f"{ctx.author.mention} I have succsesfully updated your `Ban Log` to the channel: <#{channel.id}>")
-    			await ctx.send(embed=embed)
+        if product == "chocbar":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "choc": 1}
+            for result in user:
+                coins = result["choc"]
+                mon = result["coins"]
+                coins = coins - int(amount)
+                mon1 = mon + int(amount * 3)
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"choc": coins}})
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": mon1}})
+                embed1 = discord.Embed(title="MarketPlace!")
+                embed1.add_field(
+                    name=f"**SOLD!**",
+                    value=f"{ctx.author.mention} You Sold `{amount}` Chocolate Bars! For {int(amount*3)} Coins, You Now Have {mon1} Coins!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
+        if product == "apple":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "apple": 1}
+            for result in user:
+                coins = result["apple"]
+                mon = result["coins"]
+                coins = coins - int(amount)
+                mon1 = mon + int(amount * 9)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"apple": coins}}
+                )
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": mon1}})
+                embed1 = discord.Embed(title="MarketPlace!")
+                embed1.add_field(
+                    name=f"**SOLD!**",
+                    value=f"{ctx.author.mention} You Sold `{amount}` Apples! For {int(amount*9)} Coins, You Now Have {mon1} Coins!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
+        if product == "poop":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "poop": 1}
+            for result in user:
+                coins = result["poop"]
+                mon = result["coins"]
+                coins = coins - int(amount)
+                mon1 = mon + int(amount * 5)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"poops": coins}}
+                )
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": mon1}})
+                embed1 = discord.Embed(title="MarketPlace!")
+                embed1.add_field(
+                    name=f"**SOLD**",
+                    value=f"{ctx.author.mention} You Sold `{amount}` Poops! For {int(amount*5)} Coins, You Now Have {mon1} Coins!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
+        if product == "cookie":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "cookie": 1}
+            for result in user:
+                coins = result["cookie"]
+                mon = result["coins"]
+                coins = coins - int(amount)
+                mon1 = mon + int(amount * 1)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"cookie": coins}}
+                )
+                collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": mon1}})
+                embed1 = discord.Embed(title="MarketPlace!")
+                embed1.add_field(
+                    name=f"**SOLD**",
+                    value=f"{ctx.author.mention} You Sold `{amount}` Cookies! For {int(amount*1)} Coins, You Now Have {mon1} Coins!",
+                    inline=True,
+                )
+                await ctx.send(embed=embed1)
 
-    	if options == "unbans":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
-    		query = {"_id": ctx.guild.id}
-    		unbanlog = collection.find(query)
-    		post = {"Unbanned": channel.id}
-    		for result in unbanlog:
-    			if collection.find_one({"_id": ctx.guild.id})["Unbanned"] == channel.id:
-    				embed = discord.Embed(title="Error!", description=f"Sorry {ctx.author.mention} <#{channel.id}> has already been set as your `Unbanned Log`.")
-    				return await ctx.send(embed=embed)
-    			unban = result["Unbanned"]
-    			unbanresult = int(channel.id)
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"Unbanned": unbanresult}})
-    			embed = discord.Embed(title="Logging - set", description=f"{ctx.author.mention} I have succsesfully updated your `Unban Log` to the channel: <#{channel.id}>")
-    			await ctx.send(embed=embed)
-
-    	if options == "deleted":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
-    		query = {"_id": ctx.guild.id}
-    		deletedlog = collection.find(query)
-    		post = {"DeletedMessage": channel.id}
-    		for result in deletedlog:
-    			if collection.find_one({"_id": ctx.guild.id})["DeletedMessage"] == channel.id:
-    				embed = discord.Embed(title="Error!", description=f"Sorry {ctx.author.mention} <#{channel.id}> has already been set as your `Deleted message Log`.")
-    				return await ctx.send(embed=embed)
-    			deleted = result["DeletedMessage"]
-    			deletedresult = int(channel.id)
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"DeletedMessage": deletedresult}})
-    			embed = discord.Embed(title="Logging - set", description=f"{ctx.author.mention} I have succsesfully updated your `Deleted messages Log` to the channel: <#{channel.id}>")
-    			await ctx.send(embed=embed)
-
-    	if options == "edited":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
-    		query = {"_id": ctx.guild.id}
-    		editedlog = collection.find(query)
-    		post = {"EditedMessage": channel.id}
-    		for result in editedlog:
-    			if collection.find_one({"_id": ctx.guild.id})["EditedMessage"] == channel.id:
-    				embed = discord.Embed(title="Error!", description=f"Sorry {ctx.author.mention} <#{channel.id}> has already been set as your `Edited message Log`.")
-    				return await ctx.send(embed=embed)
-    			edited = result["EditedMessage"]
-    			editedresult = int(channel.id)
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"EditedMessage": editedresult}})
-    			embed = discord.Embed(title="Logging - set", description=f"{ctx.author.mention} I have succsesfully updated your `Edited messages Log` to the channel: <#{channel.id}>")
-    			await ctx.send(embed=embed)
-
-
-    	if options == "all":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
-    		query = {"_id": ctx.guild.id}
-    		allc = collection.find(query)
-    		post = {"_id": channel.id}
-    		for result in allc:
-    			edited = result["EditedMessage"]
-    			deleted = result["DeletedMessage"]
-    			unban = result["Unbanned"]
-    			ban = result["Bans"]
-    			allresult = int(channel.id)
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"EditedMessage": allresult}})
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"DeletedMessage": allresult}})
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"Unbanned": allresult}})
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"Bans": allresult}})
-    			embed = discord.Embed(title="Logging - set", description=f"{ctx.author.mention} I have succsesfully updated all your `Logs` to the channel: <#{channel.id}>")
-    			await ctx.send(embed=embed)
-
-
-    @logging.error
-    async def logging_error(self, ctx, error):
+    @sell.error
+    async def sell_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             a = error.retry_after
             a = round(a)
             await ctx.send(
-                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.\nReason: `Could abuse database system.`"
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
             )
 
-    @commands.Cog.listener()
-    async def on_member_ban(self, guild, user):
-    	db = cluster["Logging"]
-    	collection = db["Guilds"]
-    	query = {"_id": guild.id}
-    	memberban = collection.find(query)
-    	post = {"Bans": 0}
-    	for result in memberban:
-    		ban = result["Bans"]
-    		if collection.find_one({"_id": guild.id})["Bans"] == 0:
-    			return
-    		else:
-    			ban1 = await guild.fetch_ban(user)
-    			reason = ban1.reason
-    			embed = discord.Embed(title="Ban Log", description=f"A user from this guild has been banned.\nName: `{user.name}`\nID: `{user.id}`\nReason: `{reason}`", timestamp=datetime.datetime.utcnow())
-    			channel = self.bot.get_channel(ban)
-    			await channel.send(embed=embed)
+    @buy.error
+    async def buy_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
 
-    @commands.Cog.listener()
-    async def on_member_unban(self, guild, user):
-    	db = cluster["Logging"]
-    	collection = db["Guilds"]
-    	query = {"_id": guild.id}
-    	memberunban = collection.find(query)
-    	post = {"Unbanned": 0}
-    	for result in memberunban:
-    		unban = result["Unbanned"]
-    		if collection.find_one({"_id": guild.id})["Unbanned"] == 0:
-    			return
-    		else:
-    			embed = discord.Embed(title="Unban Log", description=f"A user from this guild has been unbanned.\nName: `{user.name}`\nID: `{user.id}`", timestamp=datetime.datetime.utcnow())
-    			channel = self.bot.get_channel(unban)
-    			await channel.send(embed=embed)
+    @eat.error
+    async def eat_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
 
-    @commands.Cog.listener()
-    async def on_message_delete(self, message):
-    	db = cluster["Logging"]
-    	collection = db["Guilds"]
-    	query = {"_id": message.guild.id}
-    	messagedelete = collection.find(query)
-    	post = {"DeletedMessage": 0}
-    	for result in messagedelete:
-    		deletedm = result["DeletedMessage"]
-    		if collection.find_one({"_id": message.guild.id})["DeletedMessage"] == 0:
-    			return
-    		else:
-    			embed = discord.Embed(title="Deleted message Log", description=f"A message was just deleted.\nContent: `{message.content}`\nUser: `{message.author}`\nChannel: `{message.channel}`", timestamp=datetime.datetime.utcnow())
-    			channel = self.bot.get_channel(deletedm)
-    			await channel.send(embed=embed)
+    @sell.error
+    async def sell_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(
+                f"Sorry {ctx.author.mention} Please Type `w/sell [product] [amount]`"
+            )
 
-    @commands.Cog.listener()
-    async def on_message_edit(self, before: discord.Message, after: discord.Message):
-        db = cluster["Logging"]
-        collection = db["Guilds"]
-        query = {"_id": after.guild.id}
-        editmessage = collection.find(query)
-        post = {"EditedMessage": 0}
-        for result in editmessage:
-            editedm = result["EditedMessage"]
-            if collection.find_one({"_id": after.guild.id})["EditedMessage"] == 0:
-                return
-            else:
-                if before.content == after.content:
-                    return
-                beforec = (before.content)
-                afterc = (after.content)
-                for attachment in after.attachments:
-                	return
-                embed = discord.Embed(title="Edited message Log", description=f"A message was just edited.\nUser: `{after.author}`\nChannel: `{after.channel}`", timestamp=datetime.datetime.utcnow())
-                embed.add_field(name="Before content:", value=beforec)
-                embed.add_field(name="After content:", value=afterc)
-                channel = self.bot.get_channel(editedm)
-                await channel.send(embed=embed)
+    @eat.error
+    async def eat_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(
+                f"Sorry {ctx.author.mention} Please Type `w/eat [product] [amount]`"
+            )
+
+    @commands.command(help="Shows your inventory.")
+    @commands.cooldown(rate=8, per=50, type=commands.BucketType.member)
+    async def inv(self, ctx):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        for result in user:
+            coins = result["cookie"]
+            mon = result["coins"]
+            apple = result["apple"]
+            choc = result["choc"]
+            poop = result["poop"]
+            coins5 = result["afk"]
+            embed1 = discord.Embed(title=f"{ctx.author}'s Inventory!")
+            embed1.add_field(
+                name=f"**Cookies**", value=f":cookie: {coins} Cookies", inline=True
+            )
+            embed1.add_field(
+                name=f"**Apples**", value=f":apple: {apple} Apples", inline=True
+            )
+            embed1.add_field(
+                name=f"**Chocolate**",
+                value=f":chocolate_bar: {choc} Chocolate Bars",
+                inline=True,
+            )
+            embed1.add_field(
+                name=f"**Poops**", value=f":poop: {poop} Poops", inline=True
+            )
+            embed1.add_field(
+                name=f"**Coins**", value=f":moneybag: {mon} Coins", inline=True
+            )
+            embed1.add_field(
+                name=f"**You Want Inventory?**", value=f"Type `w/create`", inline=True
+            )
+            embed1.set_footer(text=f"Status: {coins5}")
+            await ctx.send(embed=embed1)
+
+    @inv.error
+    async def inv_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
+
+    @commands.command(help="Get daily coins.")
+    @commands.cooldown(rate=1, per=86400, type=commands.BucketType.member)
+    async def daily(self, ctx):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        post = {"_id": ctx.author.id, "coins": 0}
+        for result in user:
+            coins = result["coins"]
+            coins = coins + 200
+            collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": coins}})
+            embed1 = discord.Embed(title="Daily Coins!")
+            embed1.add_field(
+                name=f"**Success**",
+                value=f"{ctx.author.mention} I Have Added `200` Coins To Your Balance",
+                inline=True
+            )
+            await ctx.send(embed=embed1)
+            
+    @commands.command(help="Get weekly coins.")
+    @commands.cooldown(rate=1, per=604800, type=commands.BucketType.member)
+    async def weekly(self, ctx):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        post = {"_id": ctx.author.id, "coins": 500}
+        for result in user:
+            coins = result["coins"]
+            coins = coins + 1500
+            collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": coins}})
+            embed1 = discord.Embed(title="Weekly Coins!")
+            embed1.add_field(
+                name=f"**Success**",
+                value=f"{ctx.author.mention} I Have Added `1500` Coins To Your Balance",
+                inline=True,
+            )
+            await ctx.send(embed=embed1)
+
+    @commands.command(
+        aliases=["afk", "ss", "activity", "act"], help="Set a custom status."
+    )
+    @commands.cooldown(rate=8, per=230, type=commands.BucketType.member)
+    async def setstatus(self, ctx, *, afk1):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        post = {"_id": ctx.author.id, "coins": 500}
+        for result in user:
+            coins = result["afk"]
+            coins = coins + afk1
+            collection.update_one({"_id": ctx.author.id}, {"$set": {"afk": afk1}})
+            embed1 = discord.Embed(title="Status!")
+            embed1.add_field(
+                name=f"**Success**",
+                value=f"{ctx.author.mention} I Have Set Your Status To `{afk1}`",
+                inline=True,
+            )
+            embed1.set_thumbnail(url=ctx.author.avatar_url)
+            embed1.color = 0x2F3136
+            await ctx.send(embed=embed1)
+
+    @setstatus.error
+    async def setstatus_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
+
+    @commands.command(help="Shows users status")
+    @commands.cooldown(rate=11, per=80, type=commands.BucketType.member)
+    async def status(self, ctx, users: discord.Member):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": users.id}
+        user = collection.find(query)
+        for result in user:
+            coins = result["afk"]
+            embed1 = discord.Embed(title="Status")
+            embed1.add_field(
+                name=f"**Success**",
+                value=f"{users.mention}'s Status Is: `{coins}`\nTo Set Your Own Status Just Type `setstatus [status]`",
+                inline=True,
+            )
+            embed1.set_thumbnail(url=users.avatar_url)
+            embed1.color = 0x2F3136
+            await ctx.send(embed=embed1)
+
+    @status.error
+    async def status_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
 
 
-    @logging.error
-    async def logging_error(self, ctx, error):
-        if isinstance(error, commands.CommandInvokeError):
-        	await ctx.send(f"Sorry {ctx.author.mention} - {error}")
+    @commands.command(help="Beg for coins.")
+    @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
+    async def beg(self, ctx):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        post = {"_id": ctx.author.id, "coins": 25}
+        for result in user:
+            coins = result["coins"]
+            coins = coins + 25
+            collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": coins}})
+            embed1 = discord.Embed(title="Begger!")
+            embed1.add_field(
+                name=f"**Success**",
+                value=f"{ctx.author.mention} I Have Added `25` Coins To Your Balance Because you have been a good girl/boy",
+                inline=True,
+            )
+            await ctx.send(embed=embed1)
+
+    @commands.command(help="Sorry Buddy only owner.")
+    @commands.is_owner()
+    @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
+    async def give(self, ctx, users: discord.Member, *, coin):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": users.id}
+        user = collection.find(query)
+        post = {"_id": users.id, "coins": 5000}
+        for result in user:
+            coins = result["coins"]
+            coins = coins + int(coin)
+            collection.update_one({"_id": users.id}, {"$set": {"coins": coins}})
+            embed1 = discord.Embed(title="Success!")
+            embed1.add_field(
+                name=f"**Stop Cheating!**",
+                value=f"{ctx.author.mention} I Have Added `{coin}` Coins To {users.mention}'s Balance",
+                inline=True,
+            )
+            await ctx.send(embed=embed1)
+
+    @commands.command(help="Only owner buddy.")
+    @commands.is_owner()
+    @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
+    async def remove(self, ctx, users: discord.Member, *, coin):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": users.id}
+        user = collection.find(query)
+        post = {"_id": users.id, "coins": 5000}
+        for result in user:
+            coins = result["coins"]
+            coins = coins - int(coin)
+            collection.update_one({"_id": users.id}, {"$set": {"coins": coins}})
+            embed1 = discord.Embed(title="Success!")
+            embed1.add_field(
+                name=f"**Why Would You Do This?!?**",
+                value=f"{ctx.author.mention} I Have Removed `{coin}` Coins From {users.mention}'s Balance",
+                inline=True,
+            )
+            await ctx.send(embed=embed1)
+
+    @commands.command(aliases=["balance"], help="Shows users balance.")
+    async def bal(self, ctx):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        for result in user:
+            coins = result["coins"]
+            embed1 = discord.Embed(title="Balance!")
+            embed1.add_field(
+                name=f"**Success**",
+                value=f"{ctx.author.mention} You Have {coins} coins",
+                inline=True,
+            )
+            await ctx.send(embed=embed1)
+
+    @daily.error
+    async def daily_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
+
+    @beg.error
+    async def beg_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
+
+    @commands.command(aliases=["bet", "slot", "gam"], help="Gamble for some coins.")
+    @commands.cooldown(rate=2, per=8, type=commands.BucketType.member)
+    async def gamble(self, ctx):
+        amount = 15
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        for result in user:
+            userbal = result["coins"]
+
+        if collection.find_one({"_id": ctx.author.id})["coins"] < amount:
+            embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to gamble.\n Current balance: `{userbal}` Coins.")
+            return await ctx.send(embed=embed)
+
+        emojis = "ðŸŽðŸŠðŸðŸ‹ðŸ‰ðŸ‡ðŸ“ðŸ’"
+        a = random.choice(emojis)
+        b = random.choice(emojis)
+        c = random.choice(emojis)
+        slotmachine = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
+        if a == b == c:
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "coins": 300}
+            for result in user:
+                coins = result["coins"]
+                coins1 = result["coins"]
+                coins = coins + 300
+                coins1 = coins - int(15)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins}}
+                )
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins1}}
+                )
+                await ctx.send(
+                    pypyembed=discord.Embed.from_dict(
+                        {
+                            "title": "Slot machine",
+                            "description": f"{slotmachine} All matchings, you won `300` coins!",
+                        }
+                    )
+                )
+        elif (a == b) or (a == c) or (b == c):
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "coins": 150}
+            for result in user:
+                coins = result["coins"]
+                coins = coins + 150
+                coins1 = coins - int(15)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins}}
+                )
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins1}}
+                )
+                await ctx.send(
+                    embed=discord.Embed.from_dict(
+                        {
+                            "title": "Slot machine",
+                            "description": f"{slotmachine} 2 in a row, you won `150` coins!",
+                        }
+                    )
+                )
         else:
-        	await ctx.send(f"Sorry {ctx.author.mention} - {error}")
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "coins": 0}
+            for result in user:
+                coins = result["coins"]
+                coins = coins - int(15)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": coins}}
+                )
+                await ctx.send(
+                    embed=discord.Embed.from_dict(
+                        {
+                            "title": "Slot machine",
+                            "description": f"{slotmachine} No match, you lost `15` coins!",
+                        }
+                    )
+                )
 
+    @gamble.error
+    async def gamble_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
+            
+    @weekly.error
+    async def weekly_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(
+                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
+            )
 
 
 def setup(bot):
-    bot.add_cog(LoggingCog(bot))
+    bot.add_cog(EconomyCog(bot))
