@@ -253,16 +253,6 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
 
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-    	if message.author.bot:
-        	return
-    	if self.bot.user in message.mentions: 
-        	embed = discord.Embed(
-        	title='', description=f'Here Are My Prefixes: `w/`, `world `' , colour=message.author.color)
-        	embed.set_footer(text="Type <prefix>help for more info.")
-        	await message.channel.send(embed=embed)
-        	await self.bot.process_commands(message)
 
 def setup(bot):
     bot.add_cog(HelpCog(bot))
