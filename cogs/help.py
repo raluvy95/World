@@ -64,17 +64,17 @@ class HelpCog(commands.Cog):
         embed1.add_field(
             name="Show this message", value="w/categories", inline=False
         )
-        embed1.add_field(name="> Shows Mod Categorie", value="w/mod", inline=False)
-        embed1.add_field(name="> Shows Fun Categorie", value="w/fun", inline=False)
-        embed1.add_field(name="> Shows Useful Categorie", value="w/useful", inline=False)
-        embed1.add_field(name="> Shows Eeconomy Categorie", value="w/economy", inline=False)
-        embed1.add_field(name="> Shows Logging Categorie", value="w/logs", inline=False)
-        embed1.add_field(name="> Shows New Categorie", value="w/new", inline=False)
-        embed1.add_field(name="> Shows Other Categorie", value="w/other", inline=False)
+        embed1.add_field(name="> Shows Mod Category", value="w/mod", inline=False)
+        embed1.add_field(name="> Shows Fun Category", value="w/fun", inline=False)
+        embed1.add_field(name="> Shows Useful Category", value="w/useful", inline=False)
+        embed1.add_field(name="> Shows Eeconomy Category", value="w/economy", inline=False)
+        embed1.add_field(name="> Shows Logging Category", value="w/logs", inline=False)
+        embed1.add_field(name="> Shows New Category", value="w/new", inline=False)
+        embed1.add_field(name="> Shows Other Category", value="w/other", inline=False)
         await ctx.send(embed=embed1)
 
 
-    @commands.command(help="Shows other categorie.")
+    @commands.command(help="Shows other Category.")
     async def other(self, ctx):
         author = ctx.message
         author
@@ -94,7 +94,7 @@ class HelpCog(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.command(help="Shows useful categorie.")
+    @commands.command(help="Shows useful Category.")
     async def useful(self, ctx):
         author = ctx.message
         author
@@ -122,7 +122,7 @@ class HelpCog(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.command(help="Shows mod categorie.")
+    @commands.command(help="Shows mod Category.")
     async def mod(self, ctx):
       author = ctx.message
       author
@@ -148,7 +148,7 @@ class HelpCog(commands.Cog):
       )
       await ctx.send(embed=embed)
       
-    @commands.command(help="Shows logging categorie.")
+    @commands.command(help="Shows logging Category.")
     async def logs(self, ctx):
       embed = discord.Embed()
       embed.set_author(name='World - Logging help')
@@ -159,7 +159,7 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
 
 
-    @commands.command(help="Shows fun categorie.")
+    @commands.command(help="Shows fun Category.")
     async def fun(self, ctx):
       author = ctx.message
       author
@@ -193,7 +193,7 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
 
 
-    @commands.command(help="Shows economy categorie.")
+    @commands.command(help="Shows economy Category.")
     async def economy(self, ctx):
       author = ctx.message
       author
@@ -218,7 +218,7 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
     
    
-    @commands.command(help="Shows shop categorie.")
+    @commands.command(help="Shows shop Category.")
     async def shop(self, ctx):
       author = ctx.message
       author
