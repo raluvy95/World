@@ -10,7 +10,7 @@ from pymongo import MongoClient
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
 
-cluster = MongoClient("mongodb+srv://world1:Worldbot62@world-ebg2m.mongodb.net/test")
+cluster = MongoClient("damnit")
 
 
 class LoggingCog(commands.Cog):
