@@ -17,6 +17,10 @@ import pip
 import io
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
+from dotenv import load_dotenv
+
+# Load variables from .env
+load_dotenv()
 
 def get_prefix(bot, message):
     prefixes = ['w/', 'world ']
@@ -99,4 +103,4 @@ async def on_command_error(ctx, error):
         embed.set_thumbnail(url=bot.user.avatar_url)
         await channels.send(embed=embed)
 
-bot.run("i leak token again DAMNIT", bot=True, reconnect=True)
+bot.run(os.environ["TOKEN"], bot=True, reconnect=True)
