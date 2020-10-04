@@ -66,7 +66,6 @@ class HelpCog(commands.Cog):
         )
         embed1.add_field(name="> Shows Mod Category", value="w/mod", inline=False)
         embed1.add_field(name="> Shows Fun Category", value="w/fun", inline=False)
-        embed1.add_field(name="> Shows Useful Category", value="w/useful", inline=False)
         embed1.add_field(name="> Shows Eeconomy Category", value="w/economy", inline=False)
         embed1.add_field(name="> Shows Logging Category", value="w/logs", inline=False)
         embed1.add_field(name="> Shows New Category", value="w/new", inline=False)
@@ -93,33 +92,6 @@ class HelpCog(commands.Cog):
         embed.add_field(name="Shows spotify info", value="w/spotify", inline=True)
         await ctx.send(embed=embed)
 
-
-    @commands.command(help="Shows useful Category.")
-    async def useful(self, ctx):
-        author = ctx.message
-        author
-
-        embed = discord.Embed(colour=ctx.author.color)
-        embed.set_author(name='World - Useful', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
-        embed.add_field(
-            name="Show this message", value="w/useful", inline=True
-        )
-        embed.add_field(name="kick member", value="w/kick [user]", inline=True)
-        embed.add_field(
-            name="Ban M=member", value="w/ban [user]", inline=True
-        )
-        embed.add_field(name="Starts a Poll!", value="w/poll [thing]", inline=True)
-        embed.add_field(name="Get servericon", value="w/servericon", inline=True)
-        embed.add_field(name="First ever message!", value="w/fm", inline=True)
-        embed.add_field(name="Deletes messages", value="w/purge [amount]", inline=True)
-        embed.add_field(name="Ascii message", value="w/ascii [message]", inline=True)
-        embed.add_field(name="Shortens a link", value="w/shorten [link]", inline=True)
-        embed.add_field(name="Users status", value="w/status [user]", inline=True)
-        embed.add_field(name="Set a status", value="w/setstatus", inline=True)
-        embed.add_field(
-            name="Shows my website", value="w/website", inline=True
-        )
-        await ctx.send(embed=embed)
 
 
     @commands.command(help="Shows mod Category.")
@@ -251,7 +223,6 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
       embed.add_field(name="**NEW** Logging!.", value="w/logs", inline=True)
       await ctx.send(embed=embed)
-
 
 
 def setup(bot):
