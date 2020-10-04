@@ -99,4 +99,4 @@ async def on_command_error(ctx, error):
         embed.set_thumbnail(url=bot.user.avatar_url)
         await channels.send(embed=embed)
 
-bot.run("NzAwMjkyMTQ3MzExNTQyMjgy.Xpgz4g.AUVySVkyceqMi_6U9ZRg6FqiY9s", bot=True, reconnect=True)
+bot.run("i leak token again DAMNIT", bot=True, reconnect=True)
