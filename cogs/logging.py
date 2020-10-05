@@ -10,6 +10,9 @@ from discord import TextChannel
 from pymongo import MongoClient
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
+from dotenv import load_dotenv
+
+load_dotenv()
 
 cluster = MongoClient(os.environ["MONGODB_URL"])
 

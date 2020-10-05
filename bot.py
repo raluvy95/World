@@ -26,7 +26,7 @@ def get_prefix(bot, message):
     prefixes = ['w/', 'world ']
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
-bot = commands.Bot(command_prefix=get_prefix, description='Discord Bot Made For All', case_insensitive=True, intents=discord.Intents.all())
+bot = commands.Bot(command_prefix=get_prefix, description='Discord Bot Made For All', case_insensitive=True)
 bot.remove_command("help")
 
 initial_extensions = ['cogs.owner', 'cogs.ping', 'cogs.help',
