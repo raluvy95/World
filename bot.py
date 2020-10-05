@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix=get_prefix, description='Discord Bot Made For 
 bot.remove_command("help")
 
 initial_extensions = ['cogs.owner', 'cogs.ping', 'cogs.help',
- 'cogs.info', 'cogs.economy', 'cogs.fun', 'cogs.mod', 'cogs.statcord', 'cogs.iad', 'cogs.logging']
+ 'cogs.info', 'cogs.economy', 'cogs.fun', 'cogs.mod', 'cogs.logging_']
 
 
 if __name__ == '__main__':
