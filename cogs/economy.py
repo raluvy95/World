@@ -2,10 +2,11 @@ import asyncio
 import discord
 import pymongo
 import random
+import os
 from pymongo import MongoClient
 from discord.ext import commands
 
-cluster = MongoClient("https://bit.ly/dpyjslol")
+cluster = MongoClient(os.environ["MONGODB_URL"])
 
 
 class EconomyCog(commands.Cog):

@@ -3,6 +3,7 @@ import pymongo
 import typing
 import io
 import datetime
+import os
 from io import BytesIO
 from typing import Optional
 from discord import TextChannel
@@ -10,7 +11,7 @@ from pymongo import MongoClient
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
 
-cluster = MongoClient("uh really, why you look here: https://bit.ly/dpyjslol")
+cluster = MongoClient(os.environ["MONGODB_URL"])
 
 
 class LoggingCog(commands.Cog):
