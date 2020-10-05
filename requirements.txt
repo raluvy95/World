@@ -3,3 +3,4 @@ requests
 pymongo
 dnspython
 mysql-connector-python
+python-dotenv
