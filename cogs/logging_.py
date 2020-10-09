@@ -231,7 +231,7 @@ class LoggingCog(commands.Cog):
     		if collection.find_one({"_id": message.guild.id})["DeletedMessage"] == 0:
     			return
     		else:
-    			embed = discord.Embed(title="Deleted message Log", description=f"A message was just deleted.\nContent: `{message.content}`\nUser: `{message.author}`\nChannel: `{message.channel}`", timestamp=datetime.datetime.utcnow())
+    			embed = discord.Embed(title="Deleted message Log", description=f"A message was just deleted.\nContent: {message.content}\nUser: `{message.author}`\nChannel: `{message.channel}`", timestamp=datetime.datetime.utcnow())
     			channel = self.bot.get_channel(deletedm)
     			await channel.send(embed=embed)
 
