@@ -160,7 +160,7 @@ class HelpCog(commands.Cog):
       name="Love O nator", value="w/love [user]", inline=True
       )
       embed.add_field(
-      name="Sad times :(", value="w/f [thing]", inline=True
+      name="Will the akinator win?", value="w/akinator", inline=True
       )
       await ctx.send(embed=embed)
 
@@ -223,6 +223,7 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
       embed.add_field(name="Set some logs.", value="w/logs", inline=True)
       embed.add_field(name="Fast Food command.", value="w/economy", inline=True)
+      embed.add_field(name="Akinator command.", value="w/fun")
       await ctx.send(embed=embed)
 
 
