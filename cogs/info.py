@@ -167,14 +167,12 @@ class InfoCog(commands.Cog):
 
     @commands.command(help="Vote for world.")
     async def vote(self, ctx):
-        coronastats = ('https://top.gg/bot/700292147311542282')
-        em = discord.Embed(title='Click Me To Vote For Me', url=(coronastats), icon_url='https://top.gg/bot/700292147311542282')
+        bot_link = ('https://top.gg/bot/700292147311542282/vote')
+        em = discord.Embed(title='Click to vote', url=(bot_link), icon_url='https://top.gg/bot/700292147311542282')
         em.set_author(name='World - Vote!', url='https://top.gg/bot/700292147311542282' , icon_url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
-        em.description = ('Link Above Directs To Top.gg')
+        em.description = ('Click the link above to vote.')
+        em.set_image(url=f"https://cdn.discordapp.com/attachments/715214583865802844/764573991565656094/example.png")
         em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
-        em.set_image(url="https://top.gg/api/widget/700292147311542282.png?cache=poor")
-        em.set_footer(text='World - Top.gg')
-        em.colour = (0x00FF)
         await ctx.send(embed=em)
 
 
