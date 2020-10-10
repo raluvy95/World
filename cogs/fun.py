@@ -332,8 +332,12 @@ class FunCog(commands.Cog):
                     gameObj = await akiObj.back()
                 except akinator.CantGoBackAnyFurther:
                     await ctx.send(embed=discord.Embed(
-                        title="Error!",
-                        description="Sorry you cant go back."))
+                        title="Cannot go back any further :(",
+                        description="Continue playing anyway"))
+            elif resp.content == "q" or resp.content == "quit":
+                await ctx.send("The game has been stopped")
+                del self.gameCache[ctx.channel.id]
+                break
             else:
                 try:
                     gameObj = await akiObj.answer(resp.content)
@@ -342,7 +346,7 @@ class FunCog(commands.Cog):
                     return await ctx.send(embed=discord.Embed(
                         title="Invalid Answer",
                         description=
-                        "You typed a invalid answer the only answer options are:\n`y` OR `yes` for yes\n`n` OR `no` for no\n`i` OR `idk` for i dont know\n`p` OR `probably` for probably\n`pn` OR `probably not` for probably not\n`b` for back"
+                        "You typed a invalid answer the only answer options are:\n`y` OR `yes` for yes\n`n` OR `no` for no\n`i` OR `idk` for i dont know\n`p` OR `probably` for probably\n`pn` OR `probably not` for probably not\n`b` for back\n`q` or `quit` for stop the game"
                     ))
 
         await akiObj.win()
