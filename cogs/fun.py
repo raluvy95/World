@@ -53,32 +53,13 @@ class FunCog(commands.Cog):
         await ctx.send(embed=em)
 
 
-    @commands.command(help="Ask fatina a question.")
-    async def asktafina(self, ctx, *, desc):
-        responses = [
-            "Tafina Kills Himself",
-            "Tafina Ignores And Works On Mama Ping Command",
-            "Tafina Approves",
-            "Tafina Doesn't Approve"
-        ]
-        em = discord.Embed(title="Ask Tafina")
-        em.description = (f"{ctx.author.mention} - {random.choice(responses)}")
-        em.add_field(name=f"**Question**", value=f'{desc}', inline=False)
-        em.set_thumbnail(url='https://cdn.discordapp.com/attachments/265156286406983680/720797722600407121/Avatar.gif')
-        em.colour = (0xadd8e6)
-        await ctx.send(embed=em)
-
 
     @commands.command(help="Generate some P*rn Hub text.")
     async def phtext(self,ctx,text1,line,text):
         if line == '&':
-            texts = text.split("&")
-            text1 = texts[0]
-            text = texts[1]
-            embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}')
-            embed.set_image(url=f'https://api.alexflipnote.dev/pornhub?text={text1}{line}text2={text}')
-            embed.color = 0xffa31a
-            await ctx.send(embed=embed)
+        	embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}', color=0xffa31a)
+        	embed.set_image(url=f'https://api.alexflipnote.dev/pornhub?text={quote(text1)}{line}text2={quote(text)}')
+        	await ctx.send(embed=embed)
 
     @phtext.error
     async def phtext_error(self, ctx, error):
@@ -107,18 +88,6 @@ class FunCog(commands.Cog):
         embed.add_field(name='**Supreme Machine!**', value='Supreme Text Was Generated')
         embed.color=0xff0202
         await ctx.send(embed=embed)
-
-
-    @commands.command(help="Fatina is a qt")
-    async def fatina(self, ctx):
-        coronastats = ('https://discord.com/oauth2/authorize?client_id=711632711743438888&permissions=0&scope=bot')
-        em = discord.Embed(title='Invite Mama Music!', url=(coronastats), icon_url='https://cdn.discordapp.com/attachments/265156286406983680/720627340375359498/Avatar.png')
-        em.set_author(name='Fatina', url='https://discord.com/oauth2/authorize?client_id=711632711743438888&permissions=0&scope=bot' , icon_url='https://cdn.discordapp.com/attachments/265156286406983680/720626298040352838/Avatar.gif')
-        em.description = ('Fatina, Is a WonderFull Person\n I Really Like Fatina Hes A Talented Guy and i hope he does good in life.\n Fatina Your The Best!!')
-        em.set_thumbnail(url='https://cdn.discordapp.com/attachments/265156286406983680/720626298040352838/Avatar.gif')
-        em.set_footer(text='Made with love by seaÃ±#1718')
-        em.colour = (0xFF0000)
-        await ctx.send(embed=em)
 
 
     @commands.command(help="Show real love between a user.")
@@ -254,21 +223,6 @@ class FunCog(commands.Cog):
             else:
                 await ctx.send(f"```{r}```")
 
-    @commands.command(help="Secret.")
-    async def cum(self, ctx):
-        responses = [
-            "Where Do You Mant Me To Come?",
-            "Come Where, Huh?",
-            "Im Already Coming Over Chill",
-            "What You Mean Come, Im Already Here",
-            "Dummy I Aint Got Legs i Cant Come Over"
-        ]
-        em = discord.Embed(title="SECRET COMMAND FOUND!!")
-        em.description = (f"**{ctx.author.mention}** - {random.choice(responses)}")
-        em.add_field(name=f"**Secret Command | Found! **", value=f'Found By {ctx.author.mention}', inline=False)
-        em.set_thumbnail(url=ctx.author.avatar_url)
-        em.colour = (0x00FF)
-        await ctx.send(embed=em)
 
     @commands.command(help="Is that user gay?.")
     async def gay(self, ctx, *, user: discord.Member):
