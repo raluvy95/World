@@ -332,8 +332,8 @@ class FunCog(commands.Cog):
                     gameObj = await akiObj.back()
                 except akinator.CantGoBackAnyFurther:
                     await ctx.send(embed=discord.Embed(
-                        title="Look Below",
-                        description="We have successfully went back."))
+                        title="Error!",
+                        description="Sorry you cant go back."))
             else:
                 try:
                     gameObj = await akiObj.answer(resp.content)
