@@ -9,7 +9,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 cluster = MongoClient(os.environ["MONGODB_URL"])
+
 
 
 class EconomyCog(commands.Cog):
@@ -411,6 +413,123 @@ class EconomyCog(commands.Cog):
                     inline=True,
                 )
                 await ctx.send(embed=embed1)
+                
+    @commands.command(aliases=["ff"], help="Eat some nice fast food.")
+    @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
+    async def fastfood(self, ctx, product):
+        db = cluster["Coins"]
+        collection = db["Coins"]
+        query = {"_id": ctx.author.id}
+        user = collection.find(query)
+        for result in user:
+            userbal = result["coins"]
+
+        if product == "mcworlds":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < 12:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `McWorlds`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
+
+        if product == "worldhut":
+            if collection.find_one({"_id": ctx.author.id})["coins"] < 20:
+                embed = discord.Embed(title="Not enough coins", description=f"Sorry {ctx.author.mention} You dont have enough coins to buy `World Hut`.\nCurrent balance: `{userbal}` Coins.")
+                return await ctx.send(embed=embed)
+        
+        if product == "mcworlds":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "coins": 0}
+            for result in user:
+                user_coins = result["coins"]
+                cost_of_mcworlds = user_coins - int(12)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": cost_of_mcworlds}}
+                )
+                burgers = ["Hamburger",
+                "Cheeseburger",
+                "Triple Cheeseburger",
+                "Mayo Chicken",
+                ]
+                others = ["20 McNuggets",
+                "McWorlds Fries",
+                "Quarter Pounder",
+                "Chicken Legend",
+                "Apple pie",
+                "Nacho Cheese Wedges",
+                "Hash Brown",
+                "Egg McMuffin"
+                ]
+                drinks = ["Coke",
+                "Irn Bru",
+                "Fanta",
+                "Pepsi",
+                "Diet Coke",
+                "Pepsi Max",
+                "Sprite",
+                "Bannana Milkshake",
+                "Chocolate Milkshake",
+                "Strawberry Milkshake",
+                "Vanilla Milkshake",
+                ]
+                embed1 = discord.Embed(title="Welcome to McWorlds.")
+                embed1.add_field(
+                    name=f"That cost `12` coins!",
+                    value=f"{ctx.author.mention} You have just had the following:\nBurger: `{random.choice(burgers)}`\nDrink: `{random.choice(drinks)}`\nOther: `{random.choice(others)}`",
+                    inline=True,
+                )
+                return await ctx.send(embed=embed1)
+
+        if product == "worldhut":
+            db = cluster["Coins"]
+            collection = db["Coins"]
+            query = {"_id": ctx.author.id}
+            user = collection.find(query)
+            post = {"_id": ctx.author.id, "coins": 0}
+            for result in user:
+                user_coins = result["coins"]
+                cost_of_worldhut = user_coins - int(20)
+                collection.update_one(
+                    {"_id": ctx.author.id}, {"$set": {"coins": cost_of_worldhut}}
+                )
+                burgers = ["Python Burger",
+                "Juiced Burger",
+                "Musical Burger",
+                "Triple Wrldburger",
+                "Triple Juiced",
+                ]
+                others = ["World Fries",
+                "Juiced Pounder",
+                "Quad Fried Chicken",
+                "World pie",
+                "Nachos",
+                "Chicken Wrld meal",
+                ]
+                drinks = ["Coke",
+                "Irn Bru",
+                "Fanta",
+                "Pepsi",
+                "Diet Coke",
+                "Pepsi Max",
+                "Sprite",
+                "Fizzy Viper",
+                "Juiced shoot",
+                "World - No Sugar"
+                ]
+                embed2 = discord.Embed(title="Welcome to WorldHut.")
+                embed2.add_field(
+                    name=f"That cost `20` coins!",
+                    value=f"{ctx.author.mention} You have just had the following:\nBurger: `{random.choice(burgers)}`\nDrink: `{random.choice(drinks)}`\nSide: `{random.choice(others)}`",
+                    inline=True,
+                )
+                return await ctx.send(embed=embed2)
+
+        if product == "options":
+        	embed3 = discord.Embed(color=ctx.author.color)
+        	embed3.set_author(name='Fast food')
+        	embed3.add_field(name="Buy and eat McWorlds", value="w/fastfood [mcworlds]\n`12 Coins`", inline=True)
+        	embed3.add_field(name="Buy and eat World Hut", value="w/buy cookie [worldhut]\n`20 Coins`", inline=True)
+        	await ctx.send(embed=embed3)
 
     @sell.error
     async def sell_error(self, ctx, error):
@@ -520,25 +639,6 @@ class EconomyCog(commands.Cog):
             )
             await ctx.send(embed=embed1)
             
-    @commands.command(help="Get weekly coins.")
-    @commands.cooldown(rate=1, per=604800, type=commands.BucketType.member)
-    async def weekly(self, ctx):
-        db = cluster["Coins"]
-        collection = db["Coins"]
-        query = {"_id": ctx.author.id}
-        user = collection.find(query)
-        post = {"_id": ctx.author.id, "coins": 500}
-        for result in user:
-            coins = result["coins"]
-            coins = coins + 1500
-            collection.update_one({"_id": ctx.author.id}, {"$set": {"coins": coins}})
-            embed1 = discord.Embed(title="Weekly Coins!")
-            embed1.add_field(
-                name=f"**Success**",
-                value=f"{ctx.author.mention} I Have Added `1500` Coins To Your Balance",
-                inline=True,
-            )
-            await ctx.send(embed=embed1)
 
     @commands.command(
         aliases=["afk", "ss", "activity", "act"], help="Set a custom status."
@@ -797,14 +897,6 @@ class EconomyCog(commands.Cog):
                 f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
             )
             
-    @weekly.error
-    async def weekly_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            a = error.retry_after
-            a = round(a)
-            await ctx.send(
-                f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds."
-            )
 
 
 def setup(bot):
