@@ -1,18 +1,22 @@
 import discord
 import asyncio
 import urllib
+import akinator
 import random
 import requests
 import io
 import aiohttp
 import json
-from discord.ext import commands
+from discord.ext import commands, tasks
 from urllib.parse import urlparse
+from akinator.async_aki import Akinator
 
+akiObj = akinator.async_aki.Akinator()
 
 class FunCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.gameCache = {}
 
     @commands.command(help="World is funny.")
     async def joke(self, ctx):
@@ -68,6 +72,9 @@ class FunCog(commands.Cog):
     @commands.command(help="Generate some P*rn Hub text.")
     async def phtext(self,ctx,text1,line,text):
         if line == '&':
+            texts = text.split("&")
+            text1 = texts[0]
+            text = texts[1]
             embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}')
             embed.set_image(url=f'https://api.alexflipnote.dev/pornhub?text={text1}{line}text2={text}')
             embed.color = 0xffa31a
@@ -109,7 +116,7 @@ class FunCog(commands.Cog):
         em.set_author(name='Fatina', url='https://discord.com/oauth2/authorize?client_id=711632711743438888&permissions=0&scope=bot' , icon_url='https://cdn.discordapp.com/attachments/265156286406983680/720626298040352838/Avatar.gif')
         em.description = ('Fatina, Is a WonderFull Person\n I Really Like Fatina Hes A Talented Guy and i hope he does good in life.\n Fatina Your The Best!!')
         em.set_thumbnail(url='https://cdn.discordapp.com/attachments/265156286406983680/720626298040352838/Avatar.gif')
-        em.set_footer(text='Made with love by seañ#1718')
+        em.set_footer(text='Made with love by seaÃ±#1718')
         em.colour = (0xFF0000)
         await ctx.send(embed=em)
 
@@ -117,24 +124,24 @@ class FunCog(commands.Cog):
     @commands.command(help="Show real love between a user.")
     async def Love(self, ctx, *, user: discord.Member):
         responses = [
-            "█ - 1% In Love",
-            "█ - 2% In Love",
-            "█ - 4% In Love",
-            "██ - 5% In Love",
-            "███ - 6% In Love",
-            "████ - 8% In Love",
-            "███████ - 25% In Love",
-            "████ - 12% In Love",
-            "█████ - 15 % In Love",
-            "██████ - 23% In Love",
-            "████████████ - 46% In Love",
-            "█████████████████████ - 72 % In Love",
-            "██████████████████████ - 79% In Love",
-            "█████████████████ - 69% In Love",
-            "███████████████████████████ - 100% In Love",
-            "███████████████████████ - 82% In Love",
-            "████████████████████████ - 89% In Love",
-            "█████████████ - 50% In Love",
+            "â–ˆ - 1% In Love",
+            "â–ˆ - 2% In Love",
+            "â–ˆ - 4% In Love",
+            "â–ˆâ–ˆ - 5% In Love",
+            "â–ˆâ–ˆâ–ˆ - 6% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆ - 8% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 25% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆ - 12% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 15 % In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 23% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 46% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 72 % In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 79% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 69% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 100% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 82% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 89% In Love",
+            "â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 50% In Love",
         ]
         em = discord.Embed(title=":heart: The Love Machine :heart: ")
         em.description = (f"**{user}** And **{ctx.author.mention}** are {random.choice(responses)}")
@@ -142,7 +149,7 @@ class FunCog(commands.Cog):
         em.set_thumbnail(url='https://cdn.discordapp.com/attachments/710141167722824070/717771350449717288/sean.jpg')
         em.colour = (0xFF0000)
         em1 = discord.Embed(title=":heart: The Love Machine :heart: ")
-        em1.description = (f"**{user}** And **{ctx.author.mention}** are ███████████████████████████ - 100% In Love")
+        em1.description = (f"**{user}** And **{ctx.author.mention}** are â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ - 100% In Love")
         em1.add_field(name=f"**Love Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
         em1.set_thumbnail(url='https://cdn.discordapp.com/attachments/710141167722824070/717771350449717288/sean.jpg')
         em1.colour = (0xFF0000)
@@ -154,7 +161,7 @@ class FunCog(commands.Cog):
     @commands.command(name="f", help="Sad times.")
     async def f(self, ctx, *, text: commands.clean_content = None):
         """ Press F to pay respect """
-        sean = ['💔', '💝', '💚', '💙', '💜']
+        sean = ['ðŸ’”', 'ðŸ’', 'ðŸ’š', 'ðŸ’™', 'ðŸ’œ']
         reason = f"for **{text}** " if text else ""
         finchat = discord.Embed(title = f"**{ctx.author.name}** has paid their respect {reason}{random.choice(sean)}", color =ctx.author.color)
         await ctx.send(embed=finchat)
@@ -172,7 +179,7 @@ class FunCog(commands.Cog):
         em.title = f"Title: {title}\nSubreddit: r/{subr}"
         em.set_image(url=res["image"])
         em.color = 0x00FF
-        em.set_footer(text=f"👍Ups:{ups} 👎Downs:{downs}")
+        em.set_footer(text=f"ðŸ‘Ups:{ups} ðŸ‘ŽDowns:{downs}")
         await ctx.send(embed=em)
 
     @meme.error
@@ -286,6 +293,72 @@ class FunCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} Please Mention A User')
 
+
+    @commands.command(aliases=["aki"], help="Can the akinator beat you?")
+    async def akinator(self, ctx: commands.Context):
+        if ctx.channel.id in self.gameCache.keys():
+            return await ctx.send(
+                "Sorry, {0[user]} is already playing akinator in <#{0[channel]}>, try again when they finish or move to another channel!"
+                .format(self.gameCache[ctx.channel.id]))
+
+        gameObj = await akiObj.start_game(child_mode=True)
+
+        currentChannel = ctx.channel
+
+        self.gameCache.update(
+            {ctx.channel.id: {
+                "user": ctx.author,
+                "channel": ctx.channel.id
+            }})
+
+        while akiObj.progression <= 80:
+            try:
+                message1 = await ctx.send(
+                    embed=discord.Embed(title="Question", description=gameObj))
+                resp = await ctx.bot.wait_for(
+                    "message",
+                    check=lambda message: message.author == ctx.author and
+                    message.channel == ctx.channel and message.guild == ctx.
+                    guild and message.content.lower(), timeout=15)
+            except asyncio.TimeoutError:
+                await ctx.send(embed=discord.Embed(
+                    title="Hurry next time!",
+                    description=
+                    f"{ctx.author.mention} took too long to respond so we ended the game\nCurrent timeout: `15` Seconds."))
+                del self.gameCache[ctx.channel.id]
+                return await message1.delete(delay=None)
+            if resp.content == "b":
+                try:
+                    gameObj = await akiObj.back()
+                except akinator.CantGoBackAnyFurther:
+                    await ctx.send(embed=discord.Embed(
+                        title="Look Below",
+                        description="We have successfully went back."))
+            else:
+                try:
+                    gameObj = await akiObj.answer(resp.content)
+                except:
+                    del self.gameCache[ctx.channel.id]
+                    return await ctx.send(embed=discord.Embed(
+                        title="Invalid Answer",
+                        description=
+                        "You typed a invalid answer the only answer options are:\n`y` OR `yes` for yes\n`n` OR `no` for no\n`i` OR `idk` for i dont know\n`p` OR `probably` for probably\n`pn` OR `probably not` for probably not\n`b` for back"
+                    ))
+
+        await akiObj.win()
+
+        embed = discord.Embed(
+            title="I have outsmarted your outsmarting"
+        ).add_field(
+            name="I think...",
+            value="it is {0.first_guess[name]} {0.first_guess[description]}?\n\nSorry if im wrong, Akinator has tried.".
+            format(akiObj)).set_image(
+                    url=akiObj.first_guess['absolute_picture_path']
+                ).set_footer(text="Thanks to nomadiccode for helping!")
+
+        del self.gameCache[ctx.channel.id]
+        await ctx.send(embed=embed)
+
     @commands.command(aliases=["8ball"], help="Magical answers.")
     async def _8ball(self, ctx, *, question):
         responses = [
@@ -319,10 +392,10 @@ class FunCog(commands.Cog):
 
     @commands.command(help="Turn text into emojis!.")
     async def emojify(self, ctx, *, stuff):
-    	emj = ("".join([":regional_indicator_"+l+":"  if l in "abcdefghijklmnopqrstuvwyx" else [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"][int(l)] if l.isdigit() else ":question:" if l == "?" else ":exclamation:" if l == "!" else l for l in f"{stuff}"]))
-    	embed = discord.Embed(title='Emojify', description=f'Requested By {ctx.author.mention}', color=ctx.author.color)
-    	embed.add_field(name='Your Message Was Emojifyed', value=f'{emj}')
-    	await ctx.send(embed=embed)
+        emj = ("".join([":regional_indicator_"+l+":"  if l in "abcdefghijklmnopqrstuvwyx" else [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"][int(l)] if l.isdigit() else ":question:" if l == "?" else ":exclamation:" if l == "!" else l for l in f"{stuff}"]))
+        embed = discord.Embed(title='Emojify', description=f'Requested By {ctx.author.mention}', color=ctx.author.color)
+        embed.add_field(name='Your Message Was Emojifyed', value=f'{emj}')
+        await ctx.send(embed=embed)
 
     @commands.command(help="Ask the boss.")
     async def asktrump(self, ctx, *, question):
@@ -353,10 +426,10 @@ class FunCog(commands.Cog):
     @commands.command(aliases=["russianrulette"], help="Play Russian rulette.")
     async def rr(self, ctx):
         responses = [
-            "🔫Pow Your Dead!, Try again?",
-            "🎉You lived!!!",
-            "🔫SPLAT!, You died. Try again?",
-            "🎉You were lucky enough to survive!!",
+            "ðŸ”«Pow Your Dead!, Try again?",
+            "ðŸŽ‰You lived!!!",
+            "ðŸ”«SPLAT!, You died. Try again?",
+            "ðŸŽ‰You were lucky enough to survive!!",
         ]
         em = discord.Embed(title=":gun: Russian roulette :gun:")
         em.description = (f"\n{random.choice(responses)}")
