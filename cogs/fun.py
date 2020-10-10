@@ -289,9 +289,13 @@ class FunCog(commands.Cog):
                         title="Cannot go back any further :(",
                         description="Continue playing anyway"))
             elif resp.content == "q" or resp.content == "quit":
-                await ctx.send("The game has been stopped")
-                del self.gameCache[ctx.channel.id]
-                break
+            	await ctx.send(embed=discord.Embed(
+            		title="Game over",
+            		description=
+            		"You have left the game."
+            		))
+            	del self.gameCache[ctx.channel.id]
+            	break
             else:
                 try:
                     gameObj = await akiObj.answer(resp.content)
