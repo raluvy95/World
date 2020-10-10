@@ -165,7 +165,7 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
 
 
-    @commands.command(help="Shows economy Category.")
+    @commands.command(help="Shows economy categorie.")
     async def economy(self, ctx):
       author = ctx.message
       author
@@ -181,11 +181,11 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Beg for Coins", value="w/beg", inline=True)
       embed.add_field(name="Slots [cost 15 coins]", value="w/gamble", inline=True)
       embed.add_field(name="Get daily Coins", value="w/daily", inline=True)
-      embed.add_field(name="Get weekly Coins", value="w/weekly", inline=True)
       embed.add_field(name="Show inventory", value="w/inv", inline=True)
       embed.add_field(name="Buy a Product", value="w/buy [product] [amount]", inline=True)
       embed.add_field(name="Eat a Product", value="w/eat [product] [amount]", inline=True)
       embed.add_field(name="Sell a Product", value="w/sell [product] [amount]", inline=True)
+      embed.add_field(name="Buy fastfood", value="w/fastfood options", inline=True)
       embed.add_field(name="List of items", value="w/shop", inline=True)
       await ctx.send(embed=embed)
     
@@ -221,7 +221,8 @@ class HelpCog(commands.Cog):
           name="Show this message", value="w/new", inline=True
       )
       embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
-      embed.add_field(name="**NEW** Logging!.", value="w/logs", inline=True)
+      embed.add_field(name="Set some logs.", value="w/logs", inline=True)
+      embed.add_field(name="Fast Food command.", value="w/economy", inline=True)
       await ctx.send(embed=embed)
 
 
