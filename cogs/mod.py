@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 
+world_pfp = ("https://cdn.discordapp.com/attachments/727241613901824563/764885646162395156/world.png")
 
 class ModCog(commands.Cog):
     def __init__(self, bot):
@@ -11,10 +12,8 @@ class ModCog(commands.Cog):
     @commands.command(help="Ban a user.")
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
-        if member == ctx.author:
-            return await ctx.send("You can't ban yourself")
         await member.ban(reason=reason)
-        em = discord.Embed(title="The Ban Hammer Has Rised!")
+        em = discord.Embed(title="The Ban Hammer Has Rised!<")
         em.description = (f"{ctx.author.mention} Has Banned {member}")
         em.add_field(name=f"**Ban Hammer**", value=f'Banned By {ctx.author.mention}', inline=False)
         em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717867181827817984/719525512715960350/s.png')
@@ -24,8 +23,6 @@ class ModCog(commands.Cog):
     @commands.command(help="Kick a user.")
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
-        if member == ctx.author:
-            return await ctx.send("You can't kick yourself")
         await member.kick(reason=reason)
         em = discord.Embed(title="The Kick Machine Has Awoken")
         em.description = (f"{ctx.author.mention} Has Kicked {member}")
@@ -37,8 +34,6 @@ class ModCog(commands.Cog):
     @commands.command(help="Mute a user.")
     @commands.has_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, *, reason=None):
-        if user == ctx.author:
-            return await ctx.send("You can't mute yourself")
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         mute = discord.utils.get(ctx.guild.text_channels, name="MUTED-TIME-OUT")
         if not role:
@@ -52,11 +47,11 @@ class ModCog(commands.Cog):
             except discord.Forbidden:
                 return await ctx.send("I have no permissions to make a muted role!")
             await user.add_roles(muted)
-            mute1 = discord.Embed(title = f"{user} has been sent to mute area | Reason = {reason}", color =ctx.author.color)
+            mute1 = discord.Embed(title = f"{user} has been Muted | Reason = {reason}", color =ctx.author.color)
             await ctx.send(embed=mute1)
         else:
             await user.add_roles(role)
-            mute = discord.Embed(title = f"{user} has been sent to mute area | Reason = {reason}", color =ctx.author.color)
+            mute = discord.Embed(title = f"{user} has been Muted | Reason = {reason}", color =ctx.author.color)
             await ctx.send(embed=mute)
        
         if not mute:
@@ -74,31 +69,15 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
 
-    @commands.command(help="Unmute a member")
-    @commands.has_permissions(manage_messages=True)
-    async def unmute(self, ctx, user: discord.Member, *, reason=None):
-        if user == ctx.author:
-            return await ctx.send("You can't unmute yourself")
-        role = discord.utils.get(ctx.guild.roles, name="Muted")
-        if not role:
-            return await ctx.send("How can I unmute a member if there's no Muted role ??")
-        if not discord.utils.find(lambda role: role.name == "Muted", user.roles):
-            return await ctx.send(f"**{user.name}** is already unmuted!")
-        await user.remove_roles(role)
-        mute1 = discord.Embed(title = f"{user} has been unmuted! | Reason = {reason}", color =ctx.author.color)
-        return await ctx.send(embed=mute1)
-
-    @unmute.error
-    async def unmute_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
-
     @commands.command(help="Delete specified messages.")
     @commands.has_permissions(manage_messages=True)
-    async def purge(self, ctx, amount=100):
-        if amount == 1:
-            return await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} Please Purge More Than One Message')
-        await ctx.channel.purge(limit=amount)
+    async def purge(self, ctx, amount: int):
+        if amount >= 100:
+            return await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} `100` is max limit.")
+        if amount <= 1:
+            return await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} Please purge more than `1` message")
+        else:
+            await ctx.channel.purge(limit=amount)
 
     @purge.error
     async def purge_error(self, ctx, error):
@@ -126,16 +105,19 @@ class ModCog(commands.Cog):
 
             if (user.name, user.discriminator) == (member_name, member_discriminator):
                 await ctx.guild.unban(user)
-                em = discord.Embed(title="Someone Has Used The Unban Hammer!", color=0xFF0000)
+                em = discord.Embed(title="Someone Has Used The Unban Hammer!")
                 em.description = (f"{ctx.author.mention} Has UnBanned {user.name}#{user.discriminator}")
                 em.add_field(name=f"**UnBan Hammer**", value=f'UnBanned By {ctx.author.mention}', inline=False)
                 em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717867181827817984/719525512715960350/s.png')
-                return await ctx.send(embed=em)
+                em.colour = (0xFF0000)
+                await ctx.send(embed=em)
+                return
 
     @unban.error
     async def unban_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Dont Have Perms Or This Person Cannot Be Unbanned')
+
 
     @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
@@ -147,7 +129,7 @@ class ModCog(commands.Cog):
         embed.set_author(name=f"New Poll Vote To Take Part", icon_url=ctx.author.avatar_url)
         embed.description = (f'{ctx.author.mention} Has Started A New Poll')
         embed.add_field(name="World | Poll - Question", value=f"`POLL:` **{desc}**", inline=False)
-        embed.set_footer(text="👍 for Yes, ?? for 👎.")
+        embed.set_footer(text="👍 for Yes, 👎 for No.")
         add_reactions_to = await ctx.send(embed=embed)
         await add_reactions_to.add_reaction("👍")
         await add_reactions_to.add_reaction("👎")
@@ -157,8 +139,9 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')  
 
+
     @commands.command(help="Start a Poll.")
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(ban_members=True)
     async def polln(self, ctx, *, desc):
         embed = discord.Embed(
             colour = discord.Colour.red()
@@ -172,24 +155,61 @@ class ModCog(commands.Cog):
         await add_reactions_to.add_reaction("👎")
 
     @commands.command(help="Lockdown the current channel.")
-    @commands.has_permissions(manage_channels=True)
+    @commands.has_permissions(ban_members=True)
     async def lock(self, ctx):
-        await ctx.message.channel.set_permissions(ctx.guild.default_role, read_messages = True, send_messages = False)
-        embed = discord.Embed(title="World - Lockdown", color=ctx.author.color)
-        embed.add_field(name="**INFO:**", value=f"?? Channel locked.")
+        guild = ctx.guild
+        await ctx.message.channel.set_permissions(guild.default_role,read_messages = True, send_messages = False)
+        embed = discord.Embed(title="World - Lockdown")
+        embed.add_field(name="**INFO:**", value=f"🔒 Channel locked.")
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
+        embed.color = (ctx.author.color)
         await ctx.send(embed=embed)
 
  
     @commands.command(help="Unlock the current channel.")
-    @commands.has_permissions(manage_channels=True)
+    @commands.has_permissions(ban_members=True)
     async def unlock(self, ctx):
-        # You don't need to define a variable if you're only going to use it once
-        await ctx.message.channel.set_permissions(ctx.guild.default_role, read_messages = True, send_messages = True)
-        embed = discord.Embed(title="World- Lockdown Over", color=ctx.author.color)
-        embed.add_field(name="**INFO:**", value=f"?? Channel unlocked.")
+        guild = ctx.guild
+        await ctx.message.channel.set_permissions(guild.default_role,read_messages = True, send_messages = True)
+        embed = discord.Embed(title="World- Lockdown Over")
+        embed.add_field(name="**INFO:**", value=f"🔒 Channel unlocked.")
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
+        embed.color = (ctx.author.color)
         await ctx.send(embed=embed)
+
+    @commands.command(help="Set the slowmode of the channel.")
+    @commands.has_permissions(manage_messages=True)
+    async def slowmode(self, ctx, seconds: int):
+        if seconds >= 21600:
+            return await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} 21600 is max slowmode range.")
+        await ctx.message.channel.edit(slowmode_delay=seconds)
+        embed = discord.Embed(title="Slowmode",
+            description=f"I have set the slowmode for <#{ctx.message.channel.id}> to `{seconds}`",
+            color=ctx.author.color)
+        await ctx.send(embed=embed)
+
+
+    @commands.command(help="Unmute a member")
+    @commands.has_permissions(manage_messages=True)
+    async def unmute(self, ctx, user: discord.Member, *, reason=None):
+        if user == ctx.author:
+            return await ctx.send("You can't unmute yourself")
+        role = discord.utils.get(ctx.guild.roles, name="Muted")
+        if not role:
+            return await ctx.send("How can I unmute a member if there's no Muted role ?")
+        if not discord.utils.find(lambda role: role.name == "Muted", user.roles):
+            return await ctx.send(f"**{user.name}** is already unmuted!")
+        await user.remove_roles(role)
+        mute1 = discord.Embed(title = f"{user} has been unmuted! | Reason = {reason}", color =ctx.author.color)
+        return await ctx.send(embed=mute1)
+
+    @slowmode.error
+    async def slowmode_error(self, ctx, error):
+        if isinstance(error, commands.CommandInvokeError):
+            await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} `{error}`")
+        else:
+            await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} `{error}`")
+   
    
     @lock.error
     async def lock_error(self, ctx, error):
@@ -216,7 +236,7 @@ class ModCog(commands.Cog):
         embed1 = discord.Embed(description=f"You Have Recived A Message", timestamp=ctx.message.created_at)
         embed1.add_field(name="Message:", value=f"`{msg}`\n --------------\n From - {ctx.author.mention}\n Guild = `{ctx.guild}`")
         embed1.set_author(name="World - Direct Message", icon_url=self.bot.user.avatar_url)
-        embed1.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
+        embed1.set_thumbnail(url=world_pfp)
         embed1.set_footer(text=f"World - Direct Message")
         embed1.color = (ctx.author.color)
         await member.send(embed=embed1)
