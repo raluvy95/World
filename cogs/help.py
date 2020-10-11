@@ -7,6 +7,8 @@ from discord.ext.commands import command
 from discord.utils import get
 from discord.ext import commands
 
+world_pfp = ("https://cdn.discordapp.com/attachments/727241613901824563/764885646162395156/world.png")
+
 
 def syntax(command):
 	cmd_and_aliases = " | ".join([str(command), *command.aliases])
@@ -38,7 +40,7 @@ class HelpCog(commands.Cog):
     	"""Shows this message."""
     	if cmd is None:
     		embed = discord.Embed(colour=ctx.author.color)
-    		embed.set_author(name='World - Help', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+    		embed.set_author(name='World - Help', icon_url=world_pfp)
     		embed.add_field(name="Shows multiple categories.", value="w/categories", inline=True)
     		embed.add_field(name="Invite", value="[Invite World](https://discord.com/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot)", inline=True)
     		embed.add_field(name="Vote", value="[Vote For World](https://top.gg/bot/700292147311542282/vote)", inline=True)
@@ -60,7 +62,7 @@ class HelpCog(commands.Cog):
         author
 
         embed1 = discord.Embed(colour=ctx.author.color)
-        embed1.set_author(name='World - Categories', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+        embed1.set_author(name='World - Categories', icon_url=world_pfp)
         embed1.add_field(
             name="Show this message", value="w/categories", inline=False
         )
@@ -79,7 +81,7 @@ class HelpCog(commands.Cog):
         author
 
         embed = discord.Embed(colour=ctx.author.color)
-        embed.set_author(name='World - Other', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+        embed.set_author(name='World - Other', icon_url=world_pfp)
         embed.add_field(
             name="Show this message", value="w/other", inline=True
         )
@@ -100,7 +102,7 @@ class HelpCog(commands.Cog):
       author
 
       embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - Moderation', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+      embed.set_author(name='World - Moderation', icon_url=world_pfp)
       embed.add_field(
           name="Show this message", value="w/mod", inline=True
       )
@@ -137,7 +139,7 @@ class HelpCog(commands.Cog):
       author
 
       embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - Fun', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+      embed.set_author(name='World - Fun', icon_url=world_pfp)
       embed.add_field(name="Show this message", value="w/fun", inline=True)
       embed.add_field(name="Are you gay?", value="w/gay [user]", inline=True)
       embed.add_field(name="Ask Ali A", value="w/askali [question]", inline=True)
@@ -160,7 +162,7 @@ class HelpCog(commands.Cog):
       name="Love O nator", value="w/love [user]", inline=True
       )
       embed.add_field(
-      name="Will the akinator win?", value="w/akinator", inline=True
+      name="Sad times :(", value="w/f [thing]", inline=True
       )
       await ctx.send(embed=embed)
 
@@ -172,7 +174,7 @@ class HelpCog(commands.Cog):
     
 
       embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - Economy', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+      embed.set_author(name='World - Economy', icon_url=world_pfp)
       embed.add_field(
           name="Show this message", value="w/economy", inline=True
       )
@@ -197,7 +199,7 @@ class HelpCog(commands.Cog):
     
 
       embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - Economy', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+      embed.set_author(name='World - Economy', icon_url=world_pfp)
       embed.add_field(
           name="Show this message", value="w/shop", inline=True
       )
@@ -216,14 +218,13 @@ class HelpCog(commands.Cog):
     
 
       embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - new', icon_url='https://cdn.discordapp.com/icons/708396963229466645/6f90d6bd3209281acaa607d8a2dabed4.webp?size=1024')
+      embed.set_author(name='World - new', icon_url=world_pfp)
       embed.add_field(
           name="Show this message", value="w/new", inline=True
       )
       embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
       embed.add_field(name="Set some logs.", value="w/logs", inline=True)
       embed.add_field(name="Fast Food command.", value="w/economy", inline=True)
-      embed.add_field(name="Akinator command.", value="w/fun")
       await ctx.send(embed=embed)
 
 
