@@ -15,7 +15,7 @@ class InfoCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(help="Show users information.")
+    @commands.command(aliases=["ui"], help="Show users information.")
     async def userinfo(self, ctx, *, user: discord.Member = None):
       if user is None:
           user = ctx.author
@@ -92,7 +92,7 @@ class InfoCog(commands.Cog):
       embed.add_field(name='Total Users:', value=memberCount)
       embed.add_field(name='Bot Made By:', value="<@662334026098409480>")
 
-      embed.set_footer(text=f"World - Botinfo | Made By seañ#1718")
+      embed.set_footer(text=f"World - Botinfo | Made By seaÃ±#1718")
       embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
 
       await ctx.send(embed=embed)
@@ -112,7 +112,7 @@ class InfoCog(commands.Cog):
       embed.add_field(name='Total Users:', value=memberCount)
       embed.add_field(name='Bot Made By:', value="<@662334026098409480>")
 
-      embed.set_footer(text=f"World - Botstats | Made By seañ#1718")
+      embed.set_footer(text=f"World - Botstats | Made By seaÃ±#1718")
       embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
 
       await ctx.send(embed=embed)
