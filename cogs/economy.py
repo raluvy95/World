@@ -675,22 +675,24 @@ class EconomyCog(commands.Cog):
 
     @commands.command(help="Shows users status")
     @commands.cooldown(rate=11, per=80, type=commands.BucketType.member)
-    async def status(self, ctx, users: discord.Member):
-        db = cluster["Coins"]
-        collection = db["Coins"]
-        query = {"_id": users.id}
-        user = collection.find(query)
-        for result in user:
-            coins = result["afk"]
-            embed1 = discord.Embed(title="Status")
-            embed1.add_field(
-                name=f"**Success**",
-                value=f"{users.mention}'s Status Is: `{coins}`\nTo Set Your Own Status Just Type `setstatus [status]`",
-                inline=True,
-            )
-            embed1.set_thumbnail(url=users.avatar_url)
-            embed1.color = 0x2F3136
-            await ctx.send(embed=embed1)
+    async def status(self, ctx, users: discord.Member=None):
+    	users = users or ctx.author
+    	db = cluster["Coins"]
+    	collection = db["Coins"]
+    	query = {"_id": users.id}
+    	user = collection.find(query)
+    	for result in user:
+    		status = result["afk"]
+    		embed1 = discord.Embed(title="Status")
+    		embed1.add_field(
+    			name=f"**Success**",
+    			value=f"{users.mention}'s Status Is: `{status}`\nTo Set Your Own Status Just Type `setstatus [status]`",
+    			inline=True,
+    			)
+    		embed1.set_thumbnail(url=users.avatar_url)
+    		embed1.color = 0x2F3136
+    		await ctx.send(embed=embed1)
+
 
     @status.error
     async def status_error(self, ctx, error):
