@@ -47,11 +47,11 @@ class ModCog(commands.Cog):
             except discord.Forbidden:
                 return await ctx.send("I have no permissions to make a muted role!")
             await user.add_roles(muted)
-            mute1 = discord.Embed(title = f"{user} has been Muted | Reason = {reason}", color =ctx.author.color)
+            mute1 = discord.Embed(title = f"{user} has been Muted | Reason = {reason}", color =0x2F3136)
             await ctx.send(embed=mute1)
         else:
             await user.add_roles(role)
-            mute = discord.Embed(title = f"{user} has been Muted | Reason = {reason}", color =ctx.author.color)
+            mute = discord.Embed(title = f"{user} has been Muted | Reason = {reason}", color =0x2F3136)
             await ctx.send(embed=mute)
        
         if not mute:
@@ -60,7 +60,7 @@ class ModCog(commands.Cog):
                         muted: discord.PermissionOverwrite(read_message_history=True)}
             try:
                 channel = await ctx.create_channel('MUTED-TIME-OUT', overwrites=overwrites)
-                await channel.send("Welcome to Hell Bruh You will spend your time here until you get unmuted")
+                await channel.send("Welcome to Hell You will spend your time here until you get unmuted")
             except discord.Forbidden:
                 return await ctx.send("I have no permissions to make #MUTED-TIME-OUT")
 
@@ -109,7 +109,7 @@ class ModCog(commands.Cog):
                 em.description = (f"{ctx.author.mention} Has UnBanned {user.name}#{user.discriminator}")
                 em.add_field(name=f"**UnBan Hammer**", value=f'UnBanned By {ctx.author.mention}', inline=False)
                 em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717867181827817984/719525512715960350/s.png')
-                em.colour = (0xFF0000)
+                em.colour = (0x2F3136)
                 await ctx.send(embed=em)
                 return
 
@@ -124,7 +124,7 @@ class ModCog(commands.Cog):
     async def poll(self, ctx, *, desc):
         await ctx.send('@here NEW POLE VOTE TO TAKE PART!')
         embed = discord.Embed(
-            colour = discord.Colour.red()
+            colour = 0x2F3136
         )
         embed.set_author(name=f"New Poll Vote To Take Part", icon_url=ctx.author.avatar_url)
         embed.description = (f'{ctx.author.mention} Has Started A New Poll')
@@ -144,7 +144,7 @@ class ModCog(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def polln(self, ctx, *, desc):
         embed = discord.Embed(
-            colour = discord.Colour.red()
+            colour = 0x2F3136
         )
         embed.set_author(name=f"New Poll Vote To Take Part", icon_url=ctx.author.avatar_url)
         embed.description = (f'{ctx.author.mention} Has Started A New Poll')
@@ -162,7 +162,7 @@ class ModCog(commands.Cog):
         embed = discord.Embed(title="World - Lockdown")
         embed.add_field(name="**INFO:**", value=f"🔒 Channel locked.")
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
-        embed.color = (ctx.author.color)
+        embed.color = (0x2F3136)
         await ctx.send(embed=embed)
 
  
@@ -174,7 +174,7 @@ class ModCog(commands.Cog):
         embed = discord.Embed(title="World- Lockdown Over")
         embed.add_field(name="**INFO:**", value=f"🔒 Channel unlocked.")
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
-        embed.color = (ctx.author.color)
+        embed.color = (0x2F3136)
         await ctx.send(embed=embed)
 
     @commands.command(help="Set the slowmode of the channel.")
@@ -185,7 +185,7 @@ class ModCog(commands.Cog):
         await ctx.message.channel.edit(slowmode_delay=seconds)
         embed = discord.Embed(title="Slowmode",
             description=f"I have set the slowmode for <#{ctx.message.channel.id}> to `{seconds}`",
-            color=ctx.author.color)
+            color=0x2F3136)
         await ctx.send(embed=embed)
 
 
@@ -200,7 +200,7 @@ class ModCog(commands.Cog):
         if not discord.utils.find(lambda role: role.name == "Muted", user.roles):
             return await ctx.send(f"**{user.name}** is already unmuted!")
         await user.remove_roles(role)
-        mute1 = discord.Embed(title = f"{user} has been unmuted! | Reason = {reason}", color =ctx.author.color)
+        mute1 = discord.Embed(title = f"{user} has been unmuted! | Reason = {reason}", color =0x2F3136)
         return await ctx.send(embed=mute1)
 
     @slowmode.error
@@ -231,14 +231,14 @@ class ModCog(commands.Cog):
         embed.set_author(name="Succsesfully Sent Direct Message", icon_url=self.bot.user.avatar_url)
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
         embed.set_footer(text=f"World - Direct Message")
-        embed.color = (ctx.author.color)
+        embed.color = (0x2F3136)
         await ctx.send(embed=embed)
         embed1 = discord.Embed(description=f"You Have Recived A Message", timestamp=ctx.message.created_at)
         embed1.add_field(name="Message:", value=f"`{msg}`\n --------------\n From - {ctx.author.mention}\n Guild = `{ctx.guild}`")
         embed1.set_author(name="World - Direct Message", icon_url=self.bot.user.avatar_url)
         embed1.set_thumbnail(url=world_pfp)
         embed1.set_footer(text=f"World - Direct Message")
-        embed1.color = (ctx.author.color)
+        embed1.color = (0x2F3136)
         await member.send(embed=embed1)
 
     @dm.error
