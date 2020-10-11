@@ -32,7 +32,7 @@ class FunCog(commands.Cog):
     async def wasted(self, ctx, user : discord.Member=None):
         if user == None:
             user = ctx.author
-        embed=discord.Embed(title=f"Wasted Machine", color=0xb921e4)
+        embed=discord.Embed(title=f"Wasted Machine", color=0x2F3136)
         embed.set_image(url=f'https://some-random-api.ml/canvas/wasted?avatar={user.avatar_url_as(format="png")}')
         embed.set_footer(text=f"Requested by {ctx.author}")
         await ctx.send(embed=embed)
@@ -51,16 +51,16 @@ class FunCog(commands.Cog):
         em.description = (f"{ctx.author.mention} - {random.choice(responses)}")
         em.add_field(name=f"**Question**", value=f'{desc}', inline=False)
         em.set_thumbnail(url='https://cdn.discordapp.com/attachments/710141167722824070/717777626877395004/aaaaa.png')
-        em.colour = (0xadd8e6)
+        em.colour = (0x2F3136)
         await ctx.send(embed=em)
 
 
     @commands.command(help="Generate some P*rn Hub text.")
     async def phtext(self,ctx,text1,line,text):
         if line == '&':
-        	embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}', color=0xffa31a)
-        	embed.set_image(url=f'https://api.alexflipnote.dev/pornhub?text={quote(text1)}{line}text2={quote(text)}')
-        	await ctx.send(embed=embed)
+            embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}', color=0xffa31a)
+            embed.set_image(url=f'https://api.alexflipnote.dev/pornhub?text={quote(text1)}{line}text2={quote(text)}')
+            await ctx.send(embed=embed)
 
     @phtext.error
     async def phtext_error(self, ctx, error):
@@ -71,7 +71,7 @@ class FunCog(commands.Cog):
     @commands.command(help="Show love between users.")
     async def ship(self, ctx, text1: discord.Member, line, text: discord.Member):
         if line == '&':
-            embed = discord.Embed(title='Cuties', description=f'Requested By {ctx.author.mention}')
+            embed = discord.Embed(title='Cuties', description=f'Requested By {ctx.author.mention}', color=0x2F3136)
             embed.set_image(url=f'https://api.alexflipnote.dev/ship?user={text1.avatar_url}{line}user2={text.avatar_url}')
             await ctx.send(embed=embed)
 
@@ -87,7 +87,7 @@ class FunCog(commands.Cog):
         embed = discord.Embed(title='Supreme', description=f'Requested By {ctx.author.mention}')
         embed.set_image(url=f'https://api.alexflipnote.dev/supreme?text={urllib.parse.quote(sent)}')
         embed.add_field(name='**Supreme Machine!**', value='Supreme Text Was Generated')
-        embed.color=0xff0202
+        embed.color=0x2F3136
         await ctx.send(embed=embed)
 
 
@@ -133,7 +133,7 @@ class FunCog(commands.Cog):
         """ Press F to pay respect """
         sean = ['💔', '💝', '💚', '💙', '💜']
         reason = f"for **{text}** " if text else ""
-        finchat = discord.Embed(title = f"**{ctx.author.name}** has paid their respect {reason}{random.choice(sean)}", color =ctx.author.color)
+        finchat = discord.Embed(title = f"**{ctx.author.name}** has paid their respect {reason}{random.choice(sean)}", color =0x2F3136)
         await ctx.send(embed=finchat)
 
     @commands.command(help="Shows a meme from random subreddits.")
@@ -148,7 +148,7 @@ class FunCog(commands.Cog):
         em = discord.Embed()
         em.title = f"Title: {title}\nSubreddit: r/{subr}"
         em.set_image(url=res["image"])
-        em.color = 0x00FF
+        em.color = 0x2F3136
         em.set_footer(text=f"👍Ups:{ups} 👎Downs:{downs}")
         await ctx.send(embed=em)
 
@@ -168,26 +168,10 @@ class FunCog(commands.Cog):
         for _i in range(0, size):
             dong += "="
         em = discord.Embed(
-            title=f"{user}'s pepe size", description=f"8{dong}D", colour=0x00FF
+            title=f"{user}'s pepe size", description=f"8{dong}D", colour=0x2F3136
         )
         await ctx.send(embed=em)
 
-    @commands.command(help="Make a custom embed.")
-    async def embed(self, ctx, *, desc):
-            colors = [
-                0xFF8686,
-                0x331A1A,
-                0xF3031B,
-                0xFEF200,
-                0xDCCCCD,
-                0x403585,
-                0xf82b00,
-            ]
-            em = discord.Embed()
-            em.title =None
-            em.description = (f'{desc}')
-            em.colour = (random.choice(colors))
-            await ctx.send(embed=em)
 
     @commands.command(help="Steal a users avatar.")
     async def avatar(self, ctx, *, user: discord.Member=None):
@@ -211,7 +195,7 @@ class FunCog(commands.Cog):
             ) as r:
                 res = await r.json()
                 em = discord.Embed()
-                em.color = 0x00FF
+                em.color = 0x2F3136
                 em.set_image(url=res["message"])
                 await ctx.send(embed=em)
 
@@ -224,22 +208,6 @@ class FunCog(commands.Cog):
             else:
                 await ctx.send(f"```{r}```")
 
-    @commands.command(help="Secret.")
-    async def cum(self, ctx):
-        responses = [
-            "Where Do You Mant Me To Come?",
-            "Come Where, Huh?",
-            "Im Already Coming Over Chill",
-            "What You Mean Come, Im Already Here",
-            "Dummy I Aint Got Legs i Cant Come Over"
-        ]
-        em = discord.Embed(title="SECRET COMMAND FOUND!!")
-        em.description = (f"**{ctx.author.mention}** - {random.choice(responses)}")
-        em.add_field(name=f"**Secret Command | Found! **", value=f'Found By {ctx.author.mention}', inline=False)
-        em.set_thumbnail(url=ctx.author.avatar_url)
-        em.colour = (0x00FF)
-        await ctx.send(embed=em)
-
     @commands.command(help="Is that user gay?.")
     async def gay(self, ctx, *, user: discord.Member):
         randomPercentage = random.randint(1, 100)
@@ -247,12 +215,12 @@ class FunCog(commands.Cog):
         em.description = (f"**{user}** You Are 0% Gay")
         em.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
         em.set_thumbnail(url=user.avatar_url)
-        em.colour = (0x00FF)
+        em.colour = (0x2F3136)
         em1 = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
         em1.description = (f"**{user}** is {randomPercentage}% gay")
         em1.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
         em1.set_thumbnail(url=user.avatar_url)
-        em1.colour = (0x00FF)
+        em1.colour = (0x2F3136)
         if user.id == 662334026098409480:
             await ctx.send(embed=em)
         else:
@@ -284,7 +252,7 @@ class FunCog(commands.Cog):
         while akiObj.progression <= 80:
             try:
                 message1 = await ctx.send(
-                    embed=discord.Embed(title="Question", description=gameObj))
+                    embed=discord.Embed(title="Question", description=gameObj, color=0x2F3136))
                 resp = await ctx.bot.wait_for(
                     "message",
                     check=lambda message: message.author == ctx.author and
@@ -294,7 +262,7 @@ class FunCog(commands.Cog):
                 await ctx.send(embed=discord.Embed(
                     title="Hurry next time!",
                     description=
-                    f"{ctx.author.mention} took too long to respond so we ended the game\nCurrent timeout: `15` Seconds."))
+                    f"{ctx.author.mention} took too long to respond so we ended the game\nCurrent timeout: `15` Seconds.", color=0x2F3136))
                 del self.gameCache[ctx.channel.id]
                 return await message1.delete(delay=None)
             if resp.content == "b":
@@ -303,15 +271,16 @@ class FunCog(commands.Cog):
                 except akinator.CantGoBackAnyFurther:
                     await ctx.send(embed=discord.Embed(
                         title="Cannot go back any further :(",
-                        description="Continue playing anyway"))
+                        description="Continue playing anyway", color=0x2F3136))
             elif resp.content == "q" or resp.content == "quit":
-            	await ctx.send(embed=discord.Embed(
-            		title="Game over",
-            		description=
-            		"You have left the game."
-            		))
-            	del self.gameCache[ctx.channel.id]
-            	break
+                await ctx.send(embed=discord.Embed(
+                    title="Game over",
+                    description=
+                    "You have left the game.",
+                    color=0x2F3136
+                    ))
+                del self.gameCache[ctx.channel.id]
+                break
             else:
                 try:
                     gameObj = await akiObj.answer(resp.content)
@@ -320,13 +289,15 @@ class FunCog(commands.Cog):
                     return await ctx.send(embed=discord.Embed(
                         title="Invalid Answer",
                         description=
-                        "You typed a invalid answer the only answer options are:\n`y` OR `yes` for yes\n`n` OR `no` for no\n`i` OR `idk` for i dont know\n`p` OR `probably` for probably\n`pn` OR `probably not` for probably not\n`b` for back\n`q` or `quit` for stop the game"
+                        "You typed a invalid answer the only answer options are:\n`y` OR `yes` for yes\n`n` OR `no` for no\n`i` OR `idk` for i dont know\n`p` OR `probably` for probably\n`pn` OR `probably not` for probably not\n`b` for back\n`q` or `quit` for stop the game",
+                        color=0x2F3136
                     ))
 
         await akiObj.win()
 
         embed = discord.Embed(
-            title="I have outsmarted your outsmarting"
+            title="I have outsmarted your outsmarting",
+            color=0x2F3136
         ).add_field(
             name="I think...",
             value="it is {0.first_guess[name]} {0.first_guess[description]}?\n\nSorry if im wrong, Akinator has tried.".
@@ -370,16 +341,16 @@ class FunCog(commands.Cog):
 
     @commands.command(help="Turn text into emojis!.")
     async def emojify(self, ctx, *, stuff):
-    	emj = ("".join([":regional_indicator_"+l+":"  if l in "abcdefghijklmnopqrstuvwyx" else [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"][int(l)] if l.isdigit() else ":question:" if l == "?" else ":exclamation:" if l == "!" else l for l in f"{stuff}"]))
-    	embed = discord.Embed(title='Emojify', description=f'Requested By {ctx.author.mention}', color=ctx.author.color)
-    	embed.add_field(name='Your Message Was Emojifyed', value=f'{emj}')
-    	await ctx.send(embed=embed)
+        emj = ("".join([":regional_indicator_"+l+":"  if l in "abcdefghijklmnopqrstuvwyx" else [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"][int(l)] if l.isdigit() else ":question:" if l == "?" else ":exclamation:" if l == "!" else l for l in f"{stuff}"]))
+        embed = discord.Embed(title='Emojify', description=f'Requested By {ctx.author.mention}', color=0x2F3136)
+        embed.add_field(name='Your Message Was Emojifyed', value=f'{emj}')
+        await ctx.send(embed=embed)
 
     @commands.command(help="Ask the boss.")
     async def asktrump(self, ctx, *, question):
         r = requests.get(f"https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}")
         r = r.json()
-        em = discord.Embed(color=ctx.author.color, title="Ask Mr Presendent?")
+        em = discord.Embed(color=0x2F3136, title="Ask Mr Presendent?")
         em.description = f"**Question:** {question}\n\n**Trump:** {r['message']}"
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         em.set_footer(text="World - Ask Trump")
@@ -388,15 +359,15 @@ class FunCog(commands.Cog):
     @commands.command(help="Sends a random gif.")
     async def gif(self, ctx):
         try:
-            em = discord.Embed(color=ctx.author.color, title="Random GIF")
-            r = requests.get(f'https://api.giphy.com/v1/gifs/trending?api_key=)
+            em = discord.Embed(color=0x2F3136, title="Random GIF")
+            r = requests.get(f'https://api.giphy.com/v1/gifs/trending?api_key=5LLc05m7k8Ws5wj8F2Xsbe2HHXeFMfCQ')
             r = r.json()
             em.set_image(url=f"https://media.giphy.com/media/{r['data'][random.randint(0, len(r['data']) - 1)]['id']}/giphy.gif")
             em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
             em.set_footer(text='World - Random Gif')
             await ctx.send(embed=em)
         except Exception as e:
-            em = discord.Embed(color=discord.Color(value=0xf44242), title="An error occurred.")
+            em = discord.Embed(color=discord.Color(value=0x2F3136), title="An error occurred.")
             em.description = f"ERROR: \n\n```{e}```"
             await ctx.send(embed=em)
 
@@ -412,7 +383,7 @@ class FunCog(commands.Cog):
         em = discord.Embed(title=":gun: Russian roulette :gun:")
         em.description = (f"\n{random.choice(responses)}")
         em.add_field(name=f"**Have Another Go!!**", value=f'Requested By {ctx.author.mention}', inline=False)
-        em.colour = (0x808080)
+        em.colour = (0x2F3136)
         await ctx.send(embed=em)
 
 def setup(bot):
