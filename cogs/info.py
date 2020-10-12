@@ -1,26 +1,28 @@
 import discord
 import asyncio
 import time
-import datetime
 import requests
+import datetime
 from discord import Spotify
 from datetime import timedelta
 from discord.ext import commands
 starttime = time.time()
+
+world_pfp = ("https://cdn.discordapp.com/attachments/727241613901824563/764885646162395156/world.png")
 
 class InfoCog(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(help="Show users information.")
+    @commands.command(aliases=["ui"], help="Show users information.")
     async def userinfo(self, ctx, *, user: discord.Member = None):
       if user is None:
           user = ctx.author
       date_format = "%a, %d %b %Y %I:%M %p"
       em = discord.Embed(description=user.mention)
       em.set_author(name=f"{str(user)}'s Userinfo!", icon_url=user.avatar_url)
-      em.color = 0x00FF
+      em.color = 0x2F3136
       members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
       em.add_field(name="**Users Guild Info**", value=f"Joined: `{user.joined_at.strftime(date_format)}`\nJoined Server: `Place {str(members.index(user) + 1)}`\nTop Role: `{user.top_role}`\nNickname: `{user.nick}`")
       em.add_field(name="**Normal Info**", value=f"ID: `{str(user.id)}`\nStatus: `{user.status}`\nProfile Gif: `{user.is_avatar_animated()}`\nColor: `{user.color}`\nAvatar: [Click For Avatar]({user.avatar_url})")
@@ -43,13 +45,13 @@ class InfoCog(commands.Cog):
     async def servericon(self, ctx):
       em = discord.Embed(title=ctx.guild.name)
       em.set_image(url=ctx.guild.icon_url)
-      em.color = (ctx.author.color)
+      em.color = (0x2F3136)
       await ctx.send(embed=em)
     
     @commands.command(help="Show guilds information.")
     async def serverinfo(self, ctx):
       em = discord.Embed(description=f"Name: {ctx.guild}")
-      em.color = (ctx.author.color)
+      em.color = (0x2F3136)
       em.add_field(name="**Name**", value=f"{ctx.guild}", inline=True)
       em.add_field(name="**Owner**", value=f"{ctx.guild.owner}", inline=True)
       em.add_field(name="**Region**", value=f"{ctx.guild.region}", inline=True)
@@ -64,7 +66,7 @@ class InfoCog(commands.Cog):
       em.add_field(name="**Emoji limit**", value=f"{int(ctx.guild.emoji_limit)}", inline=True)
       em.add_field(name="**Verify Level**", value=f"{ctx.guild.verification_level}")
       em.add_field(name="**File Size limit**", value=f"{int(ctx.guild.filesize_limit)}", inline=True)
-      em.add_field(name="**Bitrate Limit**", value=f"{int(ctx.guild.bitrate_limit)}", inline=True)
+      em.add_field(name="**Birate Limit**", value=f"{int(ctx.guild.bitrate_limit)}", inline=True)
       em.set_thumbnail(url=ctx.guild.icon_url)
       em.set_footer(text=f"World ServerInfo | {ctx.guild}'s Info", icon_url=ctx.guild.icon_url)
       await ctx.send(embed=em)
@@ -72,7 +74,7 @@ class InfoCog(commands.Cog):
     @commands.command(help="List of connected servers.")
     async def servers(self, ctx):
       servers = list(self.bot.guilds)
-      embed = discord.Embed(title=None,colour=ctx.author.color,description="Connected on " + str(len(servers)) + " servers")
+      embed = discord.Embed(title=None,colour=0x2F3136,description="Connected on " + str(len(servers)) + " servers")
       await ctx.send(embed=embed)
 
     @commands.command(help="Show World's Info.")
@@ -81,7 +83,7 @@ class InfoCog(commands.Cog):
       serverCount = len(self.bot.guilds)
       memberCount = len(set(self.bot.get_all_members()))
 
-      embed = discord.Embed(title=f'{self.bot.user.name} - Info', description='World - Discord Bot Made For all', colour=ctx.author.colour, timestamp=ctx.message.created_at)
+      embed = discord.Embed(title=f'{self.bot.user.name} - Info', description='World - Discord Bot Made For all', colour=0x2F3136, timestamp=ctx.message.created_at)
 
       embed.add_field(name="Name:", value="World#4520", inline=True)
       embed.add_field(name='Library:', value="Discord.py")
@@ -103,7 +105,7 @@ class InfoCog(commands.Cog):
       serverCount = len(bot.guilds)
       memberCount = len(set(bot.get_all_members()))
 
-      embed = discord.Embed(title=f'{bot.user.name} - Stats', description='Updated Just Now:', colour=ctx.author.colour, timestamp=ctx.message.created_at)
+      embed = discord.Embed(title=f'{bot.user.name} - Stats', description='Updated Just Now:', colour=0x2F3136, timestamp=ctx.message.created_at)
 
       embed.add_field(name='Library Discord.py Version:', value=dpyVersion)
       embed.add_field(name='Total Servers:', value=serverCount)
@@ -136,47 +138,44 @@ class InfoCog(commands.Cog):
                 embed1.colour = (activity.color)
                 await ctx.send(embed=embed1)
             else:
-            	embed = discord.Embed(title=f"Sorry {ctx.author} you're not currenty listening to `Spotify`.")
-            	return await ctx.send(embed=embed)
-
+              embed = discord.Embed(title=f"Sorry {ctx.author} your not currenty listening to `Spotify`.")
+              return await ctx.send(embed=embed)
 
     @commands.command(help="Invite World.")
     async def invite(self, ctx):
         coronastats = ('https://discord.com/api/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot')
-        em = discord.Embed(title='Click Me To Invite Me :)', url=(coronastats), icon_url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
-        em.set_author(name='World - Invite', url='https://discord.com/api/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot' , icon_url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
+        em = discord.Embed(title='Click Me To Invite Me :)', url=(coronastats), icon_url=world_pfp)
+        em.set_author(name='World - Invite', url='https://discord.com/api/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot' , icon_url=world_pfp)
         em.description = ('Link Above Directs To My Invite Link!')
-        em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
+        em.set_thumbnail(url=worldpfp)
         em.set_image(url="https://cdn.discordapp.com/attachments/717867341333004328/730137118499799232/unknown.png")
         em.set_footer(text='World - Invite')
-        em.colour = (0x00FF)
+        em.colour = (0x2F3136)
         await ctx.send(embed=em)
-        
-    @commands.command(help="Suggest a command or report a bug.")
-    @commands.cooldown(rate=1, per=50, type=commands.BucketType.member)
-    async def suggest(self, ctx, *, message):
-    	suggestion_user = ctx.author
-    	embed = discord.Embed(title="New suggestion", description=f"Suggestion: `{message}`\nSuggestor: `{suggestion_user}`\nSuggestor ID: `{suggestion_user.id}`", timestamp=datetime.datetime.utcnow())
-    	embed.set_footer(text='If abused, the bot logs the user id and the owner will blacklist you from using world.')
-    	embed1 = discord.Embed(title="Done!", description=f"{ctx.author.mention} i have told my developers the following report/suggestion:\n`{message}`")
-    	embed.set_footer(text=f'World - Suggest')
-    	channel = self.bot.get_channel(761671480773050409)
-    	await channel.send(embed=embed)
-    	await ctx.send(embed=embed1)
 
 
     @commands.command(help="Vote for world.")
     async def vote(self, ctx):
-        coronastats = ('https://top.gg/bot/700292147311542282')
-        em = discord.Embed(title='Click Me To Vote For Me', url=(coronastats), icon_url='https://top.gg/bot/700292147311542282')
-        em.set_author(name='World - Vote!', url='https://top.gg/bot/700292147311542282' , icon_url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
-        em.description = ('Link Above Directs To Top.gg')
-        em.set_thumbnail(url='https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png')
-        em.set_image(url="https://top.gg/api/widget/700292147311542282.png?cache=poor")
-        em.set_footer(text='World - Top.gg')
-        em.colour = (0x00FF)
+        bot_link = ('https://top.gg/bot/700292147311542282/vote')
+        em = discord.Embed(title='Click to vote', url=(bot_link), icon_url='https://top.gg/bot/700292147311542282')
+        em.set_author(name='World - Vote!', url='https://top.gg/bot/700292147311542282' , icon_url=world_pfp)
+        em.description = ('Click the link above to vote.')
+        em.colour = (0x2F3136)
+        em.set_image(url=f"https://cdn.discordapp.com/attachments/715214583865802844/764573991565656094/example.png")
+        em.set_thumbnail(url=world_pfp)
         await ctx.send(embed=em)
-
+       
+    @commands.command()
+    async def translate(self, ctx, *, translation):
+        try:
+            translator = Translator()
+            result = translator.translate(translation)
+            embed = discord.Embed(title=f"Translator", description=f"`{result.origin}`", color=0x2F3136)
+            embed.add_field(name=f"Translation", value=f"`{result.text}`", inline=False)
+            await ctx.send(embed=embed)
+        except Exception as e:
+            embed = discord.Embed(title=f"Error: `{e}`")
+            await ctx.send(embed=embed)
 
     @commands.command(help="Show Guilds Bans.")
     @commands.has_permissions(ban_members=True)
@@ -188,7 +187,7 @@ class InfoCog(commands.Cog):
 
         em = discord.Embed(title=f"Here Is A List of Banned Members ({len(bans)}):")
         em.description = ", ".join([str(b.user) for b in bans])
-        em.color = 0x00FF
+        em.color = 0x2F3136
 
         await ctx.send(embed=em)
 
@@ -207,9 +206,19 @@ class InfoCog(commands.Cog):
         em.add_field(name='Total Recovered', value=f'{res[totalr]}', inline=False)
         em.set_thumbnail(url='https://unic.un.org.pl/files/496/koronawirus%20zdjecie.jpg')
         em.set_footer(text='World')
-        em.colour = (0xFEF200)
+        em.colour = (0x2F3136)
         await ctx.send(embed=em)
 
+    @commands.command(help="Suggest a command or report a bug.")
+    async def suggest(self, ctx, *, message):
+      suggestion_user = ctx.author
+      embed = discord.Embed(title="New suggestion", description=f"Suggestion: `{message}`\nSuggestor: `{suggestion_user}`\nSuggestor ID: `{suggestion_user.id}`", timestamp=datetime.datetime.utcnow(), color=0xb0b9ff)
+      embed.set_footer(text='If abused, the bot logs the user id and the owner will blacklist you from using world.')
+      embed1 = discord.Embed(title="Done!", description=f"{ctx.author.mention} i have told my developers the following report/suggestion:\n`{message}`", color=0x2F3136)
+      embed.set_footer(text=f'World - Suggest')
+      await ctx.send(embed=embed1)
+      channel = self.bot.get_channel(763110868791459860)
+      await channel.send(embed=embed)
 
     @commands.command(help="Show World's uptime.")
     async def uptime(self, ctx):
@@ -220,17 +229,8 @@ class InfoCog(commands.Cog):
         formatted = "%d Days %02d Hours %02d Minutes %02d Seconds" % (d, h, m, s)
         em = discord.Embed()
         em.add_field(name="Here Is My Uptime:", value="`" + formatted + "`", inline=False)
-        em.color = ctx.author.color
+        em.color = 0x2F3136
         await ctx.send(embed=em)
-        
-    @suggest.error
-    async def suggest_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            a = error.retry_after
-            a = round(a)
-            await ctx.send(
-                f"Sorry {ctx.author.mention} This command in on cooldown because you could try to abuse it, Try again in {a} seconds."
-            )
 
 
 def setup(bot):

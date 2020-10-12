@@ -15,6 +15,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 cluster = MongoClient(os.environ["MONGODB_URL"])
+    		
+db = cluster["Logging"]
+collection = db["Guilds"]
 
 
 class LoggingCog(commands.Cog):
@@ -28,8 +31,6 @@ class LoggingCog(commands.Cog):
 
     	if options == "create":
     		try:
-    			db = cluster["Logging"]
-    			collection = db["Guilds"]
     			post = {
     			"_id": ctx.guild.id,
     			"Bans": 0,
@@ -64,8 +65,6 @@ class LoggingCog(commands.Cog):
     			await ctx.send(embed=embed1)
 
     	if options == "shutdown":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
     		collection.remove({"_id": ctx.guild.id})
     		embed = discord.Embed(title="Logging Shutdown.", description=f"{ctx.author.mention} I have succsesfully shutdown `{ctx.guild.name}'s` Logging.")
     		await ctx.send(embed=embed)
@@ -92,8 +91,6 @@ class LoggingCog(commands.Cog):
 
 
     	if options == "bans":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
     		query = {"_id": ctx.guild.id}
     		banlog = collection.find(query)
     		post = {"Bans": channel.id}
@@ -108,8 +105,6 @@ class LoggingCog(commands.Cog):
     			await ctx.send(embed=embed)
 
     	if options == "unbans":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
     		query = {"_id": ctx.guild.id}
     		unbanlog = collection.find(query)
     		post = {"Unbanned": channel.id}
@@ -124,8 +119,6 @@ class LoggingCog(commands.Cog):
     			await ctx.send(embed=embed)
 
     	if options == "deleted":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
     		query = {"_id": ctx.guild.id}
     		deletedlog = collection.find(query)
     		post = {"DeletedMessage": channel.id}
@@ -140,8 +133,6 @@ class LoggingCog(commands.Cog):
     			await ctx.send(embed=embed)
 
     	if options == "edited":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
     		query = {"_id": ctx.guild.id}
     		editedlog = collection.find(query)
     		post = {"EditedMessage": channel.id}
@@ -157,8 +148,6 @@ class LoggingCog(commands.Cog):
 
 
     	if options == "all":
-    		db = cluster["Logging"]
-    		collection = db["Guilds"]
     		query = {"_id": ctx.guild.id}
     		allc = collection.find(query)
     		post = {"_id": channel.id}
@@ -187,8 +176,6 @@ class LoggingCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild, user):
-    	db = cluster["Logging"]
-    	collection = db["Guilds"]
     	query = {"_id": guild.id}
     	memberban = collection.find(query)
     	post = {"Bans": 0}
@@ -205,8 +192,6 @@ class LoggingCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_unban(self, guild, user):
-    	db = cluster["Logging"]
-    	collection = db["Guilds"]
     	query = {"_id": guild.id}
     	memberunban = collection.find(query)
     	post = {"Unbanned": 0}
@@ -221,8 +206,6 @@ class LoggingCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-    	db = cluster["Logging"]
-    	collection = db["Guilds"]
     	query = {"_id": message.guild.id}
     	messagedelete = collection.find(query)
     	post = {"DeletedMessage": 0}
@@ -231,14 +214,12 @@ class LoggingCog(commands.Cog):
     		if collection.find_one({"_id": message.guild.id})["DeletedMessage"] == 0:
     			return
     		else:
-    			embed = discord.Embed(title="Deleted message Log", description=f"A message was just deleted.\nContent: `{message.content}`\nUser: `{message.author}`\nChannel: `{message.channel}`", timestamp=datetime.datetime.utcnow())
+    			embed = discord.Embed(title="Deleted message Log", description=f"A message was just deleted.\nContent: {message.content}\nUser: `{message.author}`\nChannel: `{message.channel}`", timestamp=datetime.datetime.utcnow())
     			channel = self.bot.get_channel(deletedm)
     			await channel.send(embed=embed)
 
     @commands.Cog.listener()
     async def on_message_edit(self, before: discord.Message, after: discord.Message):
-        db = cluster["Logging"]
-        collection = db["Guilds"]
         query = {"_id": after.guild.id}
         editmessage = collection.find(query)
         post = {"EditedMessage": 0}
