@@ -11,7 +11,8 @@ load_dotenv()
 
 
 cluster = MongoClient(os.environ["MONGODB_URL"])
-
+db = cluster["Coins"]
+collection = db["UserCoins"]
 
 
 class EconomyCog(commands.Cog):
@@ -21,8 +22,6 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Register in Worlds database.")
     async def create(self, ctx):
         try:
-            db = cluster["Coins"]
-            collection = db["Coins"]
             post = {
                 "_id": ctx.author.id,
                 "coins": 0,
@@ -53,8 +52,6 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Buy a item from the shop.")
     @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
     async def buy(self, ctx, product, amount: int):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
         for result in user:
@@ -177,34 +174,30 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Eat a item from your inventory.")
     @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
     async def eat(self, ctx, product, amount: int):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         if amount < 0:
             await ctx.send(f"Sorry {ctx.author.mention} you cannot eat negative.")
             return
 
         if product == "chocbar":
-        	if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
-        		embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough chocolate bars in your inventory. You can buy more with the command `w/buy chocbar <amount>`", color=0x2F3136)
-        		return await ctx.send(embed=embed)
+            if collection.find_one({"_id": ctx.author.id})["choc"] < amount:
+                embed = discord.Embed(title="Not enough chocbars", description=f"Sorry {ctx.author.mention} You dont have enough chocolate bars in your inventory. You can buy more with the command `w/buy chocbar <amount>`", color=0x2F3136)
+                return await ctx.send(embed=embed)
 
         if product == "apple":
-        	if collection.find_one({"_id": ctx.author.id})["apple"] < amount:
-        		embed = discord.Embed(title="Not enough apples", description=f"Sorry {ctx.author.mention} You dont have enough apples in your inventory. You can buy more with the command `w/buy apple <amount>`", color=0x2F3136)
-        		return await ctx.send(embed=embed)
+            if collection.find_one({"_id": ctx.author.id})["apple"] < amount:
+                embed = discord.Embed(title="Not enough apples", description=f"Sorry {ctx.author.mention} You dont have enough apples in your inventory. You can buy more with the command `w/buy apple <amount>`", color=0x2F3136)
+                return await ctx.send(embed=embed)
 
         if product == "cookie":
-        	if collection.find_one({"_id": ctx.author.id})["cookie"] < amount:
-        		embed = discord.Embed(title="Not enough cookies", description=f"Sorry {ctx.author.mention} You dont have enough cookies in your inventory. You can buy more with the command `w/buy cookie <amount>`", color=0x2F3136)
-        		return await ctx.send(embed=embed)
+            if collection.find_one({"_id": ctx.author.id})["cookie"] < amount:
+                embed = discord.Embed(title="Not enough cookies", description=f"Sorry {ctx.author.mention} You dont have enough cookies in your inventory. You can buy more with the command `w/buy cookie <amount>`", color=0x2F3136)
+                return await ctx.send(embed=embed)
 
         if product == "poop":
-        	if collection.find_one({"_id": ctx.author.id})["poop"] < amount:
-        		embed = discord.Embed(title="Not enough poops", description=f"Sorry {ctx.author.mention} You dont have enough poops in your inventory. You can buy more with the command `w/buy poop <amount>`", color=0x2F3136)
-        		return await ctx.send(embed=embed)
+            if collection.find_one({"_id": ctx.author.id})["poop"] < amount:
+                embed = discord.Embed(title="Not enough poops", description=f"Sorry {ctx.author.mention} You dont have enough poops in your inventory. You can buy more with the command `w/buy poop <amount>`", color=0x2F3136)
+                return await ctx.send(embed=embed)
         if product == "chocbar":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "choc": 1}
@@ -220,8 +213,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed1)
         if product == "apple":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "apple": 1}
@@ -239,8 +230,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed1)
         if product == "cookie":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "cookie": 1}
@@ -258,8 +247,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed1)
         if product == "poop":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "poop": 1}
@@ -279,8 +266,6 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Sell a item from your inventory.")
     @commands.cooldown(rate=6, per=15, type=commands.BucketType.member)
     async def sell(self, ctx, product, amount: int):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         if amount < 0:
             await ctx.send(f"Sorry {ctx.author.mention} you cannot sell negative.")
             return
@@ -308,8 +293,6 @@ class EconomyCog(commands.Cog):
 
 
         if product == "chocbar":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "choc": 1}
@@ -328,8 +311,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed1)
         if product == "apple":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "apple": 1}
@@ -350,8 +331,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed1)
         if product == "poop":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "poop": 1}
@@ -372,8 +351,6 @@ class EconomyCog(commands.Cog):
                 )
                 await ctx.send(embed=embed1)
         if product == "cookie":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "cookie": 1}
@@ -397,8 +374,6 @@ class EconomyCog(commands.Cog):
     @commands.command(aliases=["ff"], help="Eat some nice fast food.")
     @commands.cooldown(rate=8, per=15, type=commands.BucketType.member)
     async def fastfood(self, ctx, product):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
         for result in user:
@@ -415,8 +390,6 @@ class EconomyCog(commands.Cog):
                 return await ctx.send(embed=embed)
         
         if product == "mcworlds":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "coins": 0}
@@ -461,8 +434,6 @@ class EconomyCog(commands.Cog):
                 return await ctx.send(embed=embed1)
 
         if product == "worldhut":
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "coins": 0}
@@ -505,11 +476,11 @@ class EconomyCog(commands.Cog):
                 return await ctx.send(embed=embed2)
 
         if product == "options":
-        	embed3 = discord.Embed(color=ctx.author.color)
-        	embed3.set_author(name='Fast food')
-        	embed3.add_field(name="Buy and eat McWorlds", value="w/fastfood [mcworlds]\n`12 Coins`", inline=True)
-        	embed3.add_field(name="Buy and eat World Hut", value="w/buy cookie [worldhut]\n`20 Coins`", inline=True)
-        	await ctx.send(embed=embed3)
+            embed3 = discord.Embed(color=ctx.author.color)
+            embed3.set_author(name='Fast food')
+            embed3.add_field(name="Buy and eat McWorlds", value="w/fastfood [mcworlds]\n`12 Coins`", inline=True)
+            embed3.add_field(name="Buy and eat World Hut", value="w/buy cookie [worldhut]\n`20 Coins`", inline=True)
+            await ctx.send(embed=embed3)
 
     @sell.error
     async def sell_error(self, ctx, error):
@@ -555,8 +526,6 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Shows your inventory.")
     @commands.cooldown(rate=8, per=50, type=commands.BucketType.member)
     async def inv(self, ctx):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
         for result in user:
@@ -602,8 +571,6 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Get daily coins.")
     @commands.cooldown(rate=1, per=86400, type=commands.BucketType.member)
     async def daily(self, ctx):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
         post = {"_id": ctx.author.id, "coins": 0}
@@ -618,15 +585,23 @@ class EconomyCog(commands.Cog):
                 inline=True,
             )
             await ctx.send(embed=embed1)
+
+
+    @commands.command()
+    async def afk(self, ctx, *, reason = "AFK not set"):
+        if not ctx.author.nick.startswith("AFK | "):
+            await ctx.author.edit(nick=f"AFK | {ctx.author.name}")
+            await ctx.send(f"I have set your afk to: {reason}")
+        else:
+            await ctx.author.edit(nick=ctx.author.name)
+            await ctx.send(f"Welcome back {ctx.author.mention} i have removed your afk.")
             
 
     @commands.command(
-        aliases=["afk", "ss", "activity", "act"], help="Set a custom status."
+        aliases=["ss", "activity", "act"], help="Set a custom status."
     )
     @commands.cooldown(rate=8, per=230, type=commands.BucketType.member)
     async def setstatus(self, ctx, *, afk1):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
         post = {"_id": ctx.author.id, "coins": 500}
@@ -655,21 +630,19 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Shows users status")
     @commands.cooldown(rate=11, per=80, type=commands.BucketType.member)
     async def status(self, ctx, users: discord.Member=None):
-    	users = users or ctx.author
-    	db = cluster["Coins"]
-    	collection = db["Coins"]
-    	query = {"_id": users.id}
-    	user = collection.find(query)
-    	for result in user:
-    		status = result["afk"]
-    		embed1 = discord.Embed(title="Status", color=0x2F3136)
-    		embed1.add_field(
-    			name=f"**Success**",
-    			value=f"{users.mention}'s Status Is: `{status}`\nTo Set Your Own Status Just Type `setstatus [status]`",
-    			inline=True,
-    			)
-    		embed1.set_thumbnail(url=users.avatar_url)
-    		await ctx.send(embed=embed1)
+        users = users or ctx.author
+        query = {"_id": users.id}
+        user = collection.find(query)
+        for result in user:
+            status = result["afk"]
+            embed1 = discord.Embed(title="Status", color=0x2F3136)
+            embed1.add_field(
+                name=f"**Success**",
+                value=f"{users.mention}'s Status Is: `{status}`\nTo Set Your Own Status Just Type `setstatus [status]`",
+                inline=True,
+                )
+            embed1.set_thumbnail(url=users.avatar_url)
+            await ctx.send(embed=embed1)
 
     @status.error
     async def status_error(self, ctx, error):
@@ -684,8 +657,6 @@ class EconomyCog(commands.Cog):
     @commands.command(help="Beg for coins.")
     @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
     async def beg(self, ctx):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
         post = {"_id": ctx.author.id, "coins": 25}
@@ -705,8 +676,6 @@ class EconomyCog(commands.Cog):
     @commands.is_owner()
     @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
     async def give(self, ctx, users: discord.Member, *, coin):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": users.id}
         user = collection.find(query)
         post = {"_id": users.id, "coins": 5000}
@@ -726,8 +695,6 @@ class EconomyCog(commands.Cog):
     @commands.is_owner()
     @commands.cooldown(rate=1, per=15, type=commands.BucketType.member)
     async def remove(self, ctx, users: discord.Member, *, coin):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": users.id}
         user = collection.find(query)
         post = {"_id": users.id, "coins": 5000}
@@ -745,8 +712,6 @@ class EconomyCog(commands.Cog):
 
     @commands.command(aliases=["balance"], help="Shows users balance.")
     async def bal(self, ctx):
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
         for result in user:
@@ -781,8 +746,6 @@ class EconomyCog(commands.Cog):
     @commands.cooldown(rate=2, per=8, type=commands.BucketType.member)
     async def gamble(self, ctx):
         amount = 15
-        db = cluster["Coins"]
-        collection = db["Coins"]
         query = {"_id": ctx.author.id}
         user = collection.find(query)
         for result in user:
@@ -798,8 +761,6 @@ class EconomyCog(commands.Cog):
         c = random.choice(emojis)
         slotmachine = f"**[ {a} {b} {c} ]\n{ctx.author.name}**,"
         if a == b == c:
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "coins": 300}
@@ -824,8 +785,6 @@ class EconomyCog(commands.Cog):
                     )
                 )
         elif (a == b) or (a == c) or (b == c):
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "coins": 150}
@@ -849,8 +808,6 @@ class EconomyCog(commands.Cog):
                     )
                 )
         else:
-            db = cluster["Coins"]
-            collection = db["Coins"]
             query = {"_id": ctx.author.id}
             user = collection.find(query)
             post = {"_id": ctx.author.id, "coins": 0}
