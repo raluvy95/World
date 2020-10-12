@@ -231,6 +231,25 @@ class InfoCog(commands.Cog):
         em.add_field(name="Here Is My Uptime:", value="`" + formatted + "`", inline=False)
         em.color = 0x2F3136
         await ctx.send(embed=em)
+        
+    @commands.command(help="Urban Dictionary")
+    @commands.is_nsfw()
+    async def urban(self, ctx, *name):
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(f"http://api.urbandictionary.com/v0/define?term={'%20'.join(name)}") as r:
+                if r.status != 200:
+                    return await ctx.send("It looks like the API did an oppsie...")
+                json = await r.json()
+                list1 = json['list']
+                if len(list1) < 1:
+                    return await ctx.send("No urban word found :(")
+                res = list1[0]
+                embed = discord.Embed(title=res['word'])
+                embed.description = res['definition']
+                embed.add_field(name="Example", value=res['example'])
+                embed.set_footer(text=f"👍 {res['thumbs_up']} | 👎{res['thumbs_down']}")
+                await ctx.send(embed=embed)
+     
 
 
 def setup(bot):
