@@ -87,13 +87,11 @@ class HelpCog(commands.Cog):
         )
         embed.add_field(name="Shows info on world", value="w/botinfo", inline=True)
         embed.add_field(name="Invite world", value="w/invite", inline=True)
-        embed.add_field(name="Shows serverinfo", value="w/serverinfo", inline=True)
-        embed.add_field(name="Shows Userinfo", value="w/userinfo", inline=True)
+        embed.add_field(name="Shows servers", value="w/servers", inline=True)
         embed.add_field(name="Vote for world", value="w/vote", inline=True)
         embed.add_field(name="Shows bots latency", value="w/ping", inline=True)
         embed.add_field(name="Shows bots uptime", value="w/uptime", inline=True)
         embed.add_field(name="Shows spotify info", value="w/spotify", inline=True)
-        embed.add_field(name="Translate some text!", value="w/translate", inline=True)
         await ctx.send(embed=embed)
 
 
@@ -111,7 +109,7 @@ class HelpCog(commands.Cog):
       embed.add_field(name="kicks member", value="w/kick [user]", inline=True)
       embed.add_field(name="Bans member", value="w/ban [user]", inline=True)
       embed.add_field(name="Unbans member", value="w/unban [username then #]", inline=True)
-      embed.add_field(name="Nuke a channel.", value="w/nuke", inline=True)
+      embed.add_field(name="Get users info", value="w/userinfo [user]", inline=True)
       embed.add_field(name="Shows all bans", value="w/bans", inline=True)
       embed.add_field(name="Mutes member", value="w/mute [user]", inline=True)
       embed.add_field(name="Unmute a user", value="w/unmute [user]", inline=True)
@@ -119,6 +117,9 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Channel lockdown", value="w/lock", inline=True)
       embed.add_field(name="Unlock channel", value="w/unlock", inline=True)
       embed.add_field(name="Direct Message a user", value="w/dm [user] [message]", inline=True)
+      embed.add_field(
+          name="Shows server info", value="w/serverinfo", inline=True
+      )
       await ctx.send(embed=embed)
       
     @commands.command(help="Shows logging Category.")
@@ -178,18 +179,18 @@ class HelpCog(commands.Cog):
           name="Show this message", value="w/economy", inline=True
       )
       embed.add_field(name="Create An Account", value="w/create", inline=True)
+      embed.add_field(name="Delete your Account", value="w/delete", inline=True)
       embed.add_field(name="Show balance", value="w/bal", inline=True)
       embed.add_field(name="Beg for Coins", value="w/beg", inline=True)
-      embed.add_field(name="Slots [cost 15 coins]", value="w/gamble", inline=True)
+      embed.add_field(name="Gamble your money", value="w/gamble <amount>", inline=True)
       embed.add_field(name="Get daily Coins", value="w/daily", inline=True)
+      embed.add_field(name="Get weekly Coins", value="w/daily", inline=True)
       embed.add_field(name="Show inventory", value="w/inv", inline=True)
       embed.add_field(name="Buy a Product", value="w/buy [product] [amount]", inline=True)
-      embed.add_field(name="Eat a Product", value="w/eat [product] [amount]", inline=True)
       embed.add_field(name="Sell a Product", value="w/sell [product] [amount]", inline=True)
-      embed.add_field(name="Buy fastfood", value="w/fastfood options", inline=True)
       embed.add_field(name="List of items", value="w/shop", inline=True)
       await ctx.send(embed=embed)
-
+   
 
     @commands.command(help="Shows New commands.")
     async def new(self, ctx):
@@ -204,8 +205,7 @@ class HelpCog(commands.Cog):
       )
       embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
       embed.add_field(name="Set some logs.", value="w/logs", inline=True)
-      embed.add_field(name="Fast Food command.", value="w/economy", inline=True)
-      embed.add_field(name="Translate some text!", value="w/translate", inline=True)
+      embed.add_field(name="Whole new rewrite.", value="w/economy", inline=True)
       await ctx.send(embed=embed)
 
 
