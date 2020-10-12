@@ -164,6 +164,18 @@ class InfoCog(commands.Cog):
         em.set_image(url=f"https://cdn.discordapp.com/attachments/715214583865802844/764573991565656094/example.png")
         em.set_thumbnail(url=world_pfp)
         await ctx.send(embed=em)
+       
+    @commands.command()
+    async def translate(self, ctx, *, translation):
+        try:
+            translator = Translator()
+            result = translator.translate(translation)
+            embed = discord.Embed(title=f"Translator", description=f"`{result.origin}`", color=0x2F3136)
+            embed.add_field(name=f"Translation", value=f"`{result.text}`", inline=False)
+            await ctx.send(embed=embed)
+        except Exception as e:
+            embed = discord.Embed(title=f"Error: `{e}`")
+            await ctx.send(embed=embed)
 
     @commands.command(help="Show Guilds Bans.")
     @commands.has_permissions(ban_members=True)
