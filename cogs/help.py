@@ -189,25 +189,6 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Buy fastfood", value="w/fastfood options", inline=True)
       embed.add_field(name="List of items", value="w/shop", inline=True)
       await ctx.send(embed=embed)
-    
-   
-    @commands.command(help="Shows shop Category.")
-    async def shop(self, ctx):
-      author = ctx.message
-      author
-    
-
-      embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - Economy', icon_url=world_pfp)
-      embed.add_field(
-          name="Show this message", value="w/shop", inline=True
-      )
-      embed.add_field(name="Create An Account", value="w/create\n`FREE`", inline=True)
-      embed.add_field(name="Buy Some Cookies", value="w/buy cookie [amount]\n`1 Coins`", inline=True)
-      embed.add_field(name="Buy Some Chocolate", value="w/buy chocbar [amount]\n`4 Coins`", inline=True)
-      embed.add_field(name="Buy Some Poop", value="w/buy poop [amount]\n`6 Coins`", inline=True)
-      embed.add_field(name="Buy Some Apples", value="w/buy apple [amount]\n`10 Coins`", inline=True)
-      await ctx.send(embed=embed)
 
 
     @commands.command(help="Shows New commands.")

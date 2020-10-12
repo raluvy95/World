@@ -4,4 +4,5 @@ pymongo
 dnspython
 mysql-connector-python
 python-dotenv
+motor
 akinator.py
