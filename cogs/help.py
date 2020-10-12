@@ -11,16 +11,16 @@ world_pfp = ("https://cdn.discordapp.com/attachments/727241613901824563/76488564
 
 
 def syntax(command):
-	cmd_and_aliases = " | ".join([str(command), *command.aliases])
-	params = []
+  cmd_and_aliases = " | ".join([str(command), *command.aliases])
+  params = []
 
-	for key, value in command.params.items():
-		if key not in ("self", "ctx"):
-			params.append(f"[{key}]" if "NoneType" in str(value) else f"<{key}>")
+  for key, value in command.params.items():
+    if key not in ("self", "ctx"):
+      params.append(f"[{key}]" if "NoneType" in str(value) else f"<{key}>")
 
-	params = " ".join(params)
+  params = " ".join(params)
 
-	return f"**Usage:** `w/{cmd_and_aliases} {params}`"
+  return f"**Usage:** `w/{cmd_and_aliases} {params}`"
 
 
 class HelpCog(commands.Cog):
@@ -28,32 +28,32 @@ class HelpCog(commands.Cog):
         self.bot = bot
 
     async def cmd_help(self, ctx, command):
-    	embed = Embed(title=f"{command} - Help",
-					  description=syntax(command),
-					  colour=ctx.author.colour)
-    	embed.add_field(name="Command info", value=command.help)
-    	await ctx.send(embed=embed)
+      embed = Embed(title=f"{command} - Help",
+            description=syntax(command),
+            colour=ctx.author.colour)
+      embed.add_field(name="Command info", value=command.help)
+      await ctx.send(embed=embed)
 
 
     @command(name="help", help="Shows this message.")
     async def show_help(self, ctx, cmd: Optional[str]):
-    	"""Shows this message."""
-    	if cmd is None:
-    		embed = discord.Embed(colour=ctx.author.color)
-    		embed.set_author(name='World - Help', icon_url=world_pfp)
-    		embed.add_field(name="Shows multiple categories.", value="w/categories", inline=True)
-    		embed.add_field(name="Invite", value="[Invite World](https://discord.com/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot)", inline=True)
-    		embed.add_field(name="Vote", value="[Vote For World](https://top.gg/bot/700292147311542282/vote)", inline=True)
-    		embed.add_field(name="> World is a discord bot made for all", value="> World is a discord bot made a while after juice wrld's death(Jarad Higgins).\n> My owner was very upset that juice wrld passed away so she decided to make me.", inline=False)
-    		embed.set_footer(text="Use \"w/help <command>\" For more info")
-    		await ctx.send(embed=embed)
+      """Shows this message."""
+      if cmd is None:
+        embed = discord.Embed(colour=ctx.author.color)
+        embed.set_author(name='World - Help', icon_url=world_pfp)
+        embed.add_field(name="Shows multiple categories.", value="w/categories", inline=True)
+        embed.add_field(name="Invite", value="[Invite World](https://discord.com/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot)", inline=True)
+        embed.add_field(name="Vote", value="[Vote For World](https://top.gg/bot/700292147311542282/vote)", inline=True)
+        embed.add_field(name="> World is a discord bot made for all", value="> World is a discord bot made a while after juice wrld's death(Jarad Higgins).\n> My owner was very upset that juice wrld passed away so she decided to make me.", inline=False)
+        embed.set_footer(text="Use \"w/help <command>\" For more info")
+        await ctx.send(embed=embed)
 
-    	else:
-    		if (command := get(self.bot.commands, name=cmd)):
-    			await self.cmd_help(ctx, command)
+      else:
+        if (command := get(self.bot.commands, name=cmd)):
+          await self.cmd_help(ctx, command)
 
-    		else:
-    			await ctx.send(f"Hey {ctx.author.mention} thats not a valid command.")
+        else:
+          await ctx.send(f"Hey {ctx.author.mention} thats not a valid command.")
 
 
     @commands.command(help="Shows categories.")
@@ -87,11 +87,12 @@ class HelpCog(commands.Cog):
         )
         embed.add_field(name="Shows info on world", value="w/botinfo", inline=True)
         embed.add_field(name="Invite world", value="w/invite", inline=True)
-        embed.add_field(name="Shows servers", value="w/servers", inline=True)
+        embed.add_field(name="Shows serverinfo", value="w/serverinfo", inline=True)
         embed.add_field(name="Vote for world", value="w/vote", inline=True)
         embed.add_field(name="Shows bots latency", value="w/ping", inline=True)
         embed.add_field(name="Shows bots uptime", value="w/uptime", inline=True)
         embed.add_field(name="Shows spotify info", value="w/spotify", inline=True)
+        embed.add_field(name="Translate some text!", value="w/translate", inline=True)
         await ctx.send(embed=embed)
 
 
@@ -117,9 +118,6 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Channel lockdown", value="w/lock", inline=True)
       embed.add_field(name="Unlock channel", value="w/unlock", inline=True)
       embed.add_field(name="Direct Message a user", value="w/dm [user] [message]", inline=True)
-      embed.add_field(
-          name="Shows server info", value="w/serverinfo", inline=True
-      )
       await ctx.send(embed=embed)
       
     @commands.command(help="Shows logging Category.")
@@ -225,6 +223,7 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
       embed.add_field(name="Set some logs.", value="w/logs", inline=True)
       embed.add_field(name="Fast Food command.", value="w/economy", inline=True)
+      embed.add_field(name="Translate some text!", value="w/translate", inline=True)
       await ctx.send(embed=embed)
 
 
