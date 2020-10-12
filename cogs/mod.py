@@ -78,6 +78,20 @@ class ModCog(commands.Cog):
             return await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} Please purge more than `1` message")
         else:
             await ctx.channel.purge(limit=amount)
+            
+    @commands.command(help="Nuke a channel.")
+    @commands.has_permissions(manage_messages=True)
+    async def nuke(self, ctx, channel=None):
+    	channel = channel or ctx.channel
+    	await channel.delete()
+    	nuked_channel = await channel.clone()
+    	message_ = self.bot.get_channel(nuked_channel.id)
+    	await message_.send(f"{ctx.author.mention} <#{nuked_channel.id}> was nuked.\nhttps://tenor.com/view/explosion-explode-clouds-of-smoke-gif-17216934")
+        
+    @nuke.error
+    async def nuke_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have The Role Perm: `manage messages`!')
 
     @purge.error
     async def purge_error(self, ctx, error):
