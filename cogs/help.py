@@ -90,7 +90,7 @@ class HelpCog(commands.Cog):
         embed.add_field(name="Shows servers", value="w/servers", inline=True)
         embed.add_field(name="Vote for world", value="w/vote", inline=True)
         embed.add_field(name="Shows bots latency", value="w/ping", inline=True)
-        embed.add_field(name="Shows bots uptime", value="w/uptime", inline=True)
+        embed.add_field(name="The real dictionary.", value="w/urban", inline=True)
         embed.add_field(name="Shows spotify info", value="w/spotify", inline=True)
         await ctx.send(embed=embed)
 
@@ -109,16 +109,15 @@ class HelpCog(commands.Cog):
       embed.add_field(name="kicks member", value="w/kick [user]", inline=True)
       embed.add_field(name="Bans member", value="w/ban [user]", inline=True)
       embed.add_field(name="Unbans member", value="w/unban [username then #]", inline=True)
-      embed.add_field(name="Get users info", value="w/userinfo [user]", inline=True)
+      embed.add_field(name="Snipe a message", value="w/snipe", inline=True)
       embed.add_field(name="Shows all bans", value="w/bans", inline=True)
       embed.add_field(name="Mutes member", value="w/mute [user]", inline=True)
       embed.add_field(name="Unmute a user", value="w/unmute [user]", inline=True)
-      embed.add_field(name="First ever message", value="w/fm", inline=True)
       embed.add_field(name="Channel lockdown", value="w/lock", inline=True)
       embed.add_field(name="Unlock channel", value="w/unlock", inline=True)
-      embed.add_field(name="Direct Message a user", value="w/dm [user] [message]", inline=True)
+      embed.add_field(name="Nuke a channel.", value="w/nuke", inline=True)
       embed.add_field(
-          name="Shows server info", value="w/serverinfo", inline=True
+          name="Snipe a message", value="w/editsnipe", inline=True
       )
       await ctx.send(embed=embed)
       
@@ -206,6 +205,7 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
       embed.add_field(name="Set some logs.", value="w/logs", inline=True)
       embed.add_field(name="Whole new rewrite.", value="w/economy", inline=True)
+      embed.add_field(name="Snipe commands.", value="w/mod", inline=True)
       await ctx.send(embed=embed)
 
 
