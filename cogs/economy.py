@@ -152,7 +152,6 @@ class EconomyCog(commands.Cog):
     async def inventory(self, ctx: commands.Context) -> None:
         """Returns the current items from the user inventory."""
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         author = await self._get_user(ctx.author.id)
@@ -192,7 +191,6 @@ class EconomyCog(commands.Cog):
     async def balance(self, ctx: commands.Context) -> None:
         """Returns the current balance of the user."""
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         author = await self._get_user(ctx.author.id)
@@ -215,7 +213,6 @@ class EconomyCog(commands.Cog):
         - `apple`
         """
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         user = await self._get_user(ctx.author.id)
@@ -251,7 +248,6 @@ class EconomyCog(commands.Cog):
         - `apple`
         """
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         user = await self._get_user(ctx.author.id)
@@ -302,7 +298,6 @@ class EconomyCog(commands.Cog):
     async def status(self, ctx: commands.Context, *, status: str) -> None:
         """Sets a custom status for the user."""
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         if len(status) > 80:
@@ -337,7 +332,6 @@ class EconomyCog(commands.Cog):
         The winning percentage is 5%.
         """
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         user = await self._get_user(ctx.author.id)
@@ -381,7 +375,6 @@ class EconomyCog(commands.Cog):
     async def beg(self, ctx: commands.Context) -> None:
         """User can beg for coins, and World will generate a random number between 10 and 300."""
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         random.seed(datetime.now().timestamp())
@@ -425,7 +418,6 @@ class EconomyCog(commands.Cog):
     async def daily(self, ctx: commands.Context) -> None:
         """Gives to the user a daily account of money."""
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         user = await self._get_user(ctx.author.id)
@@ -453,7 +445,6 @@ class EconomyCog(commands.Cog):
     async def weekly(self, ctx: commands.Context) -> None:
         """Gives to the user a weekly account of money."""
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         user = await self._get_user(ctx.author.id)
@@ -484,7 +475,6 @@ class EconomyCog(commands.Cog):
         The target is a member from your Discord server.
         """
         if not (await self._has_account(ctx.author.id)):
-            await ctx.send(f"Sorry {ctx.author.mention} you seem not to have a World account, I will now create one for you.")
             await self._create_account(ctx.author.id)
 
         user = await self._get_user(ctx.author.id)
