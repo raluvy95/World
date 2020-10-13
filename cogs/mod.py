@@ -24,6 +24,12 @@ class ModCog(commands.Cog):
         em.colour = (0xFF0000)
         await ctx.send(embed=em)
 
+    @ban.error
+    async def ban_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/ban <member> <reason>`")
+
+
     @commands.command(help="Kick a user.")
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
@@ -35,6 +41,11 @@ class ModCog(commands.Cog):
         em.set_thumbnail(url='https://cdn.discordapp.com/attachments/546331074876145666/719526555587575919/a.png')
         em.colour = (0xFF0000)
         await ctx.send(embed=em)
+
+    @kick.error
+    async def kick_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/kick <member> <reason>`")
 
     @commands.command(help="Mute a user.")
     @commands.has_permissions(manage_messages=True)
@@ -75,6 +86,11 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
 
+    @mute.error
+    async def mute_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/mute <member> <reason>`")
+
     @commands.command(help="Delete specified messages.")
     @commands.has_permissions(manage_messages=True)
     @commands.guild_only()
@@ -85,6 +101,11 @@ class ModCog(commands.Cog):
             return await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} Please purge more than `1` message")
         else:
             await ctx.channel.purge(limit=amount)
+
+    @purge.error
+    async def purge_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f'Sorry {ctx.author.mention} Please Type `w/purge <amount>')
 
     @purge.error
     async def purge_error(self, ctx, error):
@@ -126,6 +147,11 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Dont Have Perms Or This Person Cannot Be Unbanned')
 
+    @unban.error
+    async def unban_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/unban <member>`")
+
 
     @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
@@ -148,6 +174,11 @@ class ModCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')  
 
+    @poll.error
+    async def poll_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/poll <description>`")
+
 
     @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
@@ -164,6 +195,11 @@ class ModCog(commands.Cog):
         await add_reactions_to.add_reaction("👍")
         await add_reactions_to.add_reaction("👎")
 
+    @polln.error
+    async def polln_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/polln <description>`")
+
     @commands.command(help="Lockdown the current channel.")
     @commands.has_permissions(ban_members=True)
     @commands.guild_only()
@@ -175,6 +211,7 @@ class ModCog(commands.Cog):
         embed.add_field(name="**Requested By**", value=f"{ctx.author.mention}")
         embed.color = (0x2F3136)
         await ctx.send(embed=embed)
+
 
     @commands.command(help="Nuke a channel.")
     @commands.has_permissions(manage_messages=True)
@@ -232,6 +269,11 @@ class ModCog(commands.Cog):
         mute1 = discord.Embed(title = f"{user} has been unmuted! | Reason = {reason}", color =0x2F3136)
         return await ctx.send(embed=mute1)
 
+    @unmute.error
+    async def unmute_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/unmute <member> <reason>`")
+
     @slowmode.error
     async def slowmode_error(self, ctx, error):
         if isinstance(error, commands.CommandInvokeError):
@@ -270,6 +312,11 @@ class ModCog(commands.Cog):
         embed1.set_footer(text=f"World - Direct Message")
         embed1.color = (0x2F3136)
         await member.send(embed=embed1)
+
+    @dm.error
+    async def dm_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/dm <member> <message>`")
 
     @commands.command(help="snipe")
     @commands.guild_only()
