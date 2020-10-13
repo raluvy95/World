@@ -8,10 +8,11 @@ class PingCog(commands.Cog):
         self.bot = bot
 
     @commands.command(help="Show bots latency.")
+    @commands.guild_only()
     @commands.cooldown(rate=1, per=5, type=commands.BucketType.member)
     async def ping(self, ctx):
         ping3 = discord.Embed(title = 'Testing Latency... <a:load:724296877356482640>', color =0x13d1f2)
-        ping2 = discord.Embed(title = 'Connection Received <a:load:724296877356482640>', color =0xe30ec3)
+        ping2 = discord.Embed(title = 'Connection Recived <a:load:724296877356482640>', color =0xe30ec3)
         ppo = discord.Embed(title = f'<a:green:724295655954317404> Pong! {round(self.bot.latency * 1000)}ms', color = 0xf05f0c)
 
         pinging = await ctx.send(embed = ping3)
@@ -26,7 +27,7 @@ class PingCog(commands.Cog):
         if isinstance(error, commands.CommandOnCooldown):
             a = error.retry_after
             a = round(a)
-            await ctx.send(f"Sorry {ctx.author.mention} This command is on cooldown, Try again in {a} seconds.")
+            await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
 
 def setup(bot):
