@@ -1,7 +1,7 @@
 import discord
 import asyncio
 import time
-import requests
+import aiohttp
 import datetime
 from discord import Spotify
 from datetime import timedelta
@@ -194,20 +194,21 @@ class InfoCog(commands.Cog):
 
     @commands.command(help="Corona Virus information")
     async def corona(self, ctx):
-        r = requests.get("https://api.covid19api.com/world/total")
-        res = r.json()
-        totalc = 'TotalConfirmed'
-        totald = 'TotalDeaths'
-        totalr = 'TotalRecovered'
-        em = discord.Embed(title='Updated Just Now:')
-        em.set_author(name='Corona stats', url='https://www.worldometers.info/coronavirus/' , icon_url='https://pbs.twimg.com/profile_images/587949417577066499/3uCD4xxY.jpg')
-        em.add_field(name='Total Confirmed', value=f'{res[totalc]}', inline=False)
-        em.add_field(name='Total Deaths', value=f'{res[totald]}', inline=False)
-        em.add_field(name='Total Recovered', value=f'{res[totalr]}', inline=False)
-        em.set_thumbnail(url='https://unic.un.org.pl/files/496/koronawirus%20zdjecie.jpg')
-        em.set_footer(text='World')
-        em.colour = (0x2F3136)
-        await ctx.send(embed=em)
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get("https://api.covid19api.com/world/total") as r:
+                res = await r.json()
+                totalc = 'TotalConfirmed'
+                totald = 'TotalDeaths'
+                totalr = 'TotalRecovered'
+                em = discord.Embed(title='Updated Just Now:')
+                em.set_author(name='Corona stats', url='https://www.worldometers.info/coronavirus/' , icon_url='https://pbs.twimg.com/profile_images/587949417577066499/3uCD4xxY.jpg')
+                em.add_field(name='Total Confirmed', value=f'{res[totalc]}', inline=False)
+                em.add_field(name='Total Deaths', value=f'{res[totald]}', inline=False)
+                em.add_field(name='Total Recovered', value=f'{res[totalr]}', inline=False)
+                em.set_thumbnail(url='https://unic.un.org.pl/files/496/koronawirus%20zdjecie.jpg')
+                em.set_footer(text='World')
+                em.colour = (0x2F3136)
+                await ctx.send(embed=em)
 
     @commands.command(help="Suggest a command or report a bug.")
     async def suggest(self, ctx, *, message):
@@ -231,6 +232,25 @@ class InfoCog(commands.Cog):
         em.add_field(name="Here Is My Uptime:", value="`" + formatted + "`", inline=False)
         em.color = 0x2F3136
         await ctx.send(embed=em)
+        
+    @commands.command(help="Urban Dictionary")
+    @commands.is_nsfw()
+    async def urban(self, ctx, *name):
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(f"http://api.urbandictionary.com/v0/define?term={'%20'.join(name)}") as r:
+                if r.status != 200:
+                    return await ctx.send("It looks like the API did an oppsie...")
+                json = await r.json()
+                list1 = json['list']
+                if len(list1) < 1:
+                    return await ctx.send("No urban word found :(")
+                res = list1[0]
+                embed = discord.Embed(title=res['word'])
+                embed.description = res['definition']
+                embed.add_field(name="Example", value=res['example'])
+                embed.set_footer(text=f"👍 {res['thumbs_up']} | 👎{res['thumbs_down']}")
+                await ctx.send(embed=embed)
+     
 
 
 def setup(bot):
