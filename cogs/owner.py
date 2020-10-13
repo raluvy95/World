@@ -1,22 +1,10 @@
 import discord
 import inspect
 import traceback
+import datetime
 import asyncio
 from discord.ext import commands
 TOKEN = '||Think Ima Give You My Token!?||'
-
-import mysql.connector
-from mysql.connector import pooling
-mysql_connection = mysql.connector.pooling.MySQLConnectionPool(
-    pool_name="join_connector",
-    pool_size=2,
-    pool_reset_session=True,
-    host="107.161.23.32",
-    database="ohlhifit_world",
-    user="ohlhifit_world",
-    passwd="Uox7B$3qAu$W"
-)
-mydb = mysql_connection.get_connection()
 
 
 class OwnerCog(commands.Cog):
@@ -34,17 +22,7 @@ class OwnerCog(commands.Cog):
             await ctx.send('{}: {}'.format(type(e).__name__, e))
         else:
             embed = discord.Embed(title='load!', description=f"I Have loaded `{module}`", colour=ctx.author.colour)
-            await ctx.send(content=None, embed=embed)
-
-    @commands.command(hidden=True, help="IDK")
-    async def sqleval(self, ctx, *, code):
-    	if ctx.author.id == 662334026098409480 or ctx.author.id == 393859835331870721:
-    		cursor = mydb.cursor()
-    		cursor.execute(str(code))
-    		result = cursor.fetchall()
-    		await ctx.send(f'{result}')     
-    	else:
-    		await ctx.send("Sorry this command can only be used by my owner.")   
+            await ctx.send(content=None, embed=embed)  
 
     @commands.command(hidden=True, help="Unload a python file.")
     @commands.is_owner()
@@ -70,6 +48,20 @@ class OwnerCog(commands.Cog):
         else:
             embed = discord.Embed(title='Reload!', description=f"I Have Reloaded `{module}`", colour=ctx.author.colour)
             await ctx.send(content=None, embed=embed)
+
+    @commands.command(hidden=True, help="Set patches")
+    @commands.is_owner()
+    async def update(self, ctx, *, desc):
+    	channel = self.bot.get_channel(765632402680447006)
+    	msg = await channel.fetch_message(765675535325069323)
+    	embed = discord.Embed(
+    		title="Latest update",
+    		description=desc,
+    		color=0x2F3136,
+    		timestamp=datetime.datetime.utcnow()
+    		)
+    	await msg.edit(embed=embed)
+    	await ctx.send(f"Hey {ctx.author.mention} i have updated the message in <#765632402680447006>")
 
     @commands.command(name="eval")
     @commands.is_owner()
