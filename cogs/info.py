@@ -239,13 +239,13 @@ class InfoCog(commands.Cog):
         async with aiohttp.ClientSession() as cs:
             async with cs.get(f"http://api.urbandictionary.com/v0/define?term={'%20'.join(name)}") as r:
                 if r.status != 200:
-                    return await ctx.send("It looks like the API did an oppsie...")
+                    return await ctx.send(f"Sorry {ctx.author.mention} Api has broken.")
                 json = await r.json()
                 list1 = json['list']
                 if len(list1) < 1:
-                    return await ctx.send("No urban word found :(")
+                    return await ctx.send(f"Sorry {ctx.author.mention} This word was not found in Urban.")
                 res = list1[0]
-                embed = discord.Embed(title=res['word'])
+                embed = discord.Embed(title=res['word'], color=0x2F3136)
                 embed.description = res['definition']
                 embed.add_field(name="Example", value=res['example'])
                 embed.set_footer(text=f"👍 {res['thumbs_up']} | 👎{res['thumbs_down']}")
