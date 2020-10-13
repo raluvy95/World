@@ -1,4 +1,5 @@
 import discord
+import datetime
 from discord.ext import commands
 import asyncio
 
@@ -7,6 +8,8 @@ world_pfp = ("https://cdn.discordapp.com/attachments/727241613901824563/76488564
 class ModCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.snipeCache = {}
+        self.editSnipeCache = {}
 
 
     @commands.command(help="Ban a user.")
@@ -78,20 +81,6 @@ class ModCog(commands.Cog):
             return await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} Please purge more than `1` message")
         else:
             await ctx.channel.purge(limit=amount)
-            
-    @commands.command(help="Nuke a channel.")
-    @commands.has_permissions(manage_messages=True)
-    async def nuke(self, ctx, channel=None):
-    	channel = channel or ctx.channel
-    	await channel.delete()
-    	nuked_channel = await channel.clone()
-    	message_ = self.bot.get_channel(nuked_channel.id)
-    	await message_.send(f"{ctx.author.mention} <#{nuked_channel.id}> was nuked.\nhttps://tenor.com/view/explosion-explode-clouds-of-smoke-gif-17216934")
-        
-    @nuke.error
-    async def nuke_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have The Role Perm: `manage messages`!')
 
     @purge.error
     async def purge_error(self, ctx, error):
@@ -179,6 +168,20 @@ class ModCog(commands.Cog):
         embed.color = (0x2F3136)
         await ctx.send(embed=embed)
 
+    @commands.command(help="Nuke a channel.")
+    @commands.has_permissions(manage_messages=True)
+    async def nuke(self, ctx, channel=None):
+    	channel = channel or ctx.channel
+    	await channel.delete()
+    	nuked_channel = await channel.clone()
+    	message_ = self.bot.get_channel(nuked_channel.id)
+    	await message_.send(f"{ctx.author.mention} <#{nuked_channel.id}> was nuked.\nhttps://tenor.com/view/explosion-explode-clouds-of-smoke-gif-17216934")
+        
+    @nuke.error
+    async def nuke_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have The Role Perm: `manage messages`!')
+
  
     @commands.command(help="Unlock the current channel.")
     @commands.has_permissions(ban_members=True)
@@ -254,6 +257,46 @@ class ModCog(commands.Cog):
         embed1.set_footer(text=f"World - Direct Message")
         embed1.color = (0x2F3136)
         await member.send(embed=embed1)
+
+    @commands.command(help="snipe")
+    async def snipe(self, ctx):
+        embed = discord.Embed(title="Snipe", color=0x2F3136, timestamp=datetime.datetime.utcnow())
+        embed.add_field(name="User", value=self.snipeCache[ctx.channel.id]["user"])
+        embed.add_field(name="Content", value=self.snipeCache[ctx.channel.id]["content"])
+        embed.add_field(name="Channel", value=f"<#{self.snipeCache[ctx.channel.id]['channel']}>")
+        await ctx.send(embed=embed)
+        del self.snipeCache[ctx.channel.id]
+
+
+    @commands.command()
+    async def editsnipe(self, ctx):
+        embed = discord.Embed(title="Edit Snipe", colour=0x2F3136, timestamp=datetime.datetime.utcnow())
+        embed.add_field(name="User", value=self.editSnipeCache[ctx.channel.id]["user"])
+        embed.add_field(name="Content", value=self.editSnipeCache[ctx.channel.id]["bcontent"])
+        embed.add_field(name="Channel", value=f"<#{self.editSnipeCache[ctx.channel.id]['channel']}>")
+        await ctx.send(embed=embed)
+        del self.editSnipeCache[ctx.channel.id]
+
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+
+        self.snipeCache.update(
+            {message.channel.id: {
+            "user": message.author,
+            "content": message.content,
+            "channel": message.channel.id
+            }})
+
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        self.editSnipeCache.update(
+            {before.channel.id: {
+                "user": before.author,
+                "bcontent": before.content,
+                "channel": before.channel.id
+            }})
 
     @dm.error
     async def dm_error(self, ctx, error):
