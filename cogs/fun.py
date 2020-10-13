@@ -6,6 +6,7 @@ import random
 import requests
 import io
 import aiohttp
+import datetime
 import json
 from discord.ext import commands, tasks
 from urllib.parse import urlparse, quote
@@ -312,12 +313,12 @@ class FunCog(commands.Cog):
                         
     @commands.command(help="snipe")
     async def snipe(self, ctx):
-    	embed = discord.Embed(title="Snipe", color=0x2F3136, timestamp=datetime.datetime.utcnow())
-    	embed.add_field(name="User", value=self.snipeCache[ctx.channel.id]["user"])
-    	embed.add_field(name="Content", value=self.snipeCache[ctx.channel.id]["content"])
-    	embed.add_field(name="Channel", value=f"<#{self.snipeCache[ctx.channel.id]['channel']}>")
-    	await ctx.send(embed=embed)
-    	del self.snipeCache[ctx.channel.id]
+        embed = discord.Embed(title="Snipe", color=0x2F3136, timestamp=datetime.datetime.utcnow())
+        embed.add_field(name="User", value=self.snipeCache[ctx.channel.id]["user"])
+        embed.add_field(name="Content", value=self.snipeCache[ctx.channel.id]["content"])
+        embed.add_field(name="Channel", value=f"<#{self.snipeCache[ctx.channel.id]['channel']}>")
+        await ctx.send(embed=embed)
+        del self.snipeCache[ctx.channel.id]
 
 
     @commands.command()
@@ -333,12 +334,12 @@ class FunCog(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message):
 
-    	self.snipeCache.update(
-    		{message.channel.id: {
-    		"user": message.author,
-    		"content": message.content,
-    		"channel": message.channel.id
-    		}})
+        self.snipeCache.update(
+            {message.channel.id: {
+            "user": message.author,
+            "content": message.content,
+            "channel": message.channel.id
+            }})
 
 
     @commands.Cog.listener()
