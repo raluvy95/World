@@ -94,7 +94,9 @@ class FunCog(commands.Cog):
 
     @commands.command(help="Generate supreme text.")
     @commands.guild_only()
-    async def supreme(self, ctx,*,message=''):
+    async def supreme(self, ctx,*,message=None):
+        if message == None:
+            return await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/supreme <text>`")
         sent = message.lower()
         embed = discord.Embed(title='Supreme', description=f'Requested By {ctx.author.mention}')
         embed.set_image(url=f'https://api.alexflipnote.dev/supreme?text={urllib.parse.quote(sent)}')
@@ -102,10 +104,6 @@ class FunCog(commands.Cog):
         embed.color=0x2F3136
         await ctx.send(embed=embed)
 
-    @supreme.error
-    async def supreme_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/supreme <text>`")
 
 
     @commands.command(name="f", help="Sad times.")
@@ -193,22 +191,22 @@ class FunCog(commands.Cog):
     @commands.command(help="Is that user gay?.")
     @commands.guild_only()
     async def gay(self, ctx, *, user: discord.Member=None):
-    	user = user or (ctx.author)
-    	randomPercentage = random.randint(1, 100)
-    	em = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
-    	em.description = (f"**{user}** You Are 0% Gay")
-    	em.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
-    	em.set_thumbnail(url=user.avatar_url)
-    	em.colour = (0x2F3136)
-    	em1 = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
-    	em1.description = (f"**{user}** is {randomPercentage}% gay")
-    	em1.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
-    	em1.set_thumbnail(url=user.avatar_url)
-    	em1.colour = (0x2F3136)
-    	if user.id == 662334026098409480:
-    		await ctx.send(embed=em)
-    	else:
-    		await ctx.send(embed=em1)
+        user = user or (ctx.author)
+        randomPercentage = random.randint(1, 100)
+        em = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
+        em.description = (f"**{user}** You Are 0% Gay")
+        em.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
+        em.set_thumbnail(url=user.avatar_url)
+        em.colour = (0x2F3136)
+        em1 = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
+        em1.description = (f"**{user}** is {randomPercentage}% gay")
+        em1.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
+        em1.set_thumbnail(url=user.avatar_url)
+        em1.colour = (0x2F3136)
+        if user.id == 662334026098409480:
+            await ctx.send(embed=em)
+        else:
+            await ctx.send(embed=em1)
 
     @gay.error
     async def gay_error(self, ctx, error):
