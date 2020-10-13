@@ -97,6 +97,7 @@ async def screenshot(ctx, site):
 
 @bot.event
 async def on_command_error(ctx, error):
+    print(f"{error.__class__.__name__}: {error}")
     if ctx.author.id == 662334026098409480 or ctx.author.id == 393859835331870721:
         channels = bot.get_channel(746028290455634032)
         embed = discord.Embed(description=f":x: New Logged Error By A World Developer!\n```{error}```\nInvoker: `{ctx.author}`", color=discord.Color.blue())
