@@ -2,6 +2,7 @@ import os
 import random
 import textwrap
 
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Literal, Union
 
@@ -13,34 +14,17 @@ from discord.ext.commands.cooldowns import BucketType
 from dotenv import load_dotenv
 
 
+@dataclass
 class User:
     """Represents a World Economy user."""
-    def __init__(
-        self,
-        id_: int,
-        coins: int,
-        cookie: int,
-        choc: int,
-        poop: int,
-        apple: int,
-        afk: str
-    ) -> None:
-        """Sets up the class."""
-        self._id = id_
-        self.coins = coins
-        self.cookie = cookie
-        self.choc = choc
-        self.poop = poop
-        self.apple = apple
-        self.afk = afk
 
-    def __repr__(self) -> str:
-        """Returns the representation of this user."""
-        return f"<User _id={self._id} coins={self.coins} cookie={self.cookie} choc={self.choc} poop={self.poop} apple={self.apple} afk={self.afk}>"
-
-    def __str__(self) -> str:
-        """Returns the string representation of this user."""
-        return self.__repr__()
+    _id: int
+    coins: int
+    cookie: int
+    choc: int
+    poop: int
+    apple: int
+    afk: str
 
 
 class Item(type):
