@@ -20,8 +20,6 @@ class FunCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.gameCache = {}
-        self.snipeCache = {}
-        self.editSnipeCache = {}
 
     @commands.command(help="World is funny.")
     @commands.guild_only()
@@ -60,14 +58,19 @@ class FunCog(commands.Cog):
         em.colour = (0x2F3136)
         await ctx.send(embed=em)
 
+    @askali.error
+    async def askali_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/askali <question>`")
+
 
     @commands.command(help="Generate some P*rn Hub text.")
     @commands.guild_only()
     async def phtext(self,ctx,text1,line,text):
         if line == '&':
-        	embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}', color=0xffa31a)
-        	embed.set_image(url=f'https://api.alexflipnote.dev/pornhub?text={quote(text1)}{line}text2={quote(text)}')
-        	await ctx.send(embed=embed)
+            embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}', color=0xffa31a)
+            embed.set_image(url=f'https://api.alexflipnote.dev/pornhub?text={quote(text1)}{line}text2={quote(text)}')
+            await ctx.send(embed=embed)
 
     @phtext.error
     async def phtext_error(self, ctx, error):
@@ -86,7 +89,7 @@ class FunCog(commands.Cog):
     @ship.error
     async def ship_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/ship @user & @user`")
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/ship <@user> <&> <@user>`")
 
 
     @commands.command(help="Generate supreme text.")
@@ -99,44 +102,11 @@ class FunCog(commands.Cog):
         embed.color=0x2F3136
         await ctx.send(embed=embed)
 
+    @supreme.error
+    async def supreme_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/supreme <text>`")
 
-    @commands.command(help="Show real love between a user.")
-    @commands.guild_only()
-    async def Love(self, ctx, *, user: discord.Member):
-        responses = [
-            "█ - 1% In Love",
-            "█ - 2% In Love",
-            "█ - 4% In Love",
-            "██ - 5% In Love",
-            "███ - 6% In Love",
-            "████ - 8% In Love",
-            "███████ - 25% In Love",
-            "████ - 12% In Love",
-            "█████ - 15 % In Love",
-            "██████ - 23% In Love",
-            "████████████ - 46% In Love",
-            "█████████████████████ - 72 % In Love",
-            "██████████████████████ - 79% In Love",
-            "█████████████████ - 69% In Love",
-            "███████████████████████████ - 100% In Love",
-            "███████████████████████ - 82% In Love",
-            "████████████████████████ - 89% In Love",
-            "█████████████ - 50% In Love",
-        ]
-        em = discord.Embed(title=":heart: The Love Machine :heart: ")
-        em.description = (f"**{user}** And **{ctx.author.mention}** are {random.choice(responses)}")
-        em.add_field(name=f"**Love Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
-        em.set_thumbnail(url='https://cdn.discordapp.com/attachments/710141167722824070/717771350449717288/sean.jpg')
-        em.colour = (0xFF0000)
-        em1 = discord.Embed(title=":heart: The Love Machine :heart: ")
-        em1.description = (f"**{user}** And **{ctx.author.mention}** are ███████████████████████████ - 100% In Love")
-        em1.add_field(name=f"**Love Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
-        em1.set_thumbnail(url='https://cdn.discordapp.com/attachments/710141167722824070/717771350449717288/sean.jpg')
-        em1.colour = (0xFF0000)
-        if user.id == 662334026098409480:
-            await ctx.send(embed=em1)
-        else:
-            await ctx.send(embed=em)
 
     @commands.command(name="f", help="Sad times.")
     @commands.guild_only()
@@ -214,51 +184,31 @@ class FunCog(commands.Cog):
                 em.set_image(url=res["message"])
                 await ctx.send(embed=em)
 
-    @commands.command(help="Very fancy.")
-    @commands.guild_only()
-    async def ascii(self, ctx, *, text):
-        async with aiohttp.Client.Session().get(f'http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}').text as r:
-            read = await r.read()
-            if len('```'+r+'```') > 2000:
-                return
-            else:
-                await ctx.send(f"```{r}```")
+    @tweet.error
+    async def tweet_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/tweet <username> <message>`")
 
-    @commands.command(help="Secret.")
-    @commands.guild_only()
-    async def cum(self, ctx):
-        responses = [
-            "Where Do You Mant Me To Come?",
-            "Come Where, Huh?",
-            "Im Already Coming Over Chill",
-            "What You Mean Come, Im Already Here",
-            "Dummy I Aint Got Legs i Cant Come Over"
-        ]
-        em = discord.Embed(title="SECRET COMMAND FOUND!!")
-        em.description = (f"**{ctx.author.mention}** - {random.choice(responses)}")
-        em.add_field(name=f"**Secret Command | Found! **", value=f'Found By {ctx.author.mention}', inline=False)
-        em.set_thumbnail(url=ctx.author.avatar_url)
-        em.colour = (0x2F3136)
-        await ctx.send(embed=em)
 
     @commands.command(help="Is that user gay?.")
     @commands.guild_only()
-    async def gay(self, ctx, *, user: discord.Member):
-        randomPercentage = random.randint(1, 100)
-        em = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
-        em.description = (f"**{user}** You Are 0% Gay")
-        em.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
-        em.set_thumbnail(url=user.avatar_url)
-        em.colour = (0x2F3136)
-        em1 = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
-        em1.description = (f"**{user}** is {randomPercentage}% gay")
-        em1.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
-        em1.set_thumbnail(url=user.avatar_url)
-        em1.colour = (0x2F3136)
-        if user.id == 662334026098409480:
-            await ctx.send(embed=em)
-        else:
-            await ctx.send(embed=em1)
+    async def gay(self, ctx, *, user: discord.Member=None):
+    	user = user or (ctx.author)
+    	randomPercentage = random.randint(1, 100)
+    	em = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
+    	em.description = (f"**{user}** You Are 0% Gay")
+    	em.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
+    	em.set_thumbnail(url=user.avatar_url)
+    	em.colour = (0x2F3136)
+    	em1 = discord.Embed(title=":rainbow_flag:Gay Machine | No Mistakes Were Made:rainbow_flag:")
+    	em1.description = (f"**{user}** is {randomPercentage}% gay")
+    	em1.add_field(name=f"**Gay Machine**", value=f'Requested By {ctx.author.mention}', inline=False)
+    	em1.set_thumbnail(url=user.avatar_url)
+    	em1.colour = (0x2F3136)
+    	if user.id == 662334026098409480:
+    		await ctx.send(embed=em)
+    	else:
+    		await ctx.send(embed=em1)
 
     @gay.error
     async def gay_error(self, ctx, error):
@@ -308,14 +258,14 @@ class FunCog(commands.Cog):
                         title="Cannot go back any further :(",
                         description="Continue playing anyway", color=0x2F3136))
             elif resp.content == "q" or resp.content == "quit":
-            	await ctx.send(embed=discord.Embed(
-            		title="Game over",
-            		description=
-            		"You have left the game.",
-            		color=0x2F3136
-            		))
-            	del self.gameCache[ctx.channel.id]
-            	break
+                await ctx.send(embed=discord.Embed(
+                    title="Game over",
+                    description=
+                    "You have left the game.",
+                    color=0x2F3136
+                    ))
+                del self.gameCache[ctx.channel.id]
+                break
             else:
                 try:
                     gameObj = await akiObj.answer(resp.content)
@@ -343,48 +293,6 @@ class FunCog(commands.Cog):
         del self.gameCache[ctx.channel.id]
         await ctx.send(embed=embed)
 
-
-    @commands.command(help="snipe")
-    @commands.guild_only()
-    async def snipe(self, ctx):
-    	embed = discord.Embed(title="Snipe", color=0x2F3136, timestamp=datetime.datetime.utcnow())
-    	embed.add_field(name="User", value=self.snipeCache[ctx.channel.id]["user"])
-    	embed.add_field(name="Content", value=self.snipeCache[ctx.channel.id]["content"])
-    	embed.add_field(name="Channel", value=f"<#{self.snipeCache[ctx.channel.id]['channel']}>")
-    	await ctx.send(embed=embed)
-    	del self.snipeCache[ctx.channel.id]
-
-
-    @commands.command()
-    @commands.guild_only()
-    async def editsnipe(self, ctx):
-        embed = discord.Embed(title="Edit Snipe", colour=0x2F3136, timestamp=datetime.datetime.utcnow())
-        embed.add_field(name="User", value=self.editSnipeCache[ctx.channel.id]["user"])
-        embed.add_field(name="Content", value=self.editSnipeCache[ctx.channel.id]["bcontent"])
-        embed.add_field(name="Channel", value=f"<#{self.editSnipeCache[ctx.channel.id]['channel']}>")
-        await ctx.send(embed=embed)
-        del self.editSnipeCache[ctx.channel.id]
-
-
-    @commands.Cog.listener()
-    async def on_message_delete(self, message):
-
-    	self.snipeCache.update(
-    		{message.channel.id: {
-    		"user": message.author,
-    		"content": message.content,
-    		"channel": message.channel.id
-    		}})
-
-
-    @commands.Cog.listener()
-    async def on_message_edit(self, before, after):
-        self.editSnipeCache.update(
-            {before.channel.id: {
-                "user": before.author,
-                "bcontent": before.content,
-                "channel": before.channel.id
-            }})
 
     @commands.command(aliases=["8ball"], help="Magical answers.")
     @commands.guild_only()
@@ -418,13 +326,23 @@ class FunCog(commands.Cog):
         em.colour = (0x000000)
         await ctx.send(embed=em)
 
+    @_8ball.error
+    async def _8ball_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/8ball <question>`")
+
     @commands.command(help="Turn text into emojis!.")
     @commands.guild_only()
     async def emojify(self, ctx, *, stuff):
-    	emj = ("".join([":regional_indicator_"+l+":"  if l in "abcdefghijklmnopqrstuvwyx" else [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"][int(l)] if l.isdigit() else ":question:" if l == "?" else ":exclamation:" if l == "!" else l for l in f"{stuff}"]))
-    	embed = discord.Embed(title='Emojify', description=f'Requested By {ctx.author.mention}', color=0x2F3136)
-    	embed.add_field(name='Your Message Was Emojifyed', value=f'{emj}')
-    	await ctx.send(embed=embed)
+        emj = ("".join([":regional_indicator_"+l+":"  if l in "abcdefghijklmnopqrstuvwyx" else [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"][int(l)] if l.isdigit() else ":question:" if l == "?" else ":exclamation:" if l == "!" else l for l in f"{stuff}"]))
+        embed = discord.Embed(title='Emojify', description=f'Requested By {ctx.author.mention}', color=0x2F3136)
+        embed.add_field(name='Your Message Was Emojifyed', value=f'{emj}')
+        await ctx.send(embed=embed)
+
+    @emojify.error
+    async def emojify_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/emojify <text>`")
 
     @commands.command(help="Ask the boss.")
     @commands.guild_only()
@@ -436,6 +354,11 @@ class FunCog(commands.Cog):
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         em.set_footer(text="World - Ask Trump")
         await ctx.send(embed=em)
+
+    @asktrump.error
+    async def asktrump_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/asktrump <question>`")
 
     @commands.command(help="Sends a random gif.")
     @commands.guild_only()
