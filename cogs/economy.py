@@ -513,7 +513,7 @@ class EconomyCog(commands.Cog):
         if isinstance(error, NotEnoughCoins):
             await ctx.send(error)
         elif isinstance(error, commands.errors.MissingRequiredArgument):
-            await ctx.send(f"Sorry {ctx.author.mention} You missed the `target` parameter.")
+            await ctx.send(f"Sorry {ctx.author.mention} You forgot to mention the member.")
         elif isinstance(error, commands.errors.BadArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Member not found, or invalid coin amount.")
         elif isinstance(error, UserNotFound):
@@ -558,7 +558,7 @@ class EconomyCog(commands.Cog):
         user inventory.
         """
         if user.coins - (item.price * amount) < 0:
-            raise NotEnoughCoins(f"Sorry {ctx.author.mention} You don't have enough coins to buy this item.")
+            raise NotEnoughCoins(f"Sorry <@{user._id}> You don't have enough coins to buy this item.")
 
         await self._database_collection.update_one(
             {
