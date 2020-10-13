@@ -57,6 +57,7 @@ class HelpCog(commands.Cog):
 
 
     @commands.command(help="Shows categories.")
+    @commands.guild_only()
     async def categories(self, ctx):
         author = ctx.message
         author
@@ -76,6 +77,7 @@ class HelpCog(commands.Cog):
 
 
     @commands.command(help="Shows other Category.")
+    @commands.guild_only()
     async def other(self, ctx):
         author = ctx.message
         author
@@ -90,13 +92,14 @@ class HelpCog(commands.Cog):
         embed.add_field(name="Shows servers", value="w/servers", inline=True)
         embed.add_field(name="Vote for world", value="w/vote", inline=True)
         embed.add_field(name="Shows bots latency", value="w/ping", inline=True)
-        embed.add_field(name="The real dictionary.", value="w/urban", inline=True)
+        embed.add_field(name="Shows bots uptime", value="w/uptime", inline=True)
         embed.add_field(name="Shows spotify info", value="w/spotify", inline=True)
         await ctx.send(embed=embed)
 
 
 
     @commands.command(help="Shows mod Category.")
+    @commands.guild_only()
     async def mod(self, ctx):
       author = ctx.message
       author
@@ -113,6 +116,7 @@ class HelpCog(commands.Cog):
       embed.add_field(name="Shows all bans", value="w/bans", inline=True)
       embed.add_field(name="Mutes member", value="w/mute [user]", inline=True)
       embed.add_field(name="Unmute a user", value="w/unmute [user]", inline=True)
+      embed.add_field(name="First ever message", value="w/fm", inline=True)
       embed.add_field(name="Channel lockdown", value="w/lock", inline=True)
       embed.add_field(name="Unlock channel", value="w/unlock", inline=True)
       embed.add_field(name="Nuke a channel.", value="w/nuke", inline=True)
@@ -122,6 +126,7 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=embed)
       
     @commands.command(help="Shows logging Category.")
+    @commands.guild_only()
     async def logs(self, ctx):
       embed = discord.Embed()
       embed.set_author(name='World - Logging help')
@@ -133,6 +138,7 @@ class HelpCog(commands.Cog):
 
 
     @commands.command(help="Shows fun Category.")
+    @commands.guild_only()
     async def fun(self, ctx):
       author = ctx.message
       author
@@ -167,6 +173,7 @@ class HelpCog(commands.Cog):
 
 
     @commands.command(help="Shows economy categorie.")
+    @commands.guild_only()
     async def economy(self, ctx):
       author = ctx.message
       author
@@ -192,6 +199,7 @@ class HelpCog(commands.Cog):
    
 
     @commands.command(help="Shows New commands.")
+    @commands.guild_only()
     async def new(self, ctx):
       author = ctx.message
       author
@@ -204,8 +212,9 @@ class HelpCog(commands.Cog):
       )
       embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
       embed.add_field(name="Set some logs.", value="w/logs", inline=True)
-      embed.add_field(name="Whole new rewrite.", value="w/economy", inline=True)
-      embed.add_field(name="Snipe commands.", value="w/mod", inline=True)
+      embed.add_field(name="Whole rewrite", value="w/economy", inline=True)
+      embed.add_field(name="Snipe some messages", value="w/snipe", inline=True)
+      embed.add_field(name="Snipe some messages", value="w/editsnipe", inline=True)
       await ctx.send(embed=embed)
 
 
