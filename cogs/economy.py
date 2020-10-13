@@ -407,7 +407,6 @@ class EconomyCog(commands.Cog):
             )
         await ctx.send(embed=beg_embed)
 
-
     @beg.error
     async def beg_error(self, ctx: commands.Context, error: commands.errors.CommandInvokeError) -> None:
         """Handles errors when running the beg command."""
@@ -588,6 +587,7 @@ class EconomyCog(commands.Cog):
     async def _sell(self, item: Item, amount: int, user: User) -> Union[Literal[False], int]:
         """
         The core of the `sell` command.
+
         You have a 75% chance to sell the items successfully, and a 25% chance to loose it.
         Returns False if the user was robbed, or the coins amount (int) if the items were sold
         successfully.
