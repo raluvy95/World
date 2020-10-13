@@ -194,11 +194,7 @@ class EconomyCog(commands.Cog):
         """
         Buys items.
         
-        Items you can buy:
-        - `cookie`
-        - `chocbar`
-        - `poop`
-        - `apple`
+        Run `w/shop` for a list of items.
         """
         if not (await self._has_account(ctx.author.id)):
             await self._create_account(ctx.author.id)
@@ -230,11 +226,7 @@ class EconomyCog(commands.Cog):
         """
         Sells items.
         
-        Items you can sell:
-        - `cookie`
-        - `chocbar`
-        - `poop`
-        - `apple`
+        Run `w/shop` for a list of items.
         """
         if not (await self._has_account(ctx.author.id)):
             await self._create_account(ctx.author.id)
