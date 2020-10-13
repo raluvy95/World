@@ -13,6 +13,7 @@ class ModCog(commands.Cog):
 
 
     @commands.command(help="Ban a user.")
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         await member.ban(reason=reason)
@@ -24,6 +25,7 @@ class ModCog(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(help="Kick a user.")
+    @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
@@ -36,6 +38,7 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Mute a user.")
     @commands.has_permissions(manage_messages=True)
+    @commands.guild_only()
     async def mute(self, ctx, user: discord.Member, *, reason=None):
         role = discord.utils.get(ctx.guild.roles, name="Muted")
         mute = discord.utils.get(ctx.guild.text_channels, name="MUTED-TIME-OUT")
@@ -74,6 +77,7 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Delete specified messages.")
     @commands.has_permissions(manage_messages=True)
+    @commands.guild_only()
     async def purge(self, ctx, amount: int):
         if amount >= 100:
             return await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} `100` is max limit.")
@@ -99,6 +103,7 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Unban a user.")
     @commands.has_permissions(ban_members=True)
+    @commands.guild_only()
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split("#")
@@ -124,6 +129,7 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
+    @commands.guild_only()
     async def poll(self, ctx, *, desc):
         await ctx.send('@here NEW POLE VOTE TO TAKE PART!')
         embed = discord.Embed(
@@ -145,6 +151,7 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
+    @commands.guild_only()
     async def polln(self, ctx, *, desc):
         embed = discord.Embed(
             colour = 0x2F3136
@@ -159,6 +166,7 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Lockdown the current channel.")
     @commands.has_permissions(ban_members=True)
+    @commands.guild_only()
     async def lock(self, ctx):
         guild = ctx.guild
         await ctx.message.channel.set_permissions(guild.default_role,read_messages = True, send_messages = False)
@@ -170,12 +178,13 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Nuke a channel.")
     @commands.has_permissions(manage_messages=True)
+    @commands.guild_only()
     async def nuke(self, ctx, channel=None):
-    	channel = channel or ctx.channel
-    	await channel.delete()
-    	nuked_channel = await channel.clone()
-    	message_ = self.bot.get_channel(nuked_channel.id)
-    	await message_.send(f"{ctx.author.mention} <#{nuked_channel.id}> was nuked.\nhttps://tenor.com/view/explosion-explode-clouds-of-smoke-gif-17216934")
+        channel = channel or ctx.channel
+        await channel.delete()
+        nuked_channel = await channel.clone()
+        message_ = self.bot.get_channel(nuked_channel.id)
+        await message_.send(f"{ctx.author.mention} <#{nuked_channel.id}> was nuked.\nhttps://tenor.com/view/explosion-explode-clouds-of-smoke-gif-17216934")
         
     @nuke.error
     async def nuke_error(self, ctx, error):
@@ -185,6 +194,7 @@ class ModCog(commands.Cog):
  
     @commands.command(help="Unlock the current channel.")
     @commands.has_permissions(ban_members=True)
+    @commands.guild_only()
     async def unlock(self, ctx):
         guild = ctx.guild
         await ctx.message.channel.set_permissions(guild.default_role,read_messages = True, send_messages = True)
@@ -196,6 +206,7 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Set the slowmode of the channel.")
     @commands.has_permissions(manage_messages=True)
+    @commands.guild_only()
     async def slowmode(self, ctx, seconds: int):
         if seconds >= 21600:
             return await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} 21600 is max slowmode range.")
@@ -207,6 +218,7 @@ class ModCog(commands.Cog):
 
 
     @commands.command(help="Unmute a member")
+    @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
     async def unmute(self, ctx, user: discord.Member, *, reason=None):
         if user == ctx.author:
@@ -241,6 +253,7 @@ class ModCog(commands.Cog):
 
     @commands.command(help="Direct message a user.")
     @commands.cooldown(rate=1, per=20, type=commands.BucketType.member)
+    @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def dm(self, ctx, member : discord.Member, *, msg):
         embed = discord.Embed(description=f"World - Direct Message", timestamp=ctx.message.created_at)
@@ -259,6 +272,7 @@ class ModCog(commands.Cog):
         await member.send(embed=embed1)
 
     @commands.command(help="snipe")
+    @commands.guild_only()
     async def snipe(self, ctx):
         embed = discord.Embed(title="Snipe", color=0x2F3136, timestamp=datetime.datetime.utcnow())
         embed.add_field(name="User", value=self.snipeCache[ctx.channel.id]["user"])
@@ -269,6 +283,7 @@ class ModCog(commands.Cog):
 
 
     @commands.command()
+    @commands.guild_only()
     async def editsnipe(self, ctx):
         embed = discord.Embed(title="Edit Snipe", colour=0x2F3136, timestamp=datetime.datetime.utcnow())
         embed.add_field(name="User", value=self.editSnipeCache[ctx.channel.id]["user"])
