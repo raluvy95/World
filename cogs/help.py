@@ -1,5 +1,6 @@
 import discord
 import typing
+import textwrap
 from typing import Optional
 from discord.ext.commands import Cog
 from discord import Embed
@@ -53,169 +54,103 @@ class HelpCog(commands.Cog):
           await self.cmd_help(ctx, command)
 
         else:
-          await ctx.send(f"Hey {ctx.author.mention} thats not a valid command.")
+          await ctx.send(f"Sorry {ctx.author.mention} thats not a valid command.")
 
 
-    @commands.command(help="Shows categories.")
-    @commands.guild_only()
+    @commands.command(help="Shows categories")
     async def categories(self, ctx):
-        author = ctx.message
-        author
-
-        embed1 = discord.Embed(colour=ctx.author.color)
-        embed1.set_author(name='World - Categories', icon_url=world_pfp)
-        embed1.add_field(
-            name="Show this message", value="w/categories", inline=False
-        )
-        embed1.add_field(name="> Shows Mod Category", value="w/mod", inline=False)
-        embed1.add_field(name="> Shows Fun Category", value="w/fun", inline=False)
-        embed1.add_field(name="> Shows Eeconomy Category", value="w/economy", inline=False)
-        embed1.add_field(name="> Shows Logging Category", value="w/logs", inline=False)
-        embed1.add_field(name="> Shows New Category", value="w/new", inline=False)
-        embed1.add_field(name="> Shows Other Category", value="w/other", inline=False)
-        await ctx.send(embed=embed1)
+      em = discord.Embed(color=ctx.author.color)
+      em.add_field(name="‎‎World", value=f"New\n`w/new`\nFun\n`w/fun`\nOther\n`w/other`")
+      em.add_field(name=f"Categories", value=f"Logging\n`w/logs`\nEconomy\n`w/economy`\nModeration\n`w/mod`")
+      await ctx.send(embed=em)
 
 
-    @commands.command(help="Shows other Category.")
+    @commands.command(help="Shows other category.")
     @commands.guild_only()
     async def other(self, ctx):
-        author = ctx.message
-        author
-
-        embed = discord.Embed(colour=ctx.author.color)
-        embed.set_author(name='World - Other', icon_url=world_pfp)
-        embed.add_field(
-            name="Show this message", value="w/other", inline=True
+      em = discord.Embed(
+        title="Other commands", 
+        color=ctx.author.color,
+        ).add_field(
+        name="<:shufflelogo:765652804387471430> | Random Commands",
+        value="`w/spotify` | `w/botinfo` | `w/invite` | `w/servers` | `w/vote` | `w/urban`\n|`w/vote`"
         )
-        embed.add_field(name="Shows info on world", value="w/botinfo", inline=True)
-        embed.add_field(name="Invite world", value="w/invite", inline=True)
-        embed.add_field(name="Shows servers", value="w/servers", inline=True)
-        embed.add_field(name="Vote for world", value="w/vote", inline=True)
-        embed.add_field(name="Shows bots latency", value="w/ping", inline=True)
-        embed.add_field(name="Shows bots uptime", value="w/uptime", inline=True)
-        embed.add_field(name="Shows spotify info", value="w/spotify", inline=True)
-        await ctx.send(embed=embed)
+      await ctx.send(embed=em)
 
 
 
-    @commands.command(help="Shows mod Category.")
+    @commands.command(help="Shows moderation category.")
     @commands.guild_only()
     async def mod(self, ctx):
-      author = ctx.message
-      author
-
-      embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - Moderation', icon_url=world_pfp)
-      embed.add_field(
-          name="Show this message", value="w/mod", inline=True
-      )
-      embed.add_field(name="kicks member", value="w/kick [user]", inline=True)
-      embed.add_field(name="Bans member", value="w/ban [user]", inline=True)
-      embed.add_field(name="Unbans member", value="w/unban [username then #]", inline=True)
-      embed.add_field(name="Snipe a message", value="w/snipe", inline=True)
-      embed.add_field(name="Shows all bans", value="w/bans", inline=True)
-      embed.add_field(name="Mutes member", value="w/mute [user]", inline=True)
-      embed.add_field(name="Unmute a user", value="w/unmute [user]", inline=True)
-      embed.add_field(name="First ever message", value="w/fm", inline=True)
-      embed.add_field(name="Channel lockdown", value="w/lock", inline=True)
-      embed.add_field(name="Unlock channel", value="w/unlock", inline=True)
-      embed.add_field(name="Nuke a channel.", value="w/nuke", inline=True)
-      embed.add_field(
-          name="Snipe a message", value="w/editsnipe", inline=True
-      )
-      await ctx.send(embed=embed)
+      em = discord.Embed(
+        title="Moderation commands", 
+        color=ctx.author.color,
+        ).add_field(
+        name="<:memberlogo:765649915031846912> | Member Commands",
+        value="`w/ban` | `w/kick` | `w/unban` | `w/mute` | `w/unmute` | `w/bans`"
+        ).add_field(
+        name="<:channellogo:765650652797468682> | Channel Commands",
+        value="`w/slowmode` | `w/lock` | `w/unlock` | `w/nuke` | `w/purge` | `w/snipe` | `w/editsnipe`",
+        inline=False
+        )
+      await ctx.send(embed=em)
       
-    @commands.command(help="Shows logging Category.")
+    @commands.command(help="Shows logging category.")
     @commands.guild_only()
     async def logs(self, ctx):
-      embed = discord.Embed()
-      embed.set_author(name='World - Logging help')
-      embed.add_field(name="Register your guild.", value="w/logging create", inline=True)
-      embed.add_field(name="Remove your guild.", value="w/logging shutdown", inline=True)
-      embed.add_field(name="Set Logging.", value="w/logging <option>", inline=True)
-      embed.set_footer(text="Use \"w/logging options>\" For logging info.")
-      await ctx.send(embed=embed)
+      em = discord.Embed(
+        title="Logging commands", 
+        color=ctx.author.color,
+        ).add_field(
+        name="<:discordlogo:765648661039677481> | Guild Commands",
+        value="`w/logging create` | `w/logging shutdown`\n| `w/logging <option> <channel>` | `w/logging options`"
+        )
+      await ctx.send(embed=em)
 
 
-    @commands.command(help="Shows fun Category.")
+    @commands.command(help="Shows Fun category.")
     @commands.guild_only()
     async def fun(self, ctx):
-      author = ctx.message
-      author
-
-      embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - Fun', icon_url=world_pfp)
-      embed.add_field(name="Show this message", value="w/fun", inline=True)
-      embed.add_field(name="Are you gay?", value="w/gay [user]", inline=True)
-      embed.add_field(name="Ask Ali A", value="w/askali [question]", inline=True)
-      embed.add_field(
-      name="Show user pp size", value="w/pp", inline=True
-      )
-      embed.add_field(name="Gta - Wasted", value="w/wasted", inline=True)
-      embed.add_field(
-          name="Supreme text", value="w/supreme [text]", inline=True
-      )
-      embed.add_field(name="Makes a Tweet", value="w/tweet [user] [message]", inline=True)
-      embed.add_field(
-          name="Quote a message", value="w/quote [thing]", inline=True
-      )
-      embed.add_field(name="Magical answers", value="w/8ball [question]", inline=True)
-      embed.add_field(
-          name="PH text", value="w/phtext [text1] & [text2]", inline=True
-      )
-      embed.add_field(
-      name="Love O nator", value="w/love [user]", inline=True
-      )
-      embed.add_field(
-      name="Sad times :(", value="w/f [thing]", inline=True
-      )
-      await ctx.send(embed=embed)
+      em = discord.Embed(
+        title="Fun commands", 
+        color=ctx.author.color,
+        ).add_field(
+        name="<:fun:765647000208801803> | Fun Commands",
+        value="`w/wasted` | `w/gay` | `w/askali` | `w/pp` | `w/supreme`| \n`w/tweet` | `w/quote`| `w/8ball` | `w/phtext` | `w/f` |"
+        )
+      await ctx.send(embed=em)
 
 
-    @commands.command(help="Shows economy categorie.")
+    @commands.command(help="Shows economy category.")
     @commands.guild_only()
     async def economy(self, ctx):
-      author = ctx.message
-      author
-    
-
-      embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - Economy', icon_url=world_pfp)
-      embed.add_field(
-          name="Show this message", value="w/economy", inline=True
-      )
-      embed.add_field(name="Create An Account", value="w/create", inline=True)
-      embed.add_field(name="Delete your Account", value="w/delete", inline=True)
-      embed.add_field(name="Show balance", value="w/bal", inline=True)
-      embed.add_field(name="Beg for Coins", value="w/beg", inline=True)
-      embed.add_field(name="Gamble your money", value="w/gamble <amount>", inline=True)
-      embed.add_field(name="Get daily Coins", value="w/daily", inline=True)
-      embed.add_field(name="Get weekly Coins", value="w/daily", inline=True)
-      embed.add_field(name="Show inventory", value="w/inv", inline=True)
-      embed.add_field(name="Buy a Product", value="w/buy [product] [amount]", inline=True)
-      embed.add_field(name="Sell a Product", value="w/sell [product] [amount]", inline=True)
-      embed.add_field(name="List of items", value="w/shop", inline=True)
-      await ctx.send(embed=embed)
+      em = discord.Embed(
+        title="Economy commands", 
+        color=ctx.author.color,
+        ).add_field(
+        name="<:account:765642079920980009> | Account Commands",
+        value="`w/create` | `w/delete` | `w/balance` | `w/inventory`"
+        ).add_field(
+        name=":shopping_bags: | Market Commands",
+        value="`w/shop` | `w/buy` | `w/sell` | `w/beg`",
+        inline=False
+        ).add_field(
+        name=":thumbsup: | Fun commands",
+        value="`w/daily` | `w/weekly` | `w/gamble`",
+        inline=False
+        )
+      await ctx.send(embed=em)
    
 
-    @commands.command(help="Shows New commands.")
+    @commands.command(help="Shows new commands.")
     @commands.guild_only()
     async def new(self, ctx):
-      author = ctx.message
-      author
-    
-
-      embed = discord.Embed(colour=ctx.author.color)
-      embed.set_author(name='World - new', icon_url=world_pfp)
-      embed.add_field(
-          name="Show this message", value="w/new", inline=True
-      )
-      embed.add_field(name="Suggest or report a bug.", value="w/suggest", inline=True)
-      embed.add_field(name="Set some logs.", value="w/logs", inline=True)
-      embed.add_field(name="Whole rewrite", value="w/economy", inline=True)
-      embed.add_field(name="Snipe some messages", value="w/snipe", inline=True)
-      embed.add_field(name="Snipe some messages", value="w/editsnipe", inline=True)
-      await ctx.send(embed=embed)
+      em = discord.Embed(
+        title="New commands!", 
+        color=ctx.author.color,
+        description="Whole rewrite - `w/economy`\nMore logs! - `w/logs`\nSuggest a bug! - `w/suggest`\nSnipe commands! - `w/mod`"
+        )
+      await ctx.send(embed=em)
 
 
 def setup(bot):
