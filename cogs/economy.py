@@ -593,7 +593,7 @@ class EconomyCog(commands.Cog):
         successfully.
         """
         if getattr(user, item.name) < amount:
-            raise NotEnoughItems(f"Sorry {ctx.author.mention} You don't have enough items to perform this operation.")
+            raise NotEnoughItems(f"Sorry <@{user._id}> You don't have enough items to perform this operation.")
 
         await self._database_collection.update_one(
             {
