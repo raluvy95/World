@@ -20,8 +20,6 @@ class FunCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.gameCache = {}
-        self.snipeCache = {}
-        self.editSnipeCache = {}
 
     @commands.command(help="World is funny.")
     async def joke(self, ctx):
@@ -311,45 +309,6 @@ class FunCog(commands.Cog):
         del self.gameCache[ctx.channel.id]
         await ctx.send(embed=embed)
                         
-    @commands.command(help="snipe")
-    async def snipe(self, ctx):
-        embed = discord.Embed(title="Snipe", color=0x2F3136, timestamp=datetime.datetime.utcnow())
-        embed.add_field(name="User", value=self.snipeCache[ctx.channel.id]["user"])
-        embed.add_field(name="Content", value=self.snipeCache[ctx.channel.id]["content"])
-        embed.add_field(name="Channel", value=f"<#{self.snipeCache[ctx.channel.id]['channel']}>")
-        await ctx.send(embed=embed)
-        del self.snipeCache[ctx.channel.id]
-
-
-    @commands.command()
-    async def editsnipe(self, ctx):
-        embed = discord.Embed(title="Edit Snipe", colour=0x2F3136, timestamp=datetime.datetime.utcnow())
-        embed.add_field(name="User", value=self.editSnipeCache[ctx.channel.id]["user"])
-        embed.add_field(name="Content", value=self.editSnipeCache[ctx.channel.id]["bcontent"])
-        embed.add_field(name="Channel", value=f"<#{self.editSnipeCache[ctx.channel.id]['channel']}>")
-        await ctx.send(embed=embed)
-        del self.editSnipeCache[ctx.channel.id]
-
-
-    @commands.Cog.listener()
-    async def on_message_delete(self, message):
-
-        self.snipeCache.update(
-            {message.channel.id: {
-            "user": message.author,
-            "content": message.content,
-            "channel": message.channel.id
-            }})
-
-
-    @commands.Cog.listener()
-    async def on_message_edit(self, before, after):
-        self.editSnipeCache.update(
-            {before.channel.id: {
-                "user": before.author,
-                "bcontent": before.content,
-                "channel": before.channel.id
-            }})
 
     @commands.command(aliases=["8ball"], help="Magical answers.")
     async def _8ball(self, ctx, *, question):
