@@ -130,6 +130,7 @@ class EconomyCog(commands.Cog):
         self._connect_to_database()
 
     @commands.command(name="shop", aliases=("items",))
+    @commands.guild_only()
     async def shop(self, ctx: commands.Context) -> None:
         """Returns all items you can buy or sell."""
         shop_embed = Embed(
@@ -149,6 +150,7 @@ class EconomyCog(commands.Cog):
         await ctx.send(embed=shop_embed)
 
     @commands.command(name="inventory", aliases=("inv",))
+    @commands.guild_only()
     async def inventory(self, ctx: commands.Context) -> None:
         """Returns the current items from the user inventory."""
         if not (await self._has_account(ctx.author.id)):
@@ -188,6 +190,7 @@ class EconomyCog(commands.Cog):
 
 
     @commands.command(name="balance", aliases=("bal",))
+    @commands.guild_only()
     async def balance(self, ctx: commands.Context) -> None:
         """Returns the current balance of the user."""
         if not (await self._has_account(ctx.author.id)):
@@ -202,6 +205,7 @@ class EconomyCog(commands.Cog):
         await ctx.send(embed=bal_embed)
 
     @commands.command(name="buy")
+    @commands.guild_only()
     async def buy(self, ctx: commands.Context, item: ItemConverter, amount: UnsignedIntegerConverter) -> None:
         """
         Buys items.
@@ -236,6 +240,7 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} You missed the `item` or `amount` arguments.")
 
     @commands.command(name="sell")
+    @commands.guild_only()
     @commands.cooldown(1, 60, BucketType.member)
     async def sell(self, ctx: commands.Context, item: ItemConverter, amount: UnsignedIntegerConverter) -> None:
         """
@@ -273,6 +278,7 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} You missed the `item` or `amount` arguments.")
 
     @commands.command(name="delete")
+    @commands.guild_only()
     async def delete(self, ctx: commands.Context) -> None:
         """Deletes the economy account associated to the user."""
         if not (await self._has_account(ctx.author.id)):
@@ -284,6 +290,7 @@ class EconomyCog(commands.Cog):
             await ctx.send(embed=delete_account_embed)
 
     @commands.command(name="create")
+    @commands.guild_only()
     async def create(self, ctx: commands.Context) -> None:
         """Creates a World account."""
         if (await self._has_account(ctx.author.id)):
@@ -295,6 +302,7 @@ class EconomyCog(commands.Cog):
             await ctx.send(embed=create_account_embed)
 
     @commands.command(name="status")
+    @commands.guild_only()
     async def status(self, ctx: commands.Context, *, status: str) -> None:
         """Sets a custom status for the user."""
         if not (await self._has_account(ctx.author.id)):
@@ -324,6 +332,7 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} You missed the `status` argument.")
 
     @commands.command(name="gamble")
+    @commands.guild_only()
     async def gamble(self, ctx: commands.Context, amount: UnsignedIntegerConverter) -> None:
         """
         Gambles your amount money.
@@ -371,6 +380,7 @@ class EconomyCog(commands.Cog):
         await ctx.send(embed=win_embed)
 
     @commands.command(name="beg")
+    @commands.guild_only()
     @commands.cooldown(1, 45, BucketType.member)
     async def beg(self, ctx: commands.Context) -> None:
         """User can beg for coins, and World will generate a random number between 10 and 300."""
@@ -414,6 +424,7 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} You missed the `amount` argument.")
 
     @commands.command(name="daily")
+    @commands.guild_only()
     @commands.cooldown(1, 86400, BucketType.member)
     async def daily(self, ctx: commands.Context) -> None:
         """Gives to the user a daily account of money."""
@@ -441,6 +452,7 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Try again in {error.retry_after / 3600:.2f} hours.")
 
     @commands.command(name="weekly")
+    @commands.guild_only()
     @commands.cooldown(1, 604800, BucketType.member)
     async def weekly(self, ctx: commands.Context) -> None:
         """Gives to the user a weekly account of money."""
@@ -468,6 +480,7 @@ class EconomyCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Try again in {error.retry_after / 86400:.2f} days.")
 
     @commands.command(name="transfer")
+    @commands.guild_only()
     async def transfer(self, ctx: commands.Context, target: Member, amount: UnsignedIntegerConverter) -> None:
         """
         Transfers an amount of money to the target specified.
