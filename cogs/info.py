@@ -234,6 +234,11 @@ class InfoCog(commands.Cog):
       channel = self.bot.get_channel(763110868791459860)
       await channel.send(embed=embed)
 
+    @suggest.error
+    async def suggest_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/suggest <text>`")
+
     @commands.command(help="Show World's uptime.")
     @commands.guild_only()
     async def uptime(self, ctx):
@@ -254,7 +259,7 @@ class InfoCog(commands.Cog):
         async with aiohttp.ClientSession() as cs:
             async with cs.get(f"http://api.urbandictionary.com/v0/define?term={'%20'.join(name)}") as r:
                 if r.status != 200:
-                    return await ctx.send(f"Sorry {ctx.author.mention} Api has broken.")
+                    return await ctx.send(f"Sorry {ctx.author.mention} Api has broken. Or you have provided no word.")
                 json = await r.json()
                 list1 = json['list']
                 if len(list1) < 1:
@@ -265,6 +270,11 @@ class InfoCog(commands.Cog):
                 embed.add_field(name="Example", value=res['example'])
                 embed.set_footer(text=f"👍 {res['thumbs_up']} | 👎{res['thumbs_down']}")
                 await ctx.send(embed=embed)
+
+    @urban.error
+    async def urban_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/urban <word>`")
      
 
 
