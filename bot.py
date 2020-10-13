@@ -46,7 +46,7 @@ async def on_ready():
     ----------------
     Bot is ready!
     ---------------
-    Author: Sean, Fxcilities, and CatNowBlue
+    Author: Sean, Fxcilities, CatNowBlue and AtieP
     ---------------
     Logged in as: {bot.user.name}
     ---------------
