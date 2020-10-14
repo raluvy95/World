@@ -341,10 +341,11 @@ class EconomyCog(commands.Cog):
             lost_embed = Embed(title=f"You lost.", color=0x2F3136, description=f"Hey {ctx.author.mention} You have lost {amount} coin{'s' if amount > 1 else ''}.")
             await ctx.send(embed=lost_embed)
             return
-
+                               
+        user = await self._get_user(ctx.author.id)             
         await self._database_collection.update_one(
             {
-                "_id": ctx.author.id
+                "_id": user._id
             },
             {
                 "$set": {
@@ -352,7 +353,7 @@ class EconomyCog(commands.Cog):
                 }
             }
         )
-        win_embed = Embed(title=f"Congrats!", color=0x2F3136, description=f"Hey {ctx.author.mention} You have won `{amount * 2}` coins.")
+        win_embed = Embed(title=f"Congrats!", color=0x2F3136, description=f"Hey {ctx.author.mention} You have won `{amount}` coins.")
         await ctx.send(embed=win_embed)
 
     @commands.command(name="beg")
