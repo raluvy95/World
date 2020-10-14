@@ -314,7 +314,7 @@ class EconomyCog(commands.Cog):
         Gambles your amount money.
         
         If you win, you get your money back but doubled, Otherwise, you lose it.
-        The winning percentage is 5%.
+        The winning percentage is 15%.
         """
         if not (await self._has_account(ctx.author.id)):
             await self._create_account(ctx.author.id)
@@ -337,7 +337,7 @@ class EconomyCog(commands.Cog):
         # Get percentage
         random.seed(datetime.now().timestamp())
         percentage = random.randint(0, 100)
-        if percentage <= 95:
+        if percentage <= 85:
             lost_embed = Embed(title=f"You lost.", color=0x2F3136, description=f"Hey {ctx.author.mention} You have lost {amount} coin{'s' if amount > 1 else ''}.")
             await ctx.send(embed=lost_embed)
             return
