@@ -11,7 +11,6 @@ class ModCog(commands.Cog):
         self.snipeCache = {}
         self.editSnipeCache = {}
 
-
     @commands.command(help="Ban a user.")
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
@@ -28,7 +27,8 @@ class ModCog(commands.Cog):
     async def ban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/ban <member> <reason>`")
-
+        elif isinstance(error, commands.CheckFailure):
+            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Ban People!')
 
     @commands.command(help="Kick a user.")
     @commands.guild_only()
@@ -46,6 +46,8 @@ class ModCog(commands.Cog):
     async def kick_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/kick <member> <reason>`")
+        elif isinstance(error, commands.CheckFailure):
+            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Kick People!')
 
     @commands.command(help="Mute a user.")
     @commands.has_permissions(manage_messages=True)
@@ -85,10 +87,7 @@ class ModCog(commands.Cog):
     async def mute_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
-
-    @mute.error
-    async def mute_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/mute <member> <reason>`")
 
     @commands.command(help="Delete specified messages.")
@@ -106,21 +105,9 @@ class ModCog(commands.Cog):
     async def purge_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f'Sorry {ctx.author.mention} Please Type `w/purge <amount>')
-
-    @purge.error
-    async def purge_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
+        elif isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have The Role Perm: `manage messages`!')
-
-    @ban.error
-    async def ban_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Ban People!')
-
-    @kick.error
-    async def kick_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Kick People!')
+        
 
     @commands.command(help="Unban a user.")
     @commands.has_permissions(ban_members=True)
@@ -146,12 +133,8 @@ class ModCog(commands.Cog):
     async def unban_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Dont Have Perms Or This Person Cannot Be Unbanned')
-
-    @unban.error
-    async def unban_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
+        elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/unban <member>`")
-
 
     @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
@@ -172,13 +155,9 @@ class ModCog(commands.Cog):
     @poll.error
     async def poll_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')  
-
-    @poll.error
-    async def poll_error(self, ctx, error):
-        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(':regional_indicator_x: Sorry you dont have permissions to do this!')
+        elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/poll <description>`")
-
 
     @commands.command(help="Start a Poll.")
     @commands.has_permissions(ban_members=True)
@@ -253,7 +232,6 @@ class ModCog(commands.Cog):
             color=0x2F3136)
         await ctx.send(embed=embed)
 
-
     @commands.command(help="Unmute a member")
     @commands.guild_only()
     @commands.has_permissions(manage_messages=True)
@@ -276,17 +254,12 @@ class ModCog(commands.Cog):
 
     @slowmode.error
     async def slowmode_error(self, ctx, error):
-        if isinstance(error, commands.CommandInvokeError):
-            await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} `{error}`")
-        else:
-            await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} `{error}`")
-   
+        await ctx.send(f":regional_indicator_x: Sorry {ctx.author.mention} `{error}`")
    
     @lock.error
     async def lock_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} This Command Can Only Be Used By Admins') 
-        
         
     @unlock.error
     async def unlock_error(self, ctx, error):
@@ -317,6 +290,12 @@ class ModCog(commands.Cog):
     async def dm_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/dm <member> <message>`")
+        elif isinstance(error, commands.CheckFailure):
+            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Direct Message Members!')
+        elif isinstance(error, commands.CommandOnCooldown):
+            a = error.retry_after
+            a = round(a)
+            await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
     @commands.command(help="snipe")
     @commands.guild_only()
@@ -342,7 +321,6 @@ class ModCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-
         self.snipeCache.update(
             {message.channel.id: {
             "user": message.author,
@@ -359,18 +337,6 @@ class ModCog(commands.Cog):
                 "bcontent": before.content,
                 "channel": before.channel.id
             }})
-
-    @dm.error
-    async def dm_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Do Not Have Perms To Direct Message Members!')
-    
-    @dm.error
-    async def dm_error(self, ctx, error):
-        if isinstance(error, commands.CommandOnCooldown):
-            a = error.retry_after
-            a = round(a)
-            await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
 
 def setup(bot):
