@@ -494,7 +494,8 @@ class EconomyCog(commands.Cog):
         daily_embed = Embed(
             title=f"Transfer",
             color=0x2F3136,
-            description=f"Hey {ctx.author.mention} You have successfully transfered `{amount}` coin{'s' if amount > 1 else ''} to {target.mention}.")
+            description=f"Hey {ctx.author.mention} You have successfully transfered `{amount}` coin{'s' if amount > 1 else ''} to {target.mention}."
+        )
         await ctx.send(embed=daily_embed)
 
     @transfer.error
