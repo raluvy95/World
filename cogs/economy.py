@@ -445,7 +445,7 @@ class EconomyCog(commands.Cog):
                 }
             }
         )
-        weekly_embed = Embed(title=f"Daily", color=0x2F3136, description=f"Hey {ctx.author.mention} You successfully received your weekly amount of `800` coins.")
+        weekly_embed = Embed(title=f"Weekly", color=0x2F3136, description=f"Hey {ctx.author.mention} You successfully received your weekly amount of `800` coins.")
         await ctx.send(embed=weekly_embed)
 
     @weekly.error
