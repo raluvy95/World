@@ -24,7 +24,7 @@ from os import listdir
 load_dotenv()
 
 def get_prefix(bot, message):
-    prefixes = ['w/', 'world ']
+    prefixes = ['w/', 'world ', 'World ']
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
 bot = commands.Bot(command_prefix=get_prefix, description='Discord Bot Made For All', case_insensitive=True, intents=discord.Intents.all())

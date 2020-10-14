@@ -90,7 +90,7 @@ class HelpCog(commands.Cog):
         value="`w/ban` | `w/kick` | `w/unban` | `w/mute` | `w/unmute` | `w/bans`"
         ).add_field(
         name="<:channellogo:765650652797468682> | Channel Commands",
-        value="`w/slowmode` | `w/lock` | `w/unlock` | `w/nuke` | `w/purge` | `w/snipe` | `w/editsnipe` | `w/poll` | `w/polln`",
+        value="`w/slowmode` | `w/lock` | `w/unlock` | `w/nuke` | `w/purge` | `w/snipe` | `w/editsnipe` | `w/poll` | `w/polln` | `w/fm`",
         inline=False
         )
       await ctx.send(embed=em)
@@ -116,7 +116,7 @@ class HelpCog(commands.Cog):
         color=ctx.author.color,
         ).add_field(
         name="<:fun:765647000208801803> | Fun Commands",
-        value="`w/wasted` | `w/gay` | `w/askali` | `w/pp` | `w/supreme`| \n`w/tweet` | `w/quote`| `w/8ball` | `w/phtext` | `w/f` | `w/joke` | `w/ship` | `w/meme` | `w/avatar` | `w/akinator` | `w/emojify` | `w/asktrump` | `w/gif` | `w/rr`"
+        value="`w/wasted` | `w/gay` | `w/askali` | `w/pp` | `w/supreme`| \n`w/tweet` | `w/quote`| `w/8ball` | `w/phtext` | `w/f` | `w/joke` | `w/ship` | `w/meme` | `w/avatar` | `w/akinator` | `w/emojify` | `w/asktrump` | `w/gif` | `w/rr` | `w/screenshot`"
         )
       await ctx.send(embed=em)
 
@@ -129,7 +129,7 @@ class HelpCog(commands.Cog):
         color=ctx.author.color,
         ).add_field(
         name="<:account:765642079920980009> | Account Commands",
-        value="`w/create` | `w/delete` | `w/balance` | `w/inventory`"
+        value="`w/create` | `w/delete` | `w/balance` | `w/inventory` | `w/transfer`"
         ).add_field(
         name=":shopping_bags: | Market Commands",
         value="`w/shop` | `w/buy` | `w/sell` | `w/beg`",
