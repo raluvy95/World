@@ -20,7 +20,7 @@ load_dotenv()
 # -------
 # Main bot area
 world = commands.Bot(
-    command_prefix=("w/", "world"),
+    command_prefix=("w/", "world "),
     description="Discord Bot Made For All",
     case_insensitive=True,
     intents=Intents.all()
