@@ -319,14 +319,5 @@ class LoggingCog(commands.Cog):
             		await channel.send(file=discord.File(fp=image_binary,filename="goodbye.png"))
 
 
-    @logging.error
-    async def logging_error(self, ctx, error):
-        if isinstance(error, commands.CommandInvokeError):
-        	await ctx.send(f"Sorry {ctx.author.mention} - {error}")
-        else:
-        	await ctx.send(f"Sorry {ctx.author.mention} - {error}")
-
-
-
 def setup(bot):
     bot.add_cog(LoggingCog(bot))
