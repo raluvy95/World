@@ -8,7 +8,7 @@ from typing import Literal, Union
 
 import motor.motor_asyncio
 
-from discord import Color, Embed, Member
+from discord import Embed, Member
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from dotenv import load_dotenv
@@ -61,7 +61,7 @@ class Apple(metaclass=Item):
 
 class ItemConverter(commands.Converter):
     """Converts a string into a World item."""
-    
+
     async def convert(self, ctx: commands.Context, argument: str) -> Item:
         """Converts a string into a World item."""
         if argument.lower() in ("cookie", "cookies"):
@@ -172,7 +172,6 @@ class EconomyCog(commands.Cog):
         inventory_embed.set_thumbnail(url=ctx.author.avatar_url)
         await ctx.send(embed=inventory_embed)
 
-
     @commands.command(name="balance", aliases=("bal",))
     @commands.guild_only()
     async def balance(self, ctx: commands.Context) -> None:
@@ -185,7 +184,7 @@ class EconomyCog(commands.Cog):
             title=f"{ctx.author}'s balance",
             color=0x2F3136,
             description=f"`{author.coins:.2f}` Coins"
-            )
+        )
         await ctx.send(embed=bal_embed)
 
     @commands.command(name="buy")
@@ -193,7 +192,7 @@ class EconomyCog(commands.Cog):
     async def buy(self, ctx: commands.Context, item: ItemConverter, amount: UnsignedIntegerConverter) -> None:
         """
         Buys items.
-        
+
         Run `w/shop` for a list of items.
         """
         if not (await self._has_account(ctx.author.id)):
@@ -202,10 +201,10 @@ class EconomyCog(commands.Cog):
         user = await self._get_user(ctx.author.id)
         await self._buy(item, amount, user)
         buy_embed = Embed(
-            title=f"You successfully bought",
+            title="You successfully bought",
             color=0x2F3136,
             description=f"{ctx.author.mention} bought `{amount} {item.name}{'s' if amount > 1 else ''}`\n\nTo see your inventory run the command `w/inventory`"
-            )
+        )
         await ctx.send(embed=buy_embed)
 
     @buy.error
@@ -225,7 +224,7 @@ class EconomyCog(commands.Cog):
     async def sell(self, ctx: commands.Context, item: ItemConverter, amount: UnsignedIntegerConverter) -> None:
         """
         Sells items.
-        
+
         Run `w/shop` for a list of items.
         """
         if not (await self._has_account(ctx.author.id)):
@@ -234,10 +233,10 @@ class EconomyCog(commands.Cog):
         user = await self._get_user(ctx.author.id)
         coins_earned = await self._sell(item, amount, user)
         if not coins_earned:
-            robbed_embed = Embed(title=f"Sorry", color=0x2F3136, description=f"Sorry {ctx.author.mention} your items couldn't be sold because you got robbed. Good luck the next time!")
+            robbed_embed = Embed(title="Sorry", color=0x2F3136, description=f"Sorry {ctx.author.mention} your items couldn't be sold because you got robbed. Good luck the next time!")
             await ctx.send(embed=robbed_embed)
         else:
-            sold_embed = Embed(title=f"Congrats!", color=0x2F3136, description=f"Hey {ctx.author.mention} You sold your items successfully! You earned **{coins_earned}** coins.")
+            sold_embed = Embed(title="Congrats!", color=0x2F3136, description=f"Hey {ctx.author.mention} You sold your items successfully! You earned **{coins_earned}** coins.")
             await ctx.send(embed=sold_embed)
 
     @sell.error
@@ -258,11 +257,11 @@ class EconomyCog(commands.Cog):
     async def delete(self, ctx: commands.Context) -> None:
         """Deletes the economy account associated to the user."""
         if not (await self._has_account(ctx.author.id)):
-            no_account_embed = Embed(title=f"Uh oh!", color=0x2F3136, description=f"Hey {ctx.author.mention} You dont have a World account, Run the following command `w/create`")
+            no_account_embed = Embed(title="Uh oh!", color=0x2F3136, description=f"Hey {ctx.author.mention} You dont have a World account, Run the following command `w/create`")
             await ctx.send(embed=no_account_embed)
         else:
             await self._database_collection.delete_one({"_id": ctx.author.id})
-            delete_account_embed = Embed(title=f"Goodbye", color=0x2F3136, description=f"Hey {ctx.author.mention} I have successfully removed your World account.")
+            delete_account_embed = Embed(title="Goodbye", color=0x2F3136, description=f"Hey {ctx.author.mention} I have successfully removed your World account.")
             await ctx.send(embed=delete_account_embed)
 
     @commands.command(name="create")
@@ -270,11 +269,11 @@ class EconomyCog(commands.Cog):
     async def create(self, ctx: commands.Context) -> None:
         """Creates a World account."""
         if (await self._has_account(ctx.author.id)):
-            has_account_embed = Embed(title=f"Uh oh!", color=0x2F3136, description=f"Hey {ctx.author.mention} You already have a World account.")
+            has_account_embed = Embed(title="Uh oh!", color=0x2F3136, description=f"Hey {ctx.author.mention} You already have a World account.")
             await ctx.send(embed=has_account_embed)
         else:
             await self._create_account(ctx.author.id)
-            create_account_embed = Embed(title=f"Welcome!", color=0x2F3136, description=f"Hey {ctx.author.mention} I have successfully made your World account.")
+            create_account_embed = Embed(title="Welcome!", color=0x2F3136, description=f"Hey {ctx.author.mention} I have successfully made your World account.")
             await ctx.send(embed=create_account_embed)
 
     @commands.command(name="status")
@@ -298,7 +297,7 @@ class EconomyCog(commands.Cog):
                 }
             }
         )
-        status_embed = Embed(title=f"Status", color=0x2F3136, description=f"Hey {ctx.author.mention} I have set your current status to `{status}`.")
+        status_embed = Embed(title="Status", color=0x2F3136, description=f"Hey {ctx.author.mention} I have set your current status to `{status}`.")
         await ctx.send(embed=status_embed)
 
     @status.error
@@ -312,7 +311,7 @@ class EconomyCog(commands.Cog):
     async def gamble(self, ctx: commands.Context, amount: UnsignedIntegerConverter) -> None:
         """
         Gambles your amount money.
-        
+
         If you win, you get your money back but doubled, Otherwise, you lose it.
         The winning percentage is 15%.
         """
@@ -338,11 +337,11 @@ class EconomyCog(commands.Cog):
         random.seed(datetime.now().timestamp())
         percentage = random.randint(0, 100)
         if percentage <= 85:
-            lost_embed = Embed(title=f"You lost.", color=0x2F3136, description=f"Hey {ctx.author.mention} You have lost {amount} coin{'s' if amount > 1 else ''}.")
+            lost_embed = Embed(title="You lost.", color=0x2F3136, description=f"Hey {ctx.author.mention} You have lost {amount} coin{'s' if amount > 1 else ''}.")
             await ctx.send(embed=lost_embed)
             return
-                               
-        user = await self._get_user(ctx.author.id)             
+
+        user = await self._get_user(ctx.author.id)
         await self._database_collection.update_one(
             {
                 "_id": user._id
@@ -353,7 +352,7 @@ class EconomyCog(commands.Cog):
                 }
             }
         )
-        win_embed = Embed(title=f"Congrats!", color=0x2F3136, description=f"Hey {ctx.author.mention} You have won `{amount}` coins.")
+        win_embed = Embed(title="Congrats!", color=0x2F3136, description=f"Hey {ctx.author.mention} You have won `{amount}` coins.")
         await ctx.send(embed=win_embed)
 
     @commands.command(name="beg")
@@ -378,10 +377,10 @@ class EconomyCog(commands.Cog):
             }
         )
         beg_embed = Embed(
-            title=f"You have begged.",
+            title="You have begged.",
             color=0x2F3136,
             description=f"Amount given from World: `{amount_of_coins}` Coins\nCurrent balance: `{user.coins + amount_of_coins}` Coins"
-            )
+        )
         await ctx.send(embed=beg_embed)
 
     @beg.error
@@ -418,7 +417,7 @@ class EconomyCog(commands.Cog):
                 }
             }
         )
-        daily_embed = Embed(title=f"Daily", color=0x2F3136, description=f"Hey {ctx.author.mention} You successfully received your daily amount of `200` coins.")
+        daily_embed = Embed(title="Daily", color=0x2F3136, description=f"Hey {ctx.author.mention} You successfully received your daily amount of `200` coins.")
         await ctx.send(embed=daily_embed)
 
     @daily.error
@@ -446,7 +445,7 @@ class EconomyCog(commands.Cog):
                 }
             }
         )
-        weekly_embed = Embed(title=f"Weekly", color=0x2F3136, description=f"Hey {ctx.author.mention} You successfully received your weekly amount of `800` coins.")
+        weekly_embed = Embed(title="Weekly", color=0x2F3136, description=f"Hey {ctx.author.mention} You successfully received your weekly amount of `800` coins.")
         await ctx.send(embed=weekly_embed)
 
     @weekly.error
@@ -460,7 +459,7 @@ class EconomyCog(commands.Cog):
     async def transfer(self, ctx: commands.Context, target: Member, amount: UnsignedIntegerConverter) -> None:
         """
         Transfers an amount of money to the target specified.
-        
+
         The target is a member from your Discord server.
         """
         if not (await self._has_account(ctx.author.id)):
@@ -493,7 +492,7 @@ class EconomyCog(commands.Cog):
             }
         )
         daily_embed = Embed(
-            title=f"Transfer",
+            title="Transfer",
             color=0x2F3136,
             description=f"Hey {ctx.author.mention} You have successfully transfered `{amount}` coin{'s' if amount > 1 else ''} to {target.mention}."
         )
@@ -545,7 +544,7 @@ class EconomyCog(commands.Cog):
     async def _buy(self, item: Item, amount: int, user: User) -> None:
         """
         The core of the `buy` command.
-        
+
         This performs the buy operation. This will check if the user has enough coins,
         substract the coins from the user account, and add the specified item into the
         user inventory.
