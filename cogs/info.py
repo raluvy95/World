@@ -3,12 +3,13 @@ import asyncio
 import time
 import aiohttp
 import datetime
+from typing import Optional
+
 from discord import Spotify
 from datetime import timedelta
 from discord.ext import commands
-starttime = time.time()
 
-world_pfp = ("https://cdn.discordapp.com/attachments/727241613901824563/764885646162395156/world.png")
+starttime = time.time()
 
 class InfoCog(commands.Cog):
 
@@ -102,16 +103,14 @@ class InfoCog(commands.Cog):
 
       await ctx.send(embed=embed)
 
-
-
     @commands.command(help="Show World's Info.")
     @commands.guild_only()
     async def botstats(self, ctx):
       dpyVersion = discord.__version__
-      serverCount = len(bot.guilds)
-      memberCount = len(set(bot.get_all_members()))
+      serverCount = len(self.bot.guilds)
+      memberCount = len(set(self.bot.get_all_members()))
 
-      embed = discord.Embed(title=f'{bot.user.name} - Stats', description='Updated Just Now:', colour=0x2F3136, timestamp=ctx.message.created_at)
+      embed = discord.Embed(title=f'{self.bot.user.name} - Stats', description='Updated Just Now:', colour=0x2F3136, timestamp=ctx.message.created_at)
 
       embed.add_field(name='Library Discord.py Version:', value=dpyVersion)
       embed.add_field(name='Total Servers:', value=serverCount)
@@ -119,14 +118,13 @@ class InfoCog(commands.Cog):
       embed.add_field(name='Bot Made By:', value="<@662334026098409480>")
 
       embed.set_footer(text=f"World - Botstats | Made By seaÃ±#1718")
-      embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
+      embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
 
       await ctx.send(embed=embed)
 
-
     @commands.command(help="Show users spotify info.")
     @commands.guild_only()
-    async def spotify(self, ctx, user: discord.Member=None):
+    async def spotify(self, ctx, user: Optional[discord.Member]):
         user = user or ctx.author
         for activity in user.activities:
             if isinstance(activity, discord.Spotify):
@@ -145,8 +143,8 @@ class InfoCog(commands.Cog):
                 embed1.colour = (activity.color)
                 await ctx.send(embed=embed1)
             else:
-              embed = discord.Embed(title=f"Sorry {ctx.author} your not currenty listening to `Spotify` or you have a custom status.")
-              return await ctx.send(embed=embed)
+                embed = discord.Embed(title=f"Sorry {ctx.author} your not currenty listening to `Spotify` or you have a custom status.")
+                await ctx.send(embed=embed)
 
     @commands.command(help="Invite World.")
     @commands.guild_only()
@@ -155,12 +153,11 @@ class InfoCog(commands.Cog):
         em = discord.Embed(title='Click Me To Invite Me :)', url=(coronastats), icon_url=world_pfp)
         em.set_author(name='World - Invite', url='https://discord.com/api/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot' , icon_url=world_pfp)
         em.description = ('Link Above Directs To My Invite Link!')
-        em.set_thumbnail(url=worldpfp)
+        em.set_thumbnail(url=self.bot.user.avatar_url)
         em.set_image(url="https://cdn.discordapp.com/attachments/717867341333004328/730137118499799232/unknown.png")
         em.set_footer(text='World - Invite')
         em.colour = (0x2F3136)
         await ctx.send(embed=em)
-
 
     @commands.command(help="Vote for world.")
     @commands.guild_only()
@@ -201,7 +198,6 @@ class InfoCog(commands.Cog):
         em.color = 0x2F3136
 
         await ctx.send(embed=em)
-
 
     @commands.command(help="Corona Virus information")
     @commands.guild_only()
@@ -275,7 +271,6 @@ class InfoCog(commands.Cog):
     async def urban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/urban <word>`")
-     
 
 
 def setup(bot):
