@@ -29,14 +29,12 @@ def get_prefix(bot, message):
 bot = commands.Bot(command_prefix=get_prefix, description='Discord Bot Made For All', case_insensitive=True, intents=discord.Intents.all())
 bot.remove_command("help")
 
-initial_extensions = ['cogs.owner', 'cogs.ping', 'cogs.help',
- 'cogs.info', 'cogs.economy', 'cogs.fun', 'cogs.mod', 'cogs.logging_']
-
-
-if __name__ == '__main__':
-    for extension in initial_extensions:
-        bot.load_extension(extension)
-
+cogs = [
+    f[:-3] for f in listdir("cogs/")
+    if f.endswith(".py")
+]
+for cog in cogs:
+	bot.load_extension(f"cogs.{cog}")
 
 @bot.event
 async def on_ready():
