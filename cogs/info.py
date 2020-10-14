@@ -16,7 +16,7 @@ class InfoCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["ui"], help="Show users information.")=
+    @commands.command(aliases=["ui"], help="Show users information.")
     async def userinfo(self, ctx, *, user: discord.Member = None):
       if user is None:
           user = ctx.author
