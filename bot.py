@@ -97,7 +97,7 @@ async def on_command_error(ctx: commands.Context, error: commands.errors.Command
             Error
             
             Cog: {ctx.cog.__class__.__name__}
-            Command: {ctx.command.__class__.__name__}
+            Command: {ctx.command}
             Invoker: {ctx.author} ({ctx.author.id})
             Location: {ctx.message.jump_url}
             Input: `{ctx.message.content}`
