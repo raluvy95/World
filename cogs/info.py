@@ -42,14 +42,14 @@ class InfoCog(commands.Cog):
       em.set_footer(text=f"World Userinfo | {user}'s Info", icon_url=user.avatar_url)
       return await ctx.send(embed=em)
 
-    @commands.command(help="Show guilds avatar.")=
+    @commands.command(help="Show guilds avatar.")
     async def servericon(self, ctx):
       em = discord.Embed(title=ctx.guild.name)
       em.set_image(url=ctx.guild.icon_url)
       em.color = (0x2F3136)
       await ctx.send(embed=em)
     
-    @commands.command(help="Show guilds information.")=
+    @commands.command(help="Show guilds information.")
     async def serverinfo(self, ctx):
       em = discord.Embed(description=f"Name: {ctx.guild}")
       em.color = (0x2F3136)
@@ -72,13 +72,13 @@ class InfoCog(commands.Cog):
       em.set_footer(text=f"World ServerInfo | {ctx.guild}'s Info", icon_url=ctx.guild.icon_url)
       await ctx.send(embed=em)
 
-    @commands.command(help="List of connected servers.")=
+    @commands.command(help="List of connected servers.")
     async def servers(self, ctx):
       servers = list(self.bot.guilds)
       embed = discord.Embed(title=None,colour=0x2F3136,description="Connected on " + str(len(servers)) + " servers")
       await ctx.send(embed=embed)
 
-    @commands.command(help="Show World's Info.")=
+    @commands.command(help="Show World's Info.")
     async def botinfo(self, ctx):
       dpyVersion = discord.__version__
       serverCount = len(self.bot.guilds)
