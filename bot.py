@@ -112,7 +112,7 @@ async def on_command_error(ctx: commands.Context, error: commands.errors.Command
             color=0xff0000
         )
         try:
-            error_channel = await world.fetch_channel(747887386624786513)
+            error_channel = await world.fetch_channel(763111707379761162)
         except HTTPException:
             return
         await error_channel.send(embed=error_embed)
