@@ -31,7 +31,6 @@ class LoggingCog(commands.Cog):
 
     @commands.command(help="World - Logging")
     @commands.has_permissions(administrator=True)
-    @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def logging(self, ctx, options, channel: Optional[discord.TextChannel]):
 

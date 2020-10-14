@@ -16,8 +16,7 @@ class InfoCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["ui"], help="Show users information.")
-    @commands.guild_only()
+    @commands.command(aliases=["ui"], help="Show users information.")=
     async def userinfo(self, ctx, *, user: discord.Member = None):
       if user is None:
           user = ctx.author
@@ -43,16 +42,14 @@ class InfoCog(commands.Cog):
       em.set_footer(text=f"World Userinfo | {user}'s Info", icon_url=user.avatar_url)
       return await ctx.send(embed=em)
 
-    @commands.command(help="Show guilds avatar.")
-    @commands.guild_only()
+    @commands.command(help="Show guilds avatar.")=
     async def servericon(self, ctx):
       em = discord.Embed(title=ctx.guild.name)
       em.set_image(url=ctx.guild.icon_url)
       em.color = (0x2F3136)
       await ctx.send(embed=em)
     
-    @commands.command(help="Show guilds information.")
-    @commands.guild_only()
+    @commands.command(help="Show guilds information.")=
     async def serverinfo(self, ctx):
       em = discord.Embed(description=f"Name: {ctx.guild}")
       em.color = (0x2F3136)
@@ -75,15 +72,13 @@ class InfoCog(commands.Cog):
       em.set_footer(text=f"World ServerInfo | {ctx.guild}'s Info", icon_url=ctx.guild.icon_url)
       await ctx.send(embed=em)
 
-    @commands.command(help="List of connected servers.")
-    @commands.guild_only()
+    @commands.command(help="List of connected servers.")=
     async def servers(self, ctx):
       servers = list(self.bot.guilds)
       embed = discord.Embed(title=None,colour=0x2F3136,description="Connected on " + str(len(servers)) + " servers")
       await ctx.send(embed=embed)
 
-    @commands.command(help="Show World's Info.")
-    @commands.guild_only()
+    @commands.command(help="Show World's Info.")=
     async def botinfo(self, ctx):
       dpyVersion = discord.__version__
       serverCount = len(self.bot.guilds)
@@ -123,7 +118,6 @@ class InfoCog(commands.Cog):
       await ctx.send(embed=embed)
 
     @commands.command(help="Show users spotify info.")
-    @commands.guild_only()
     async def spotify(self, ctx, user: Optional[discord.Member]):
         user = user or ctx.author
         for activity in user.activities:
@@ -147,7 +141,6 @@ class InfoCog(commands.Cog):
                 await ctx.send(embed=embed)
 
     @commands.command(help="Invite World.")
-    @commands.guild_only()
     async def invite(self, ctx):
         coronastats = ('https://discord.com/api/oauth2/authorize?client_id=700292147311542282&permissions=8&scope=bot')
         em = discord.Embed(title='Click Me To Invite Me :)', url=(coronastats), icon_url=world_pfp)
@@ -160,7 +153,6 @@ class InfoCog(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(help="Vote for world.")
-    @commands.guild_only()
     async def vote(self, ctx):
         bot_link = ('https://top.gg/bot/700292147311542282/vote')
         em = discord.Embed(title='Click to vote', url=(bot_link), icon_url='https://top.gg/bot/700292147311542282')
@@ -172,7 +164,6 @@ class InfoCog(commands.Cog):
         await ctx.send(embed=em)
        
     @commands.command()
-    @commands.guild_only()
     async def translate(self, ctx, *, translation):
         try:
             translator = Translator()
@@ -185,7 +176,6 @@ class InfoCog(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command(help="Show Guilds Bans.")
-    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def bans(self, ctx):
         try:
@@ -200,7 +190,6 @@ class InfoCog(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(help="Corona Virus information")
-    @commands.guild_only()
     async def corona(self, ctx):
         async with aiohttp.ClientSession() as cs:
             async with cs.get("https://api.covid19api.com/world/total") as r:
@@ -219,7 +208,6 @@ class InfoCog(commands.Cog):
                 await ctx.send(embed=em)
 
     @commands.command(help="Suggest a command or report a bug.")
-    @commands.guild_only()
     async def suggest(self, ctx, *, message):
       suggestion_user = ctx.author
       embed = discord.Embed(title="New suggestion", description=f"Suggestion: `{message}`\nSuggestor: `{suggestion_user}`\nSuggestor ID: `{suggestion_user.id}`", timestamp=datetime.datetime.utcnow(), color=0xb0b9ff)
@@ -236,7 +224,6 @@ class InfoCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/suggest <text>`")
 
     @commands.command(help="Show World's uptime.")
-    @commands.guild_only()
     async def uptime(self, ctx):
         seconds = time.time()-starttime
         m, s = divmod(seconds, 60)
@@ -249,7 +236,6 @@ class InfoCog(commands.Cog):
         await ctx.send(embed=em)
         
     @commands.command(help="Urban Dictionary")
-    @commands.guild_only()
     @commands.is_nsfw()
     async def urban(self, ctx, *name):
         async with aiohttp.ClientSession() as cs:

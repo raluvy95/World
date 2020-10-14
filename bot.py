@@ -1,106 +1,123 @@
-import discord
-import asyncio
-import random
-import os
-import time
-import requests
-import aiohttp
-import urllib
+import textwrap
 import json
-import discord
-import sys
-import inspect
-import traceback
-import datetime
-import platform
-import pip
-import io
-from discord.ext import commands
-from discord.ext.commands import has_permissions, MissingPermissions
-from dotenv import load_dotenv
-from os import listdir
 
-# Load variables from .env
+from os import environ, listdir
+
+from discord import (
+    Activity,
+    ActivityType,
+    Embed,
+    HTTPException,
+    Intents,
+    Message,
+    Status
+)
+from discord.ext import commands
+from dotenv import load_dotenv
+
 load_dotenv()
 
-def get_prefix(bot, message):
-    prefixes = ['w/', 'world ', 'World ']
-    return commands.when_mentioned_or(*prefixes)(bot, message)
+# -------
+# Main bot area
+world = commands.Bot(
+    command_prefix=("w/", "world"),
+    description="Discord Bot Made For All",
+    case_insensitive=True,
+    intents=Intents.all()
+)
+world.remove_command("help")
 
-bot = commands.Bot(command_prefix=get_prefix, description='Discord Bot Made For All', case_insensitive=True, intents=discord.Intents.all())
-bot.remove_command("help")
 
+# -------
+# Cogs area
 cogs = [
     f[:-3] for f in listdir("cogs/")
     if f.endswith(".py")
 ]
+
 for cog in cogs:
-	bot.load_extension(f"cogs.{cog}")
+    world.load_extension(f"cogs.{cog}")
 
-@bot.event
-async def on_ready():
-    await bot.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=discord.ActivityType.listening, name="w/help")
+
+# -------
+# Blacklist area
+with open("blacklisted.json") as f:
+    blacklisted_people = json.load(f)
+
+
+# -------
+# Message received area
+@world.event
+async def on_message(message: Message) -> None:
+    """
+    Dispatched every time a message is sent.
+
+    Checks if the message wasn't send by a bot, the message wasn't send
+    on DMs and the user isn't blacklisted.
+    """
+    if message.author.bot:
+        return
+    if not message.guild:
+        await message.channel.send((
+            "You can't use commands on DMs, invite the bot your server: "
+            f"<https://discord.com/oauth2/authorize?client_id={world.user.id}&permissions=8&scope=bot>"
+        ))
+        return
+
+    if message.author.id in blacklisted_people:
+        return
+    
+    await world.process_commands(message)
+
+
+# -------
+# On ready area
+@world.event
+async def on_ready() -> None:
+    """Dispatched when the bot has successfully connected into Discord."""
+    await world.change_presence(
+        status=Status.dnd,
+        activity=Activity(
+            type=ActivityType.listening,
+            name="w/help"
+        )
     )
-    print(f"""Status:
-    ----------------
-    Bot is ready!
-    ---------------
-    Author: Sean, Fxcilities, CatNowBlue and AtieP
-    ---------------
-    Logged in as: {bot.user.name}
-    ---------------
-    Current Version: 433634.128947
-    ---------------
-    """)
-
-@bot.command(aliases=["firstmessage"], help="Pull first sent message in a channel.")
-@commands.has_permissions(manage_messages=True)
-async def fm(ctx, channel: discord.TextChannel=None):
-	if channel is None:
-		channel = ctx.channel
-		fm = (await channel.history(limit=1, oldest_first=True).flatten())[0]
-		embed = discord.Embed(description=fm.content, timestamp=ctx.message.created_at)
-		embed.add_field(name="First Ever Message!", value=f"[Click To Go To Message]({fm.jump_url})\nChannel: <#{channel.id}>")
-		embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
-		embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
-		embed.set_footer(text=f"World - First Message")
-		embed.color = (ctx.author.color)
-		await ctx.send(embed=embed)
-	else:
-		fm = (await channel.history(limit=1, oldest_first=True).flatten())[0]
-		embed = discord.Embed(description=fm.content, timestamp=ctx.message.created_at)
-		embed.add_field(name="First Ever Message!", value=f"[Click To Go To Message]({fm.jump_url})\nChannel: <#{channel.id}>")
-		embed.set_author(name=bot.user.name, icon_url=bot.user.avatar_url)
-		embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/717029914360020992/730135115673370684/contest1replace.png")
-		embed.set_footer(text=f"World - First Message")
-		embed.color = (ctx.author.color)
-		await ctx.send(embed=embed)
+    print("Bot connected successfully into Discord!")
 
 
-@fm.error
-async def fm_error(ctx, error):
-    if isinstance(error, commands.CheckFailure):
-        await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} You Dont Have `manage messages` Permission')
+# -------
+# Error handler area
+@world.event
+async def on_command_error(ctx: commands.Context, error: commands.errors.CommandInvokeError) -> None:
+    """Dispatched when an exception was raised."""
+    error = getattr(error, "original", error)
+    if environ["DEBUG"] == "1":
+        error_msg = textwrap.dedent(f"""
+            ------------------
+            Error
+            
+            Cog: {ctx.cog.__class__.__name__}
+            Command: {ctx.cog.__class__.__name__}
+            Invoker: {ctx.author} ({ctx.author.id})
+            Location: {ctx.message.jump_url}
+            
+            {error.__class__.__name__}: {error}
+            ------------------
+        """)
+        print(error_msg)
 
-
-@bot.command(help="[Nsfw], Screenshot a website.")
-async def screenshot(ctx, site):
-    if ctx.channel.is_nsfw():
-        embed=discord.Embed(title="World - Screenshot", timestamp=ctx.message.created_at, color=ctx.author.color)
-        embed.set_image(url=f"https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{site}")
-        await ctx.send(embed=embed)
+        error_embed = Embed(
+            title=":x: Error",
+            description=error_msg.strip().strip("-"),
+            color=0xff0000
+        )
+        try:
+            error_channel = await world.fetch_channel(747887386624786513)
+        except HTTPException:
+            return
+        await error_channel.send(embed=error_embed)
     else:
-        embed=discord.Embed(title="Nsfw Only!", timestamp=ctx.message.created_at, color=ctx.author.color)
-        embed.set_image(url=f"https://media.discordapp.net/attachments/265156286406983680/728328135942340699/nsfw.gif")
-        await ctx.send(embed=embed)
+        print(f"{error.__class__.__name__}: {error}")
 
-@bot.event
-async def on_command_error(ctx, error):
-    print(f"{error.__class__.__name__}: {error}")
-    if ctx.author.id == 662334026098409480 or ctx.author.id == 393859835331870721:
-        channels = bot.get_channel(746028290455634032)
-        embed = discord.Embed(description=f":x: New Logged Error By A World Developer!\n```{error}```\nInvoker: `{ctx.author}`", color=discord.Color.blue())
-        embed.set_thumbnail(url=bot.user.avatar_url)
-        await channels.send(embed=embed)
 
-bot.run(os.environ["TOKEN"], bot=True, reconnect=True)
+world.run(environ["TOKEN"], bot=True, reconnect=True)

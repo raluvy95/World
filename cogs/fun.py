@@ -22,7 +22,6 @@ class FunCog(commands.Cog):
         self.gameCache = {}
 
     @commands.command(help="World is funny.")
-    @commands.guild_only()
     async def joke(self, ctx):
         headers = {"Accept": "application/json"}
         async with aiohttp.ClientSession() as session:
@@ -31,7 +30,6 @@ class FunCog(commands.Cog):
         await ctx.send(r["joke"])
 
     @commands.command(help="Make a user wasted.")
-    @commands.guild_only()
     async def wasted(self, ctx, user : discord.Member=None):
         if user == None:
             user = ctx.author
@@ -40,10 +38,7 @@ class FunCog(commands.Cog):
         embed.set_footer(text=f"Requested by {ctx.author}")
         await ctx.send(embed=embed)
 
-
-
     @commands.command()
-    @commands.guild_only()
     async def askali(self, ctx, *, desc):
         responses = [
             "Ali A Kills Himself",
@@ -63,9 +58,7 @@ class FunCog(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/askali <question>`")
 
-
     @commands.command(help="Generate some P*rn Hub text.")
-    @commands.guild_only()
     async def phtext(self,ctx,text1,line,text):
         if line == '&':
             embed = discord.Embed(title='P*rn Hub Text', description=f'Requested By {ctx.author.mention}', color=0xffa31a)
@@ -77,9 +70,7 @@ class FunCog(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/phtext text & text`")
 
-
     @commands.command(help="Show love between users.")
-    @commands.guild_only()
     async def ship(self, ctx, text1: discord.Member, line, text: discord.Member):
         if line == '&':
             embed = discord.Embed(title='Cuties', description=f'Requested By {ctx.author.mention}', color=0x2F3136)
@@ -91,9 +82,7 @@ class FunCog(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/ship <@user> <&> <@user>`")
 
-
     @commands.command(help="Generate supreme text.")
-    @commands.guild_only()
     async def supreme(self, ctx,*,message=None):
         if message == None:
             return await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/supreme <text>`")
@@ -104,10 +93,7 @@ class FunCog(commands.Cog):
         embed.color=0x2F3136
         await ctx.send(embed=embed)
 
-
-
     @commands.command(name="f", help="Sad times.")
-    @commands.guild_only()
     async def f(self, ctx, *, text: commands.clean_content = None):
         """ Press F to pay respect """
         sean = ['💔', '💝', '💚', '💙', '💜']
@@ -117,7 +103,6 @@ class FunCog(commands.Cog):
 
     @commands.command(help="Shows a meme from random subreddits.")
     @commands.cooldown(rate=4, per=7, type=commands.BucketType.member)
-    @commands.guild_only()
     async def meme(self, ctx):
         r = requests.get("https://memes.blademaker.tv/api?lang=en")
         res = r.json()
@@ -140,7 +125,6 @@ class FunCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} This command in on cooldown, Try again in {a} seconds.")
 
     @commands.command(aliases=["pepe"], help="Shows users pp size.")
-    @commands.guild_only()
     async def pp(self, ctx, *, user: discord.Member = None):
         if user is None:
             user = ctx.author
@@ -153,9 +137,7 @@ class FunCog(commands.Cog):
         )
         await ctx.send(embed=em)
 
-
     @commands.command(help="Steal a users avatar.")
-    @commands.guild_only()
     async def avatar(self, ctx, *, user: discord.Member=None):
         format = "gif"
         user = user or ctx.author
@@ -167,7 +149,6 @@ class FunCog(commands.Cog):
                 image = await resp.read()
         with io.BytesIO(image) as file:
             await ctx.send(file = discord.File(file, f"Avatar.{format}"))
-
 
     @commands.command(help="Fake tweet text.")
     @commands.guild_only()
@@ -187,9 +168,7 @@ class FunCog(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/tweet <username> <message>`")
 
-
     @commands.command(help="Is that user gay?.")
-    @commands.guild_only()
     async def gay(self, ctx, *, user: discord.Member=None):
         user = user or (ctx.author)
         randomPercentage = random.randint(1, 100)
@@ -213,9 +192,7 @@ class FunCog(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f':regional_indicator_x: Sorry {ctx.author.mention} Please Mention A User')
 
-
     @commands.command(aliases=["aki"], help="Can the akinator beat you?")
-    @commands.guild_only()
     async def akinator(self, ctx: commands.Context):
         if ctx.channel.id in self.gameCache.keys():
             return await ctx.send(
@@ -293,7 +270,6 @@ class FunCog(commands.Cog):
 
 
     @commands.command(aliases=["8ball"], help="Magical answers.")
-    @commands.guild_only()
     async def _8ball(self, ctx, *, question):
         responses = [
             "It is certain.",
@@ -330,7 +306,6 @@ class FunCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/8ball <question>`")
 
     @commands.command(help="Turn text into emojis!.")
-    @commands.guild_only()
     async def emojify(self, ctx, *, stuff):
         emj = ("".join([":regional_indicator_"+l+":"  if l in "abcdefghijklmnopqrstuvwyx" else [":zero:", ":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"][int(l)] if l.isdigit() else ":question:" if l == "?" else ":exclamation:" if l == "!" else l for l in f"{stuff}"]))
         embed = discord.Embed(title='Emojify', description=f'Requested By {ctx.author.mention}', color=0x2F3136)
@@ -343,7 +318,6 @@ class FunCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/emojify <text>`")
 
     @commands.command(help="Ask the boss.")
-    @commands.guild_only()
     async def asktrump(self, ctx, *, question):
         r = requests.get(f"https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}")
         r = r.json()
@@ -359,7 +333,6 @@ class FunCog(commands.Cog):
             await ctx.send(f"Sorry {ctx.author.mention} Please Type `w/asktrump <question>`")
 
     @commands.command(help="Sends a random gif.")
-    @commands.guild_only()
     async def gif(self, ctx):
         try:
             em = discord.Embed(color=0x2F3136, title="Random GIF")
@@ -376,7 +349,6 @@ class FunCog(commands.Cog):
 
 
     @commands.command(aliases=["russianrulette"], help="Play Russian rulette.")
-    @commands.guild_only()
     async def rr(self, ctx):
         responses = [
             "🔫Pow Your Dead!, Try again?",

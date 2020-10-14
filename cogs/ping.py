@@ -8,7 +8,6 @@ class PingCog(commands.Cog):
         self.bot = bot
 
     @commands.command(help="Show bots latency.")
-    @commands.guild_only()
     @commands.cooldown(rate=1, per=5, type=commands.BucketType.member)
     async def ping(self, ctx):
         ping3 = discord.Embed(title = 'Testing Latency... <a:load:724296877356482640>', color =0x13d1f2)
@@ -20,7 +19,6 @@ class PingCog(commands.Cog):
         await pinging.edit(embed = ping2)
         await asyncio.sleep(2)
         await pinging.edit(embed = ppo)
-
 
     @ping.error
     async def ping_error(self, ctx, error):

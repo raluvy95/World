@@ -66,7 +66,6 @@ class HelpCog(commands.Cog):
 
 
     @commands.command(help="Shows other category.")
-    @commands.guild_only()
     async def other(self, ctx):
       em = discord.Embed(
         title="Other commands", 
@@ -80,7 +79,6 @@ class HelpCog(commands.Cog):
 
 
     @commands.command(help="Shows moderation category.")
-    @commands.guild_only()
     async def mod(self, ctx):
       em = discord.Embed(
         title="Moderation commands", 
@@ -96,7 +94,6 @@ class HelpCog(commands.Cog):
       await ctx.send(embed=em)
       
     @commands.command(help="Shows logging category.")
-    @commands.guild_only()
     async def logs(self, ctx):
       em = discord.Embed(
         title="Logging commands", 
@@ -109,7 +106,6 @@ class HelpCog(commands.Cog):
 
 
     @commands.command(help="Shows Fun category.")
-    @commands.guild_only()
     async def fun(self, ctx):
       em = discord.Embed(
         title="Fun commands", 
@@ -122,7 +118,6 @@ class HelpCog(commands.Cog):
 
 
     @commands.command(help="Shows economy category.")
-    @commands.guild_only()
     async def economy(self, ctx):
       em = discord.Embed(
         title="Economy commands", 
@@ -143,7 +138,6 @@ class HelpCog(commands.Cog):
    
 
     @commands.command(help="Shows new commands.")
-    @commands.guild_only()
     async def new(self, ctx):
       em = discord.Embed(
         title="New commands!", 
