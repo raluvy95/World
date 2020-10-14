@@ -165,7 +165,7 @@ class LoggingCog(commands.Cog):
     				return await ctx.send(embed=embed)
     			joined = result["JoinedServer"]
     			joinedresult = int(channel.id)
-    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"JoinedServer": joinedresultt}})
+    			collection.update_one({"_id": ctx.guild.id}, {"$set": {"JoinedServer": joinedresult}})
     			embed = discord.Embed(title="Logging - set", description=f"{ctx.author.mention} I have succsesfully updated your `Welcome Messages` to the channel: <#{channel.id}>")
     			await ctx.send(embed=embed)
 
