@@ -84,17 +84,18 @@ class InfoCog(commands.Cog):
       serverCount = len(self.bot.guilds)
       memberCount = len(set(self.bot.get_all_members()))
 
-      embed = discord.Embed(title=f'{self.bot.user.name} - Info', description='World - Discord Bot Made For all', colour=0x2F3136, timestamp=ctx.message.created_at)
-
-      embed.add_field(name="Name:", value="World#4520", inline=True)
-      embed.add_field(name='Library:', value="Discord.py")
-      embed.add_field(name='Library Discord.py Version:', value=dpyVersion)
-      embed.add_field(name='Total Servers:', value=serverCount)
-      embed.add_field(name='Total Users:', value=memberCount)
-      embed.add_field(name='Bot Made By:', value="<@662334026098409480>")
-
-      embed.set_footer(text=f"World - Botinfo | Made By seaÃ±#1718")
-      embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+      embed = discord.Embed(
+      	title=f"World's Info!",
+      	color=0x2F3136
+      	).add_field(
+      	name=":robot: | Stats",
+      	value=f"Version: `{dpyVersion}`\nServers: `{serverCount}`\nUsers: `{memberCount}`"
+      	).add_field(
+      	name="<:pythonversion:765926470639419414> | Developers",
+      	value="Owner: `seañ#1718`\nDevelopers: `Atie#5173`\n|`fxcilities#4728`|`catnowblue#5904`",
+      	inline=False
+      	)
+      await ctx.send(embed=embed)
 
       await ctx.send(embed=embed)
 
